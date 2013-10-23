@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity Admin of OSafe Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+
+    <entity entity-name="XProductStoreParm"
+            package-name="org.ofbiz.osafe.admin"
+            title="Parameters for a specific product store">
+      <field name="productStoreId" type="id-ne"></field>
+      <field name="parmCategory" type="description"></field>
+      <field name="parmKey" type="id-long-ne"></field>
+      <field name="parmValue" type="value"></field>
+      <field name="description" type="description"></field>
+      <prim-key field="productStoreId"/>
+      <prim-key field="parmKey"/>
+        <relation type="one" fk-name="XPSP_PRODUCTSTORE" rel-entity-name="ProductStore">
+            <key-map field-name="productStoreId"/>
+        </relation>
+    </entity>
+
+    <view-entity entity-name="ProductContentAndText"
+            package-name="org.ofbiz.osafe.admin"
+            title="ProductContent, Content, DataResource and ElectronicText View Entity">
+      <member-entity entity-alias="PC" entity-name="ProductContent"/>
+      <member-entity entity-alias="CO" entity-name="Content"/>
+      <member-entity entity-alias="DR" entity-name="DataResource"/>
+      <member-entity entity-alias="ET" entity-name="ElectronicText"/>
+       <alias entity-alias="PC" name="productId"/>
+      <alias entity-alias="PC" name="contentId"/>
+      <alias entity-alias="PC" name="productContentTypeId"/>
+      <alias entity-alias="PC" name="fromDate"/>
+      <alias entity-alias="PC" name="thruDate"/>
+      <alias entity-alias="CO" name="dataResourceId"/>
+      <alias entity-alias="ET" name="textData"/>
+      <view-link entity-alias="PC" rel-entity-alias="CO">
+        <key-map field-name="contentId"/>
+      </view-link>
+      <view-link entity-alias="CO" rel-entity-alias="DR">
+        <key-map field-name="dataResourceId"/>
+      </view-link>
+      <view-link entity-alias="DR" rel-entity-alias="ET">
+        <key-map field-name="dataResourceId"/>
+      </view-link>
+      <relation type="one-nofk" rel-entity-name="ElectronicText">
+        <key-map field-name="dataResourceId"/>
+      </relation>
+      <relation type="one-nofk" rel-entity-name="ImageDataResource">
+        <key-map field-name="dataResourceId"/>
+      </relation>
+      <relation type="one-nofk" rel-entity-name="OtherDataResource">
+        <key-map field-name="dataResourceId"/>
+      </relation>
+      <relation type="many" rel-entity-name="ContentAssocDataResourceViewFrom">
+        <key-map field-name="contentId" rel-field-name="contentIdStart"/>
+      </relation>
+      <relation type="many" rel-entity-name="ContentAssocDataResourceViewTo">
+        <key-map field-name="contentId" rel-field-name="contentIdStart"/>
+      </relation>
+    </view-entity>
+
+    <view-entity entity-name="PartyContentAndText"
+            package-name="org.ofbiz.osafe.admin"
+            title="PartyContent Content, DataResource and ElectronicText View Entity">
+      <member-entity entity-alias="PC" entity-name="PartyContent"/>
+      <member-entity entity-alias="CO" entity-name="Content"/>
+      <member-entity entity-alias="DR" entity-name="DataResource"/>
+      <member-entity entity-alias="ET" entity-name="ElectronicText"/>
+       <alias entity-alias="PC" name="partyId"/>
+      <alias entity-alias="PC" name="contentId"/>
+      <alias entity-alias="PC" name="partyContentTypeId"/>
+      <alias entity-alias="PC" name="fromDate"/>
+      <alias entity-alias="PC" name="thruDate"/>
+      <alias entity-alias="CO" name="dataResourceId"/>
+      <alias entity-alias="ET" name="textData"/>
+      <view-link entity-alias="PC" rel-entity-alias="CO">
+        <key-map field-name="contentId"/>
+      </view-link>
+      <view-link entity-alias="CO" rel-entity-alias="DR">
+        <key-map field-name="dataResourceId"/>
+      </view-link>
+      <view-link entity-alias="DR" rel-entity-alias="ET">
+        <key-map field-name="dataResourceId"/>
+      </view-link>
+      <relation type="one-nofk" rel-entity-name="ElectronicText">
+        <key-map field-name="dataResourceId"/>
+      </relation>
+      <relation type="one-nofk" rel-entity-name="ImageDataResource">
+        <key-map field-name="dataResourceId"/>
+      </relation>
+      <relation type="one-nofk" rel-entity-name="OtherDataResource">
+        <key-map field-name="dataResourceId"/>
+      </relation>
+      <relation type="many" rel-entity-name="ContentAssocDataResourceViewFrom">
+        <key-map field-name="contentId" rel-field-name="contentIdStart"/>
+      </relation>
+      <relation type="many" rel-entity-name="ContentAssocDataResourceViewTo">
+        <key-map field-name="contentId" rel-field-name="contentIdStart"/>
+      </relation>
+    </view-entity>
+
+    <entity entity-name="BlueDartPrepaid"
+            package-name="org.ofbiz.osafe.admin"
+            title="BlueDart Prepaid">
+      <field name="pincode" type="id-ne"></field>
+      <field name="carea" type="name"></field>
+      <field name="cscrcd" type="name"></field>
+      <field name="careadesc" type="description"></field>
+      <field name="city" type="name"></field>
+      <field name="bdelLoc" type="name"></field>
+      <field name="state" type="name"></field>
+      <field name="region" type="name"></field>
+      <field name="zone" type="name"></field>
+      <field name="cloctype" type="name"></field>
+      <field name="bembargo" type="name"></field>
+      <field name="domestic" type="name"></field>
+      <field name="apex" type="name"></field>
+      <field name="surface" type="name"></field>
+      <field name="cod" type="name"></field>
+      <field name="creditcard" type="name"></field>
+      <field name="tdd" type="name"></field>
+      <field name="tddapx1200" type="name"></field>
+      <field name="dstarcd" type="name"></field>
+      <field name="ccrcrdscr" type="name"></field>
+      <field name="csfczone" type="name"></field>
+      <field name="sfzonedesc" type="name"></field>
+      <field name="subregion" type="name"></field>
+      <field name="cservflag" type="name"></field>
+      <field name="ctel" type="name"></field>
+      <field name="cnt" type="name"></field>
+      <field name="newzone" type="name"></field>
+      <field name="dodApex" type="name"></field>
+      <field name="dodSfc" type="name"></field>
+      <field name="fodApex" type="name"></field>
+      <field name="fodSfc" type="name"></field>
+      <field name="blueDartlimit" type="name"></field>
+      <prim-key field="pincode"/>
+    </entity>
+    
+    <entity entity-name="BlueDartCodpin"
+            package-name="org.ofbiz.osafe.admin"
+            title="BlueDart Codpin">
+      <field name="pincode" type="id-ne"></field>
+      <field name="carea" type="name"></field>
+      <field name="cscrcd" type="name"></field>
+      <field name="city" type="name"></field>
+      <field name="bdelLoc" type="name"></field>
+      <field name="state" type="name"></field>
+      <field name="region" type="name"></field>
+      <field name="zone" type="name"></field>
+      <field name="cloctype" type="name"></field>
+      <field name="bembargo" type="name"></field>
+      <field name="domestic" type="name"></field>
+      <field name="apex" type="name"></field>
+      <field name="surface" type="name"></field>
+      <field name="cod" type="name"></field>
+      <field name="tdd" type="name"></field>
+      <field name="dstarcd" type="name"></field>
+      <field name="subregion" type="name"></field>
+      <field name="returnLoc" type="name"></field>
+      <field name="retLoc" type="name"></field>
+      <field name="newzone" type="name"></field>
+      <field name="blueDartlimit" type="name"></field>
+      <prim-key field="pincode"/>
+    </entity>
+</entitymodel>

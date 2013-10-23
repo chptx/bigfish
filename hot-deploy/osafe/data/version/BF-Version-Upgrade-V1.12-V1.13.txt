@@ -1,0 +1,1899 @@
+//********************************************************************************************
+//        TABLE OF CONTENTS
+//RELEASE ITEMS - Notes on items in this release 
+//SQL UPDATES - SQL statements to be executed against DB
+//BIGFISH PARAMETERS UPDATES - System Parameters added/removed (Entity: X_PRODUCT_STORE_PARM)
+//BIGFISH TYPES - Specific DB Types added/removed
+//BIGFISH EXTENDED STORE - Options added/removed to script for additional product stores
+//BIGFISH CONTENT MENU - Detailed options added/removed to maintain BigFish Content Menu options (emails, page content)
+//LABEL UPDATES - Ecommerce Labels added/removed
+//DIV SEQUENCE UPDATES - Ecommerce DIV sequence items added/removed
+//CLIENT DEPLOYMENT UPDATES - Properties added/removed
+//ECOMMERCE SEED UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE CONTENT SEED UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE EMAIL DATA UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE CSS UPDATES - High level Styles added/removed to CSS files
+//All entries in each section are noted by the following:
+//   Date:
+//   Issue #:
+//   Description: [Feedback Subject]
+//   By: [Developer Initials]
+//   Note: [Additional notation]
+//********************************************************************************************
+
+
+
+//********************************************************************************************
+//RELEASE ITEMS
+//********************************************************************************************
+Date: 08/29/2013
+Issue #: 31375
+Description: MySql Connector
+By: PA
+Note: Replaced the mysql-connector-java-5.1.7-bin.jar with mysql-connector-java-5.1.23.jar to make it compatible with both MySql version 5.1 and 5.6.
+      
+      Update the jar in following directory structure:-
+      \osafe_deployment\ofbiz\framework\entity\lib\jdbc
+      We need to delete the mysql-connector-java-5.1.7-bin.jar from ofbiz\framework\entity\lib\jdbc\ for every running instance.  
+
+Date: 09/11/2013
+Issue #: 31612
+Description: Osafe.properties
+By: PA
+Note: Replaced the version_osafe.properties with version_OsafeProperties.xml to include this property file in merge process
+      
+      File version_osafe.properties was deleted from below directory location:-
+      hot-deploy\osafe\data
+      File version_OsafeProperties.xml was added at below directory location:-
+      hot-deploy\osafe\data
+      
+
+    
+//********************************************************************************************
+//SQL UPDATES
+//********************************************************************************************
+
+Date: 08/05/2013
+Issue #: 31067
+Description: SmokeV1.12SSJ-QA: Contact us error on submit
+By: RB
+Note: Updated the default (seeded) store email. This should be a valid email address that exists. 
+	UPDATE CONTACT_MECH SET info_string='bigfish@solveda.com' WHERE contact_mech_id='@store.storePrefix@_1002';
+
+//********************************************************************************************
+//BIGFISH PARAMETERS UPDATES
+//FILE: bigFishParameters.xml
+//********************************************************************************************
+
+//Add
+
+Date: 07/31/2013
+Issue #: 30907
+Description: Loyalty Points: apply redemption in checkout
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_LOYALTY_METHOD" description="A value indicating if Loyalty Card redemptions are available during checkout and which service is to be used. Valid values are NONE and TENTEST (test that returns 10 points)." parmCategory="CHECKOUT"/>
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_LOYALTY_CONVERSION" description="A value indicating the conversion of Loyalty Points to money. POINTS divided by CONVERSION equals MONETARY-VALUE. 100 points with a conversion of 10 would equal 10 monetary units." parmCategory="CHECKOUT"/>
+
+Date: 08/05/2013
+Issue #: 30905
+Description: New Payment Gateway: atom Paynetz
+By: RL
+Note:   
+    <XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_ALLOW_PAYNETZ" description="Determines if the Atom PAYNETZ, a special Payment Gateway for Indian eCommerce retailers, is an acceptable form of payment during the Check Out process" parmCategory="CHECKOUT"/>
+
+Date: 08/07/2013
+Issue #: 30679
+Description: Store Locator: no results found alternative search
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="GMAP_NOT_FOUND_ADDRESS" description="An address that is used when no stores are found using the customers request. This should be a value that ensures results." parmCategory="GMAP"/>
+	
+//Remove
+
+
+//********************************************************************************************
+//BIGFISH CONTENT MENU
+//FILE: bigFishContentMenu.xml
+//********************************************************************************************
+
+//Add
+Date: 09/06/2013
+Issue #: 31559
+Description: Email Templates
+By: LS
+Note: Common Sub components, typically included in E_ORDER_DETAIL
+
+		E_ORDER_HEADER: lists the details of an order
+		E_ORDER_PAYMENTS: lists the payments of an order
+		E_ORDER_SHIPMENTS: lists the shipments of an order
+		E_ORDER_ITEMS: lists the items of an order
+		E_ORDER_ITEM_SUMMARY: lists the summary totals of an order
+
+    
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//BIGFISH TYPES
+//FILE: bigFishTypes.xml
+//********************************************************************************************
+
+//Add
+
+Date: 07/31/2013
+Issue #: 30907
+Description: Loyalty Points: apply redemption in checkout
+By: RB
+Note:
+	<OrderAdjustmentType description="Loyalty Point Redemption" hasTable="N" orderAdjustmentTypeId="LOYALTY_POINTS" parentTypeId=""/>
+
+Date: 08/05/2013
+Issue #: 30905
+Description: New Payment Gateway: atom Paynetz
+By: RL
+Note:
+    <CustomMethodType customMethodTypeId="PAYNETZ_AUTH" parentTypeId="" hasTable="N" description="PAYNETZ authorize methods"/>
+    <CustomMethodType customMethodTypeId="PAYNETZ_RELEASE" parentTypeId="" hasTable="N" description="PAYNETZ release methods"/>
+    <CustomMethodType customMethodTypeId="PAYNETZ_CAPTURE" parentTypeId="" hasTable="N" description="PAYNETZ capture methods"/>
+    <CustomMethodType customMethodTypeId="PAYNETZ_REFUND" parentTypeId="" hasTable="N" description="PAYNETZ refund methods"/>
+    <PaymentMethodType paymentMethodTypeId="EXT_PAYNETZ" description="Atom PayNetz Payment"/>
+    <PaymentGatewayConfigType paymentGatewayConfigTypeId="PAYNETZ" hasTable="N" description="Atom PayNetz Payment Gateway"/>
+
+
+//Remove
+
+
+//Edit
+
+
+//********************************************************************************************
+//BIGFISH EXTENDED STORE
+//FILE: bigFishExtendedStore.xml
+//********************************************************************************************
+
+//Add
+
+
+		
+//Remove
+
+//Edit
+
+
+//********************************************************************************************
+//LABEL UPDATES
+//FILE: OSafeUiLabels.xml
+//********************************************************************************************
+
+//Add
+Date: 07/31/2013
+Issue #: 30297
+Description: eComm: Check Out, added Gift Card Redemption
+By: RL
+Note:
+    <property key="GiftCardInvalidError">
+        <value xml:lang="en">Please check your Gift Card, it appears you have entered an invalid number</value>
+        <category>MESSAGE_ERROR</category>
+        <description>GiftCardInvalidError</description>
+    </property>
+    <property key="GiftCardZeroBalanceError">
+        <value xml:lang="en">This Gift Card has a zero balance and cannot be redeemed</value>
+        <category>MESSAGE_ERROR</category>
+        <description>GiftCardZeroBalanceError</description>
+    </property>
+    <property key="GiftCardInSufficientBalanceError">
+        <value xml:lang="en">We cannot process your payment information. Gift card have not sufficient balance.</value>
+        <category>MESSAGE_ERROR</category>
+        <description>GiftCardInSufficientBalanceError</description>
+    </property>
+    <property key="RemainingGiftCardBalanceCaption">
+        <value xml:lang="en">Total Remaining on Gift Card After Purchase:</value>
+        <category>MULTI_USE</category>
+        <description>RemainingGiftCardBalanceCaption</description>
+    </property>
+    <property key="GiftCardLabel">
+        <value xml:lang="en">on Card #</value>
+        <category>MULTI_USE</category>
+        <description>GiftCardLabel</description>
+    </property>
+    
+Date: 07/31/2013
+Issue #: 30907
+Description: Loyalty Points: apply redemption in checkout
+By: RB
+Note:
+	<property key="LoyaltyPointsMissingError">
+        <value xml:lang="en">Please enter a Loyalty Points ID</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsMissingError</description>
+    </property>
+    <property key="LoyaltyPointsFailError">
+        <value xml:lang="en">We're sorry but we could not validate your Loyalty Card number. Please retry or call 1-888-555-1212 for assistance</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsFailError</description>
+    </property>
+    <property key="LoyaltyPointsUserInvalidError">
+        <value xml:lang="en">Please check your Loyalty Points ID, it appears you have entered an invalid number</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsUserInvalidError</description>
+    </property>
+    <property key="LoyaltyPointsLabel">
+        <value xml:lang="en">If you are a Loyalty Points Member, enter your ID here:</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsLabel</description>
+    </property>
+    <property key="ApplyLoyaltyCardBtn">
+        <value xml:lang="en">Apply Loyalty Card</value>
+        <category>MULTI_USE</category>
+        <description>ApplyLoyaltyCardBtn</description>
+    </property>
+    <property key="RemoveLoyaltyCardLabel">
+        <value xml:lang="en">Remove Loyalty Card</value>
+        <category>MULTI_USE</category>
+        <description>RemoveLoyaltyCardLabel</description>
+    </property>
+    <property key="LoyaltyPointsHeading">
+        <value xml:lang="en">Loyalty Points Redemption</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsHeading</description>
+    </property>
+    <property key="LoyaltyPointsAmountCaption">
+        <value xml:lang="en">Points:</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsAmountCaption</description>
+    </property>
+    <property key="LoyaltyPointsCurrencyAmountCaption">
+        <value xml:lang="en">Amount:</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsCurrencyAmountCaption</description>
+    </property>
+    <property key="LoyaltyPointsExpDateCaption">
+        <value xml:lang="en">Expires:</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsExpDateCaption</description>
+    </property>
+
+Date: 08/1/2013
+Issue #: 30382
+Description: Email: messaging on failure
+By: RB
+Note:
+	<property key="SendEmailErrorLabel">
+        <value xml:lang="en">Error when sending message to ${toEmail} from ${fromEmail} cc ${ccEmail} bcc ${bccEmail} subject ${emailSubject}</value>
+        <category>EMAIL</category>
+        <description>SendEmailErrorLabel</description>
+    </property>
+    <property key="NullLabel">
+        <value xml:lang="en">null</value>
+        <category>MULTI_USE</category>
+        <description>NullLabel</description>
+    </property>
+    
+Date: 08/1/2013
+Issue #: 30875
+Description: Admin: Shipping Address blank
+By: RB
+Note:
+	<property key="ShippingAddressMissingError">
+        <value xml:lang="en">Please select a Shipping Address.</value>
+        <category>MULTI_USE</category>
+        <description>ShippingAddressMissingError</description>
+    </property>
+
+Date: 08/01/2013
+Issue #: 31028
+Description: Site Search, styling H1 and sub headings
+By: LS
+Note:
+    <property key="SearchResultsFoundTitle">
+        <value xml:lang="en">Your search for '${searchText}' produced the following results.</value>
+        <category>PAGE_HEADING_H1</category>
+        <description>SearchResultsFoundTitle</description>
+    </property>
+    <property key="SearchResultsNotFoundTitle">
+        <value xml:lang="en">You searched for '${searchText}'.</value>
+        <category>PAGE_HEADING_H1</category>
+        <description>SearchResultsNotFoundTitle</description>
+    </property>
+    <property key="SearchResultsNotFoundSuggestionTitle">
+        <value xml:lang="en">We did not find any matches. Showing results for '${searchTextSpellCheck}' instead.</value>
+        <category>PAGE_HEADING_H1</category>
+        <description>SearchResultsNotFoundSuggestionTitle</description>
+    </property>
+
+Date: 08/2/2013
+Issue #: 29163
+Description: Super Saver Option
+By: LS
+Note:
+    <property key="CartItemPriceRecurrenceCaption">
+        <value xml:lang="en">Item Recurrence Price:</value>
+        <category>CART</category>
+        <description>CartItemPriceRecurrenceCaption</description>
+    </property>
+    <property key="CartItemRecurrencePriceSavingsLabel">
+        <value xml:lang="en">You Save</value>
+        <category>CART</category>
+        <description>CartItemRecurrencePriceSavingsLabel</description>
+    </property>
+    <property key="CartItemPriceRecurrenceLabel">
+        <value xml:lang="en">Recurrence Price</value>
+        <category>CART</category>
+        <description>CartItemPriceRecurrenceLabel</description>
+    </property>
+    
+Date: 08/02/2013
+Issue #: 30906
+Description: Loyalty Points: capture ID
+By: RB
+Note:
+	<property key="LoyaltyPointIdCaption">
+        <value xml:lang="en">Loyalty Point ID:</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointIdCaption</description>
+    </property>
+    
+Date: 08/05/2013
+Issue #: 31056
+Description: Gift Message Warning
+By: RB
+Note:    
+    <property key="EditGiftMessageLink">
+        <value xml:lang="en">Edit Gift Message</value>
+        <category>CART</category>
+        <description>EditGiftMessageLink</description>
+    </property>
+    <property key="GiftMessageWarning">
+        <value xml:lang="en">NOTE: You have ${totalItems} item(s) in your cart that can have a Gift Message. There are ${itemsWithoutGiftMessage} item(s) that do NOT have a Gift Message. Click on the ‘Add Gift Message’ above if you want to include a personalized message.</value>
+        <category>CART</category>
+        <description>GiftMessageWarning</description>
+    </property>
+
+Date: 08/08/2013
+Issue #: 30679
+Description: Store Locator: no results found alternative search
+By: RB
+Note:
+	<property key="NotFoundAddressUsedError">
+        <value xml:lang="en">We are sorry, we do not have stores within ${searchRadius} ${uom} of the address you entered. Showing results for ‘${notFoundAddress}’ instead</value>
+        <category>MESSAGE_ERROR</category>
+        <description>NotFoundAddressUsedError</description>
+    </property>
+
+Date: 08/14/2013
+Issue #: 30343
+Description: Enhencement: add footer info for BF Version #
+By: RL
+Note:
+    <property key="BigFishInfoTitle">
+        <value xml:lang="en">BigFish Information</value>
+        <category>PAGE_HEADING_H1</category>
+        <description>BigFishInfoTitle</description>
+    </property>
+    <property key="LatestVersionFileNameCaption">
+        <value xml:lang="en">Latest Version File Name:</value>
+        <category>MULTI_USE</category>
+        <description>LatestVersionFileNameCaption</description>
+    </property>
+    <property key="LatestVersionFileDataCaption">
+        <value xml:lang="en">Latest Version File Data:</value>
+        <category>MULTI_USE</category>
+        <description>LatestVersionFileDataCaption</description>
+    </property>
+
+Date: 08/27/2013
+Issue #: 29436
+Description: Cust Acct Mgmt: Order Status: show tracking info
+By: PA
+Note:
+    <property key="NotApplicableLabel">
+        <value xml:lang="en">N/A</value>
+        <category>MULTI_USE</category>
+        <description>NotApplicableLabel</description>
+    </property>
+   
+Date: 08/28/2013
+Issue #: 30962   
+Description: PayPal/EBS Payment with Gift Card
+By: RL
+Note:  
+    <property key="GiftCardTotalCaption">
+        <value xml:lang="en">Total of Gift Card Redemptions:</value>
+        <category>CHECKOUT</category>
+        <description>GiftCardTotalCaption</description>
+    </property>
+    
+Date: 08/30/2013
+Issue #: 31435
+Description: Loyalty Points: allow customer to enter points
+By: RB
+Note:
+	<property key="PointsAvailableCaption">
+        <value xml:lang="en">Points Available:</value>
+        <category>CHECK_OUT</category>
+        <description>PointsAvailableCaption</description>
+    </property>
+    <property key="AmountAvailableCaption">
+        <value xml:lang="en">Amount Available:</value>
+        <category>CHECK_OUT</category>
+        <description>AmountAvailableCaption</description>
+    </property>
+    <property key="PointsRedeemedCaption">
+        <value xml:lang="en">Points Redeemed:</value>
+        <category>CHECK_OUT</category>
+        <description>PointsRedeemedCaption</description>
+    </property>
+    <property key="AmountRedeemedCaption">
+        <value xml:lang="en">Amount Redeemed:</value>
+        <category>CHECK_OUT</category>
+        <description>AmountRedeemedCaption</description>
+    </property>
+    <property key="UpdateLoyaltyPointsBtn">
+        <value xml:lang="en">Update</value>
+        <category>MULTI_USE</category>
+        <description>UpdateLoyaltyPointsBtn</description>
+    </property>
+    <property key="RemoveLoyaltyCardBtn">
+        <value xml:lang="en">Remove Loyalty Card</value>
+        <category>MULTI_USE</category>
+        <description>RemoveLoyaltyCardBtn</description>
+    </property>
+    <property key="LoyaltyPointsExceedCartBalanceWarning">
+        <value xml:lang="en">The Total Number of Points available exceeds what you owe! We have adjusted the Points Redeemed accordingly</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsExceedCartBalanceWarning</description>
+    </property>
+    <property key="LoyaltyPointsLowBalanceError">
+        <value xml:lang="en">Your Loyalty Program is active and valid but unfortunately you do not have any credits available. Please retry or call 1-888-555-1212 for assistance</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsLowBalanceError</description>
+    </property>
+        <property key="LoyaltyPointsUpdateFailError">
+        <value xml:lang="en">The Points Redeemed must be numeric, must be greater than zero and cannot exceed the number of Points you have available</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsUpdateFailError</description>
+    </property>
+    <property key="LoyaltyPointsRedeemedExceedCartBalanceWarning">
+        <value xml:lang="en">The Total Number of Points that you entered exceeds what you owe! We have adjusted the Points Redeemed accordingly</value>
+        <category>MULTI_USE</category>
+        <description>LoyaltyPointsRedeemedExceedCartBalanceWarning</description>
+    </property>
+    
+Date: 09/03/2013
+Issue #: 31462
+Description: Payment Method changes
+By: RL
+Note:
+    <property key="TypeCaption">
+        <value xml:lang="en">Type:</value>
+        <category>CHECK_OUT</category>
+        <description>TypeCaption</description>
+    </property>
+
+Date: 09/11/2013
+Issue #: 31750
+Description: SSJ DEV CSS:Change Personal information
+By: PA
+Note:
+    <property key="WorkPhoneMissingError">
+        <value xml:lang="en">Please enter your Work Phone</value>
+        <category>MESSAGE_ERROR</category>
+        <description>WorkPhoneMissingError</description>
+    </property>    
+//Remove
+
+Date: 08/01/2013
+Issue #: 31028
+Description: Site Search, styling H1 and sub headings
+By: LS
+Note:
+    <property key="SearchResultsCountsTitle">
+        <value xml:lang="en">Your Search for '${searchText}' produced the following results.</value>
+        <category>PAGE_HEADING_H1</category>
+        <description>SearchResultsCountsTitle</description>
+    </property>
+    <property key="SearchResultsSpellCheckCountsTitle">
+        <value xml:lang="en">Your Search for '${searchText}' produced no results. Showing results for '${searchTextSpellCheck}' instead.</value>
+        <category>PAGE_HEADING_H1</category>
+        <description>SearchResultsSpellCheckCountsTitle</description>
+    </property>
+    
+Date: 08/05/2013
+Issue #: 30905
+Description: New Payment Gateway: atom Paynetz
+By: RL
+Note:  
+    <property key="PaynetzHeading">
+        <value xml:lang="en">atom PAYNETZ</value>
+        <category>PAGE_SUB_HEADING</category>
+        <description>PaynetzHeading</description>
+    </property> 
+    <property key="PaynetzCaption">
+        <value xml:lang="en">Pay with atom PAYNETZ:</value>
+        <category>CHECK_OUT</category>
+        <description>PaynetzCaption</description>
+    </property>
+    <property key="PayNetZOnlyCaption">
+        <value xml:lang="en">Paid by atom PAYNETZ:</value>
+        <category>CHECK_OUT</category>
+        <description>PayNetZOnlyCaption</description>
+    </property>
+
+Date: 08/28/2013
+Issue #: 30962   
+Description: PayPal/EBS Payment with Gift Card
+By: RL
+Note:  
+    <property key="GiftCardTotalLabel">
+        <value xml:lang="en">Total of Gift Card Redemptions:</value>
+        <category>CHECKOUT</category>
+        <description>GiftCardTotalLabel</description>
+    </property>
+    
+Date: 08/30/2013
+Issue #: 31435
+Description: Loyalty Points: allow customer to enter points
+By: RB
+Note:
+	<property key="PointsCaption">
+        <value xml:lang="en">Points:</value>
+        <category>CHECK_OUT</category>
+        <description>PointsCaption</description>
+    </property>
+    <property key="RemoveLoyaltyCardLabel">
+        <value xml:lang="en">Remove Loyalty Card</value>
+        <category>MULTI_USE</category>
+        <description>RemoveLoyaltyCardLabel</description>
+    </property>
+    
+Date: 09/09/2013
+Issue #: 31711
+Description: SSJ DEV CSS: Account registration page
+By: RB
+Note:
+	<property key="CityCaption">
+        <value xml:lang="en">City:</value>
+        <category>MY_ACCOUNT</category>
+        <description>CityCaption</description>
+    </property>
+    <property key="StateCaption">
+        <value xml:lang="en">State:</value>
+        <category>MY_ACCOUNT</category>
+        <description>StateCaption</description>
+    </property>
+    <property key="ProvinceCaption">
+        <value xml:lang="en">Province:</value>
+        <category>MY_ACCOUNT</category>
+        <description>ProvinceCaption</description>
+    </property>
+    <property key="ZipCodeCaption">
+        <value xml:lang="en">Zip:</value>
+        <category>MY_ACCOUNT</category>
+        <description>ZipCodeCaption</description>
+    </property>
+    <property key="PostalCodeCaption">
+        <value xml:lang="en">Postal Code:</value>
+        <category>MY_ACCOUNT</category>
+        <description>PostalCodeCaption</description>
+    </property>
+
+    
+//Edit
+Date: 08/27/2013
+Issue #: 29436
+Description: Cust Acct Mgmt: Order Status: show tracking info
+By: PA
+Note:
+   <property key="TrackingNumberCaption">
+        <value xml:lang="en">Tracking#:</value>
+        <category>ORDER_STATUS</category>
+        <description>TrackingNumberCaption</description>
+    </property>
+    <property key="OrderNumberCaption">
+        <value xml:lang="en">Order Number:</value>
+        <category>CONTACT_US</category>
+        <description>OrderNumberCaption</description>
+    </property>
+
+//********************************************************************************************
+//eCommerce Id Map UPDATES
+//FILE: eCommerceIdMap.xml
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//DIV SEQUENCE UPDATES
+//FILE: OSafeUiSequence.xml
+//********************************************************************************************
+//Add
+
+Date: 07/31/2013
+Issue #: 30907
+Description: Loyalty Points: apply redemption in checkout
+By: RB
+Note:
+	<property key="loyaltyPoints">
+        <value xml:lang="en">0</value>
+        <screen>ShowCart</screen>
+        <div>showCartLoyaltyPoints</div>
+        <description>Loyalty Points entry element. This is where the customer enters a Loyalty Points ID and may redeem for monetary units.</description>
+    </property>
+    <property key="loyaltyPoints">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummary</screen>
+        <div>orderSummaryLoyaltyPoints</div>
+        <description>Loyalty Points entry element. This is where the customer enters a Loyalty Points ID and may redeem for monetary units.</description>
+    </property>
+    <property key="loyaltyPoints">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutLoyaltyPoints</div>
+        <description>Loyalty Points entry element. This is where the customer enters a Loyalty Points ID and may redeem for monetary units.</description>
+    </property>
+    <property key="loyaltyDiscount">
+        <value xml:lang="en">0</value>
+        <screen>ShowCartOrderItemsSummary</screen>
+        <div>showCartLoyaltyDiscount</div>
+        <description>Discount from Loyalty redemption</description>
+    </property>
+    <property key="loyaltyDiscount">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummaryOrderItemsSummary</screen>
+        <div>orderSummaryLoyaltyDiscount</div>
+        <description>Discount from Loyalty redemption</description>
+    </property>
+    <property key="loyaltyDiscount">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirmOrderItemsSummary</screen>
+        <div>orderConfirmLoyaltyDiscount</div>
+        <description>Discount from Loyalty redemption</description>
+    </property>
+    <property key="loyaltyDiscount">
+        <value xml:lang="en">0</value>
+        <screen>LightBoxOrderItemsSummary</screen>
+        <div>lightBoxLoyaltyDiscount</div>
+        <description>Discount from Loyalty redemption</description>
+    </property>
+    
+Date: 08/2/2013
+Issue #: 29163
+Description: Super Saver Option
+By: LS
+Note:
+
+Date: 08/02/2013
+Issue #: 30906
+Description: Loyalty Points: capture ID
+By: RB
+Note:
+	<property key="loyaltyPointId">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <div>personalInfoLoyaltyPointId</div>
+        <description>Loyalty Point Identifier</description>
+    </property>
+    
+Date: 08/05/2013
+Issue #: 30906
+Description: Gift Message Warning
+By: RB
+Note:   
+    <property key="giftMessageWarning">
+        <value xml:lang="en">0</value>
+        <screen>ShowCart</screen>
+        <div>showCartGiftMessageWarning</div>
+        <description>Gift Message Warning</description>
+    </property>
+
+Date: 08/26/2013
+Issue #: 31404
+Description: DIV: Order History
+By: LS
+Note: DIV: OrderHistory,OrderHistoryOrderDetails 
+
+    <property key="orderHistoryOrderDetails">
+        <value xml:lang="en">10</value>
+        <screen>OrderHistory</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>List of orders</description>
+    </property>
+    <property key="orderHistoryPreviousButton">
+        <value xml:lang="en">20</value>
+        <screen>OrderHistory</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The PREVIOUS button that will return the customer to the previous step.</description>
+    </property>
+    <property key="orderHistoryReorderButton">
+        <value xml:lang="en">30</value>
+        <screen>OrderHistory</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The RE-ORDER button</description>
+    </property>        
+        
+    <property key="orderHistoryOrderDetailsOrderNumber">
+        <value xml:lang="en">10</value>
+        <screen>OrderHistoryOrderDetails</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Order Number</description>
+    </property>
+    <property key="orderHistoryOrderDetailsOrderDate">
+        <value xml:lang="en">20</value>
+        <screen>OrderHistoryOrderDetails</screen>
+        <style>date</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Order Date</description>
+    </property>
+    <property key="orderHistoryOrderDetailsOrderStatus">
+        <value xml:lang="en">30</value>
+        <screen>OrderHistoryOrderDetails</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Order Status</description>
+    </property>
+    <property key="orderHistoryOrderDetailsTrackingNumber">
+        <value xml:lang="en">40</value>
+        <screen>OrderHistoryOrderDetails</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Tracking Number</description>
+    </property>
+    <property key="orderHistoryOrderDetailsOrderTotalAmount">
+        <value xml:lang="en">50</value>
+        <screen>OrderHistoryOrderDetails</screen>
+        <style>currency</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Order Total Amount</description>
+    </property>
+    <property key="orderHistoryOrderDetailsReorderButton">
+        <value xml:lang="en">60</value>
+        <screen>OrderHistoryOrderDetails</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Reorder Button</description>
+    </property>        
+
+Date: 08/26/2013
+Issue #: 31404
+Description: DIV: Order History,
+By: LS
+Note: DIV: ReorderItemsSummary,ReorderItems 
+
+    <property key="reorderItemsSummaryFilter">
+        <value xml:lang="en">10</value>
+        <screen>ReorderItemsSummary</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Filter by Order drop down component</description>
+    </property>
+    <property key="reorderItemsSummaryItems">
+        <value xml:lang="en">20</value>
+        <screen>ReorderItemsSummary</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>A container for a list of item details. See ReorderItems.</description>
+    </property>
+    <property key="reorderItemsSummaryPreviousButton">
+        <value xml:lang="en">30</value>
+        <screen>ReorderItemsSummary</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The RE-ORDER button</description>
+    </property>
+    <property key="reorderItemsSummaryReorderButton">
+        <value xml:lang="en">40</value>
+        <screen>ReorderItemsSummary</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The RE-ORDER button</description>
+    </property>
+    
+    <property key="reorderItemsItemImage">
+        <value xml:lang="en">10</value>
+        <screen>ReorderItems</screen>
+        <style>image</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item Image</description>
+    </property>
+    <property key="reorderItemsItemName">
+        <value xml:lang="en">20</value>
+        <screen>ReorderItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item Name</description>
+    </property>
+    <property key="reorderItemsItemDescription">
+        <value xml:lang="en">30</value>
+        <screen>ReorderItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item Description (Selected Features)</description>
+    </property>
+    <property key="reorderItemsItemLastOrderDate">
+        <value xml:lang="en">40</value>
+        <screen>ReorderItems</screen>
+        <style>date</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The last ordered date</description>
+    </property>
+    <property key="reorderItemsItemCheckbox">
+        <value xml:lang="en">50</value>
+        <screen>ReorderItems</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Re-Order checkbox indicator</description>
+    </property>
+    <property key="reorderItemsItemQty">
+        <value xml:lang="en">60</value>
+        <screen>ReorderItems</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item quantity (entry field)</description>
+    </property>    
+    <property key="reorderItemsItemPrice">
+        <value xml:lang="en">70</value>
+        <screen>ReorderItems</screen>
+        <style>currency</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The current unit price of the item</description>
+    </property>    
+  
+Date: 08/29/2013
+Issue #: 31397
+Description: DIV: Contact Us and Request Catalog,
+By: LS
+Note: DIV: ContactUs, RequestCatalog
+
+    <property key="contactUsReasonForContact">
+        <value xml:lang="en">10</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>The Contact reason drop-dwon</description>
+    </property>
+    <property key="contactUsFirstName">
+        <value xml:lang="en">20</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Customer First Name</description>
+    </property>
+    <property key="contactUsLastName">
+        <value xml:lang="en">30</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Custoemr Last Name</description>
+    </property>
+    <property key="contactUsEmailAddress">
+        <value xml:lang="en">40</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Customer Email Address</description>
+    </property>
+    <property key="contactUsPhoneContact">
+        <value xml:lang="en">50</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Customer Contact Phone Number</description>
+    </property>
+    <property key="contactUsOrderNumber">
+        <value xml:lang="en">60</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Customer Order Number</description>
+    </property>
+    <property key="contactUsComment">
+        <value xml:lang="en">70</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The Contact Reason</description>
+    </property>
+    <property key="contactUsSubmitButton">
+        <value xml:lang="en">80</value>
+        <screen>ContactUs</screen>
+        <style>action</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Submit button</description>
+    </property>
+
+    <property key="requestCatalogFirstName">
+        <value xml:lang="en">10</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Customer First Name</description>
+    </property>
+    <property key="requestCatalogLastName">
+        <value xml:lang="en">20</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Custoemr Last Name</description>
+    </property>
+    <property key="requestCatalogCountry">
+        <value xml:lang="en">30</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Country Selector</description>
+    </property>
+    <property key="requestCatalogAddress1">
+        <value xml:lang="en">40</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Address Line 1</description>
+    </property>
+    <property key="requestCatalogAddress2">
+        <value xml:lang="en">50</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Address Line 2</description>
+    </property>
+    <property key="requestCatalogAddress3">
+        <value xml:lang="en">60</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Address Line 3</description>
+    </property>
+    <property key="requestCatalogCityTown">
+        <value xml:lang="en">70</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>City or Town</description>
+    </property>
+    <property key="requestCatalogStateProvince">
+        <value xml:lang="en">80</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>State or Province</description>
+    </property>
+    <property key="requestCatalogZipPostcode">
+        <value xml:lang="en">90</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Zip or Postcode</description>
+    </property>
+    <property key="requestCatalogEmailAddress">
+        <value xml:lang="en">100</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Customer Email Address</description>
+    </property>
+    <property key="requestCatalogPhoneContact">
+        <value xml:lang="en">110</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Customer Contact Phone Number</description>
+    </property>
+    <property key="requestCatalogUsComment">
+        <value xml:lang="en">120</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Request Comment</description>
+    </property>
+    <property key="requestCatalogSubmitButton">
+        <value xml:lang="en">130</value>
+        <screen>RequestCatalog</screen>
+        <style>action</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Submit button</description>
+    </property>
+    
+Date: 09/02/2013
+Issue #: 31259
+Description: Admin DIV Sequence: new attributes
+By: RB
+Note:
+	<property key="writeReviewProduct">
+        <value xml:lang="en">0</value>
+        <screen>WriteReview</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Review Product Information.</description>
+    </property>
+    
+Date: 09/02/2013
+Issue #: 30156
+Description: eComm: Add to basket on PLP
+By: RB
+Note:
+	<property key="pdpComplementQty">
+        <value xml:lang="en">0</value>
+        <screen>PDPComplement</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Qty field that the customer uses for purchasing.</description>
+    </property>
+    <property key="pdpComplementAddToCart">
+        <value xml:lang="en">0</value>
+        <screen>PDPComplement</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Add To Cart. The actual action button that adds the Product to the cart.</description>
+    </property>
+    <property key="pdpComplementAddToWishlist">
+        <value xml:lang="en">0</value>
+        <screen>PDPComplement</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Add To Wishlist. The actual action button that adds the Product to the Wish List.</description>
+    </property>
+    <property key="pdpAccessoryQty">
+        <value xml:lang="en">0</value>
+        <screen>PDPAccessory</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Qty field that the customer uses for purchasing.</description>
+    </property>
+    <property key="pdpAccessoryAddToCart">
+        <value xml:lang="en">0</value>
+        <screen>PDPAccessory</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Add To Cart. The actual action button that adds the Product to the cart.</description>
+    </property>
+    <property key="pdpAccessoryAddToWishlist">
+        <value xml:lang="en">0</value>
+        <screen>PDPAccessory</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Add To Wishlist. The actual action button that adds the Product to the Wish List.</description>
+    </property>
+    <property key="pdpRecentQty">
+        <value xml:lang="en">0</value>
+        <screen>PDPRecent</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Qty field that the customer uses for purchasing.</description>
+    </property>
+    <property key="pdpRecentAddToCart">
+        <value xml:lang="en">0</value>
+        <screen>PDPRecent</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Add To Cart. The actual action button that adds the Product to the cart.</description>
+    </property>
+    <property key="pdpRecentAddToWishlist">
+        <value xml:lang="en">0</value>
+        <screen>PDPRecent</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Add To Wishlist. The actual action button that adds the Product to the Wish List.</description>
+    </property>
+  
+Date: 09/03/2013
+Issue #: 31462
+Description: DIV: Contact Us and Request Catalog,
+By: RL
+Note: Payment Method changes
+    <property key="paymentMethodSummaryItems">
+        <value xml:lang="en">10</value>
+        <screen>PaymentMethodSummary</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>List of items, see PaymentMethodItems</description>
+    </property>
+    <property key="paymentMethodSummaryPreviousButton">
+        <value xml:lang="en">20</value>
+        <screen>PaymentMethodSummary</screen>
+        <style>action</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>The PREVIOUS button that will return the customer to the previous step.</description>
+    </property>
+    <property key="paymentMethodSummaryContinueButton">
+        <value xml:lang="en">30</value>
+        <screen>PaymentMethodSummary</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Add new credit card button</description>
+    </property>
+    <property key="paymentMethodItemsCardNumber">
+        <value xml:lang="en">10</value>
+        <screen>PaymentMethodItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Credit Card Number</description>
+    </property>
+    <property key="paymentMethodItemsCardType">
+        <value xml:lang="en">20</value>
+        <screen>PaymentMethodItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Credit Card Type</description>
+    </property>
+    <property key="paymentMethodItemsNameOnCard">
+        <value xml:lang="en">30</value>
+        <screen>PaymentMethodItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Name on Card</description>
+    </property>
+    <property key="paymentMethodItemsExpirationDate">
+        <value xml:lang="en">40</value>
+        <screen>PaymentMethodItems</screen>
+        <style>date</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Expiration Date</description>
+    </property>
+    <property key="paymentMethodItemsEditButton">
+        <value xml:lang="en">50</value>
+        <screen>PaymentMethodItems</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Edit button</description>
+    </property>
+    <property key="paymentMethodItemsDeleteButton">
+        <value xml:lang="en">60</value>
+        <screen>PaymentMethodItems</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Delete button</description>
+    </property>
+    <property key="paymentMethodItemsSetAsDefaultButton">
+        <value xml:lang="en">70</value>
+        <screen>PaymentMethodItems</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Set As Default button</description>
+    </property>
+
+Date: 09/05/2013
+Issue #: 31558
+Description: DIV - Sign In
+By: RB
+Note:
+	<property key="signInNewCustomer">
+        <value xml:lang="en">10</value>
+        <screen>SignIn</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>New Customer Sign In</description>
+    </property>
+    <property key="signInExistingCustomer">
+        <value xml:lang="en">20</value>
+        <screen>SignIn</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Existing Customer Sign In</description>
+    </property>
+    <property key="signInGuestCustomer">
+        <value xml:lang="en">30</value>
+        <screen>SignIn</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Guest Customer Sign In</description>
+    </property>
+    
+
+Date: 09/10/2013
+Issue #: 31560
+Description: DIV - Registration and Create Account
+By: RL
+Note:
+    <property key="registrationPersonalInfo">
+        <value xml:lang="en">10</value>
+        <screen>Registration</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>About You Information</description>
+    </property>
+    <property key="registrationBillingAddress">
+        <value xml:lang="en">20</value>
+        <screen>Registration</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Customer Billing Address</description>
+    </property>
+    <property key="registrationShippingAddress">
+        <value xml:lang="en">30</value>
+        <screen>Registration</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Customer Shipping Address</description>
+    </property>
+    <property key="registrationCreateAccount">
+        <value xml:lang="en">40</value>
+        <screen>Registration</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Customer Create Account Information</description>
+    </property>
+    <property key="registrationPreviousButton">
+        <value xml:lang="en">50</value>
+        <screen>Registration</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Previous Button</description>
+    </property>
+    <property key="registrationContinueButton">
+        <value xml:lang="en">60</value>
+        <screen>Registration</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Continue Button</description>
+    </property>
+    <property key="createAccountEmailAddress">
+        <value xml:lang="en">10</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>User Login Email Address</description>
+    </property>
+    <property key="createAccountEmailAddressConfirm">
+        <value xml:lang="en">20</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>User Login Email Address Confirm</description>
+    </property>
+    <property key="createAccountPassword">
+        <value xml:lang="en">30</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>User Login Password</description>
+    </property>
+    <property key="createAccountPasswordConfirm">
+        <value xml:lang="en">40</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>User Login Password Confirm</description>
+    </property>
+    <property key="createAccountAllowSolicitation">
+        <value xml:lang="en">50</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Checkbox Solicitation</description>
+    </property>
+    <property key="createAccountEmailPreference">
+        <value xml:lang="en">60</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Radio Button Email Preference</description>
+    </property>
+    <property key="createAccountTxtPreference">
+        <value xml:lang="en">70</value>
+        <screen>CreateAccount</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Radio Button Txt Message Preference</description>
+    </property>
+    <property key="createAccountPreviousButton">
+        <value xml:lang="en">0</value>
+        <screen>CreateAccount</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Previous Button</description>
+    </property>
+    <property key="createAccountContinueButton">
+        <value xml:lang="en">0</value>
+        <screen>CreateAccount</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Continue Button</description>
+    </property>
+
+Date: 09/11/2013
+Issue #: 31814
+Description: DIV Sequence - Gift Message Order items
+By: RB
+Note:
+    <property key="giftMessageOrderItems">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessage</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Selected item from Shopping Cart</description>
+    </property>
+    <property key="giftMessageMessageEntry">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessage</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Form for entering gift messages</description>
+    </property>
+    <property key="giftMessagePreviousButton">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessage</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Previous button to return checkout process.</description>
+    </property>
+    <property key="giftMessageContinueButton">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessage</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Continue button to save gift messages</description>
+    </property>
+    
+    <property key="giftMessageOrderItemsItemImage">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>image</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item image</description>
+    </property>
+    <property key="giftMessageOrderItemsItemName">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item Name</description>
+    </property>
+    <property key="giftMessageOrderItemsItemDescription">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item Description (Selected Features)</description>
+    </property>
+    <property key="giftMessageOrderItemsItemQty">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>number</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The item quantity</description>
+    </property>
+    <property key="giftMessageOrderItemsItemPrice">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>currency</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The unit price of the item</description>
+    </property>
+    <property key="giftMessageOrderItemsItemOfferPrice">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>currency</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The offer price of the item</description>
+    </property>
+    <property key="giftMessageOrderItemsItemPriceRecurrence">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>currency</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The recurrence price savings percent of the item</description>
+    </property>
+    <property key="giftMessageOrderItemsItemAvailability">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The items stock level  (In Stock, Out of Stock , Low Stock)</description>
+    </property>
+    <property key="giftMessageOrderItemsItemTotal">
+        <value xml:lang="en">0</value>
+        <screen>GiftMessageOrderItems</screen>
+        <style>currency</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The total (quantity * price) of the item.</description>
+    </property>
+    
+    
+//Remove
+
+    <property key="itemPriceRecurrence">
+        <value xml:lang="en">0</value>
+        <screen>ShowCartOrderItems</screen>
+        <div>showCartItemPriceRecurrence</div>
+        <description>The recurrence price savings percent of the item</description>
+    </property>
+    <property key="itemPriceRecurrence">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummaryOrderItems</screen>
+        <div>orderSummaryItemPriceRecurrence</div>
+        <description>The recurrence price savings percent of the item</description>
+    </property>
+    <property key="itemPriceRecurrence">
+        <value xml:lang="en">0</value>
+        <screen>LightBoxOrderItems</screen>
+        <div>lightBoxItemPriceRecurrence</div>
+        <description>The recurrence price savings percent of the item</description>
+    </property>
+    <property key="priceRecurrence">
+        <value xml:lang="en">0</value>
+        <screen>ManufacturerProductList</screen>
+        <div>manufacturerItemPriceRecurrence</div>
+        <description>Recurrence Price. The price the customer will pay for the item if added as a Recurring order. Compares RECURRING and ONLINE prices. This shows the percentage saved.</description>
+    </property>
+    <property key="itemPriceRecurrence">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirmOrderItems</screen>
+        <div>orderConfirmItemPriceRecurrence</div>
+        <description>The recurrence price savings percent of the item</description>
+    </property>
+    
+Date: 09/02/2013
+Issue #: 31259
+Description: Admin DIV Sequence: new attributes
+By: RB
+Note:
+	<property key="productContainer">
+        <value xml:lang="en">0</value>
+        <screen>WriteReview</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Review Product Information.</description>
+    </property>
+
+//Edit
+Date: 09/10/2013
+Issue #: 31397
+Description: DIV: Contact-Us and Request-Catalog
+By: RL
+Note:
+    <property key="contactUsLastName">
+        <value xml:lang="en">30</value>
+        <screen>ContactUs</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Customer Last Name</description>
+    </property>
+    <property key="requestCatalogLastName">
+        <value xml:lang="en">20</value>
+        <screen>RequestCatalog</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Customer Last Name</description>
+    </property>
+
+Date: 09/11/2013
+Issue #: 31750
+Description: SSJ DEV CSS:Change Personal information
+By: PA
+Note:
+    <property key="personalInfoPhoneHome">
+        <value xml:lang="en">40</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Phone Home</description>
+    </property>
+    <property key="personalInfoPhoneCell">
+        <value xml:lang="en">50</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Phone Cell</description>
+    </property>
+    <property key="personalInfoPhoneWork">
+        <value xml:lang="en">60</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Phone Work</description>
+    </property>
+    <property key="personalInfoGender">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Gender</description>
+    </property>
+    <property key="personalInfoDateOfBirthMMDDYYYY">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Date of Birth in MMDDYYYY format</description>
+    </property>
+    <property key="personalInfoDateOfBirthMMDD">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Date of Birth in MMDD format</description>
+    </property>
+    <property key="personalInfoDateOfBirthDDMMYYYY">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Date of Birth in DDMMYYYY format</description>
+    </property>
+    <property key="personalInfoDateOfBirthDDMM">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Date of Birth in DDMM format</description>
+    </property>
+    <property key="personalInfoCustomAttributes">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>container</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Custom Attributes, if defined</description>
+    </property>
+    <property key="personalInfoLoyaltyPointId">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Loyalty Point Identifier</description>
+    </property>
+//********************************************************************************************
+//CLIENT DEPLOYMENT UPDATES
+//FILE: client-deployment.properties
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+
+Date: 08/05/2013
+Issue #: 30905
+Description: New Payment Gateway: atom Paynetz
+By: RL
+Note:
+    <!-- Atom PayNetz Payment Gateway Config -->
+    <PaymentGatewayConfig paymentGatewayConfigId="PAYNETZ_CONFIG" paymentGatewayConfigTypeId="PAYNETZ" description="Atom PayNetz Config"/>
+    <PaymentGatewayPayNetz paymentGatewayConfigId="PAYNETZ_CONFIG" apiUrl="" loginId="160" password="Test@123" productId="NSE" payNetzMode="TEST" redirectUrl="http://203.114.240.183/paynetz/epi/fts" returnUrl="https://www.yourdomainname.com/online/control/payNetzCheckoutReturn" transactionType="NBFundTransfer"/>
+
+//Remove
+
+//********************************************************************************************
+//ECOMMERCE CONTENT SEED UPDATES
+//FILE: eCommerceContentSeedData.xml
+//********************************************************************************************
+
+//Add
+Date: 09/03/2013
+Issue #: 31344
+Description: List Carriers seed data needs to be cleaned up
+By: PA
+Note: Add Seed Data for Carrier TRACKING_URL content
+
+<DataResource dataResourceId="UPS" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" statusId="CTNT_PUBLISHED"/>
+<Content contentId="UPS" contentTypeId="DOCUMENT" dataResourceId="UPS" statusId="CTNT_PUBLISHED"/>
+<PartyContent partyId="UPS" contentId="UPS" partyContentTypeId="TRACKING_URL" fromDate="2011-03-01 12:17:55.000"/>
+<ElectronicText dataResourceId="UPS">
+<textData><![CDATA[
+    http://www.ups.com/pes/?loc=en_US&trackNums=${TRACKING_NUMBER}
+]]>
+</textData>
+</ElectronicText>
+
+<DataResource dataResourceId="USPS" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" statusId="CTNT_PUBLISHED"/>
+<Content contentId="USPS" contentTypeId="DOCUMENT" dataResourceId="USPS" statusId="CTNT_PUBLISHED"/>
+<PartyContent partyId="USPS" contentId="USPS" partyContentTypeId="TRACKING_URL" fromDate="2011-03-01 12:17:55.000"/>
+<ElectronicText dataResourceId="USPS">
+<textData><![CDATA[
+    https://tools.usps.com/go/TrackConfirmAction_input?tLabels=${TRACKING_NUMBER}
+]]>
+</textData>
+</ElectronicText>
+
+<DataResource dataResourceId="FEDEX" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" statusId="CTNT_PUBLISHED"/>
+<Content contentId="FEDEX" contentTypeId="DOCUMENT" dataResourceId="FEDEX" statusId="CTNT_PUBLISHED"/>
+<PartyContent partyId="FEDEX" contentId="FEDEX" partyContentTypeId="TRACKING_URL" fromDate="2011-03-01 12:17:55.000"/>
+<ElectronicText dataResourceId="FEDEX">
+<textData><![CDATA[
+    https://www.fedex.com/fedextrack/?tracknumbers=${TRACKING_NUMBER}
+]]>
+</textData>
+</ElectronicText>
+
+<DataResource dataResourceId="DHL" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" statusId="CTNT_PUBLISHED"/>
+<Content contentId="DHL" contentTypeId="DOCUMENT" dataResourceId="DHL" statusId="CTNT_PUBLISHED"/>
+<PartyContent partyId="DHL" contentId="DHL" partyContentTypeId="TRACKING_URL" fromDate="2011-03-01 12:17:55.000"/>
+<ElectronicText dataResourceId="DHL">
+<textData><![CDATA[
+    http://www.dhl.com/content/g0/en/express/tracking.shtml?brand=DHL&AWB=${TRACKING_NUMBER}
+]]>
+</textData>
+</ElectronicText>
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE EMAIL DATA UPDATES
+//FILE: eCommerceContentEmailData.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE CSS UPDATES
+//FILE: bigFishClientSkin.css
+//********************************************************************************************
+
+//Add
+
+
+
+//Remove
+
+
+
+//********************************************************************************************
+//OSAFE PROPERTIES UPDATE
+//FILE: osafe.properties.template
+//********************************************************************************************
+
+//Add
+
+Date: 08/14/2013
+Issue #: 30343
+Description: Enhencement: add footer info for BF Version #
+By: RL
+Note:
+    #############################
+    # Version File Paths
+    #############################
+    bigfish-version-files-path=${sys:getProperty('ofbiz.home')}/hot-deploy/osafe/data/version
+
+//Remove
+
+
+//Edit
+
+    
+//********************************************************************************************
+//EECAS XML TEMPLATE UPDATE
+//FILE: eecas.xml.template
+//********************************************************************************************
+
+
+//********************************************************************************************
+//OFBIZ COMPONENT XML UPDATES
+//FILE: ofbiz-component.xml.template
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//CLIENT STORE SEED DATA XML UPDATES
+//FILE: clientStoreSeedData.xml.template
+//********************************************************************************************
+
+//Add
+
+Date: 07/31/2013
+Issue #: 30907
+Description: Loyalty Points: apply redemption in checkout
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_LOYALTY_METHOD" parmValue="NONE" description="A value indicating if Loyalty Card redemptions are available during checkout and which service is to be used. Valid values are NONE and TEN (test that returns 10 points)." parmCategory="CHECKOUT"/>
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_LOYALTY_CONVERSION" parmValue="1" description="A value indicating the conversion of Loyalty Points to money. POINTS divided by CONVERSION equals MONETARY-VALUE. 100 points with a conversion of 10 would equal 10 monetary units." parmCategory="CHECKOUT"/>
+
+Date: 08/05/2013
+Issue #: 30905
+Description: New Payment Gateway: atom Paynetz
+By: RL
+Note:	
+    <XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_ALLOW_PAYNETZ" parmValue="FALSE" description="Determines if the Atom PAYNETZ, a special Payment Gateway for Indian eCommerce retailers, is an acceptable form of payment during the Check Out process" parmCategory="CHECKOUT"/>
+    <ProductStorePaymentSetting productStoreId="@store.productStoreId@" paymentMethodTypeId="EXT_PAYNETZ" paymentServiceTypeEnumId="PRDS_PAY_EXTERNAL" paymentGatewayConfigId="PAYNETZ_CONFIG" applyToAllProducts="Y"/>
+    <ProductStorePaymentSetting productStoreId="@store.productStoreId@" paymentMethodTypeId="EXT_PAYNETZ" paymentServiceTypeEnumId="PRDS_PAY_AUTH" paymentService="payNetzAuthProcessor" paymentCustomMethodId="PAYNETZ_AUTH" paymentGatewayConfigId="PAYNETZ_CONFIG" applyToAllProducts="Y"/>
+    <ProductStorePaymentSetting productStoreId="@store.productStoreId@" paymentMethodTypeId="EXT_PAYNETZ" paymentServiceTypeEnumId="PRDS_PAY_RELEASE" paymentService="payNetzRelease" paymentCustomMethodId="PAYNETZ_RELEASE" paymentGatewayConfigId="PAYNETZ_CONFIG" applyToAllProducts="Y"/>
+    <ProductStorePaymentSetting productStoreId="@store.productStoreId@" paymentMethodTypeId="EXT_PAYNETZ" paymentServiceTypeEnumId="PRDS_PAY_CAPTURE" paymentService="payNetzCapture" paymentCustomMethodId="PAYNETZ_CAPTURE" paymentGatewayConfigId="PAYNETZ_CONFIG" applyToAllProducts="Y"/>
+    <ProductStorePaymentSetting productStoreId="@store.productStoreId@" paymentMethodTypeId="EXT_PAYNETZ" paymentServiceTypeEnumId="PRDS_PAY_REFUND" paymentService="payNetzRefund" paymentCustomMethodId="PAYNETZ_REFUND" paymentGatewayConfigId="PAYNETZ_CONFIG" applyToAllProducts="Y"/>
+
+Date: 08/07/2013
+Issue #: 30679
+Description: Store Locator: no results found alternative search
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="GMAP_NOT_FOUND_ADDRESS" parmValue="" description="An address that is used when no stores are found using the customers request. This should be a value that ensures results." parmCategory="GMAP"/>
+
+//Remove
+
+
+	
+//********************************************************************************************
+//CACHE PROPERTIES
+//FILE: cache.properties
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//JS LIBRARIES
+//DIRECTORY: osafe-theme/js/lib
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//VISUAL THEME RESOURCE
+//FILE: OsafeThemeData.xml.template
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+
+//********************************************************************************************
+//ECOMMERCE PAYMENT CUSTIOME METHODS
+//FILE: eCommercePaymentCustomMethods.xml
+//********************************************************************************************
+
+//Add
+
+Date: 08/05/2013
+Issue #: 30905
+Description: New Payment Gateway: atom Paynetz
+By: RL
+Note:   
+    <!-- PayNetz Payment Custom Method -->
+    <CustomMethod customMethodId="PAYNETZ_AUTH" customMethodTypeId="PAYNETZ_AUTH" customMethodName="payNetzAuthProcessor" description="PAYNETZ payment authorize"/>
+    <CustomMethod customMethodId="PAYNETZ_RELEASE" customMethodTypeId="PAYNETZ_RELEASE" customMethodName="payNetzRelease" description="PAYNETZ Order Release"/>
+    <CustomMethod customMethodId="PAYNETZ_CAPTURE" customMethodTypeId="PAYNETZ_CAPTURE" customMethodName="payNetzCapture" description="PAYNETZ payment capture"/>
+    <CustomMethod customMethodId="PAYNETZ_REFUND" customMethodTypeId="PAYNETZ_REFUND" customMethodName="payNetzRefund" description="PAYNETZ payment refund"/>
+
+    
+
+    
+
+
+

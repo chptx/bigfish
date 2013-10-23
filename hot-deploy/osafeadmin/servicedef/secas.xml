@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-eca xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/service-eca.xsd">
+    <eca service="updateLabelXml" event="commit">
+        <action service="copyLabelXml" mode="sync"/>
+    </eca>
+    <eca service="addUiLabelXml" event="commit">
+        <action service="copyLabelXml" mode="sync"/>
+    </eca>
+    <eca service="deleteUiLabelXml" event="commit">
+        <action service="copyLabelXml" mode="sync"/>
+    </eca>
+    <eca service="addDivSeqItemXml" event="commit">
+        <action service="copyDivSequenceXml" mode="sync"/>
+    </eca>
+    <eca service="deleteDivSeqItemXml" event="commit">
+        <action service="copyDivSequenceXml" mode="sync"/>
+    </eca>
+    <eca service="updateDivSequenceXml" event="commit">
+        <action service="copyDivSequenceXml" mode="sync"/>
+    </eca>
+    <eca service="updateDivSeqXml" event="commit">
+        <action service="copyDivSequenceXml" mode="sync"/>
+    </eca>
+    <eca service="modifyImageLocationPreferencesXml" event="commit">
+        <action service="copyImageLocationPreferencesXml" mode="sync"/>
+    </eca>
+    <!-- THIS ECA BY SERVICE NAME generates a order status change when the order is generated  
+    <eca service="changeOrderStatus" event="global-commit" run-on-error="false">
+        <condition field-name="statusId" operator="not-equals" value="ORDER_COMPLETED"/>
+        <condition field-name="statusId" operator="not-equals" value="ORDER_APPROVED"/>
+        <condition-field field-name="statusId" operator="not-equals" to-field-name="oldStatusId"/>
+        <action service="resetGrandTotal" mode="sync"/>
+        <action service="sendOrderChangeNotification" mode="async" persist="true"/>
+    </eca>
+    
+    <eca service="updateOrderStatus" event="global-commit" run-on-error="false">
+        <condition-field field-name="statusId" operator="not-equals" to-field-name="oldStatusId"/>
+        <action service="resetGrandTotal" mode="sync"/>
+        <action service="sendOrderChangeNotification" mode="async" persist="true"/>
+    </eca>
+    -->
+
+    <eca service="genProductsIndex" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="genProductsIndex"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="abandonCartEmail" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="abandonCartEmail"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="shipReviewEmail" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="shipReviewEmail"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="reevooGetProductRatingScore" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="reevooGetProductRatingScore"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="reevooProductRatingUpdate" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="reevooProductRatingUpdate"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="clientProductRatingUpdate" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="clientProductRatingUpdate"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="clientProductUpdate" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="clientProductUpdate"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="clientStoreUpdate" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="clientStoreUpdate"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="clientOrderStatusUpdate" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="clientOrderStatusUpdate"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="bigFishCustomerFeed" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="bigFishCustomerFeed"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="bigFishOrderFeed" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="bigFishOrderFeed"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="bigFishContactUsFeed" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="bigFishContactUsFeed"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="bigFishRequestCatalogFeed" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="bigFishRequestCatalogFeed"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="genStoreGeoPoint" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="genStoreGeoPoint"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="genSeoFriendlyUrl" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="genSeoFriendlyUrl"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="clientProductUpdateIndexSeoFriendlyUrl" event="return" run-on-failure="true" run-on-error="true">
+        <condition field-name="productStoreId" operator="is-not-empty"/>
+        <set field-name="scheduledJobName" value="clientProductUpdateIndexSeoFriendlyUrl"/>
+        <action service="sendScheduledJobNotification" mode="async" persist="true"/>
+    </eca>
+    <eca service="addCustomPartyAttributeItemXml" event="commit">
+        <action service="copyCustomPartyAttributeXml" mode="sync"/>
+    </eca>
+    <eca service="updateCustomPartyAttributeItemXml" event="commit">
+        <action service="copyCustomPartyAttributeXml" mode="sync"/>
+    </eca>
+</service-eca>

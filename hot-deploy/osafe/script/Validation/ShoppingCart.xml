@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/simple-methods.xsd">
+
+    <simple-method method-name="validateCartPromoCode" short-description="Validate Address" login-required="false">
+
+        <!-- Check that a "Promo Code" has been entered -->
+         <call-map-processor in-map-name="parameters" out-map-name="promoCodeContext">
+             <simple-map-processor name="promoCode">
+
+                <process field="productPromoCodeId">
+                    <copy to-field="productPromoCodeId"/>
+                    <not-empty><fail-property resource="OSafeUiLabels" property="OfferCodeMissingError"/></not-empty>
+                </process>
+
+             </simple-map-processor>
+             
+         </call-map-processor>
+
+        <!-- Check that a "Promo Code" exists -->
+        <if-not-empty field="promoCodeContext.productPromoCodeId">
+            <session-to-field field="shoppingCart"/>
+            <call-object-method obj-field="promoCodeContext.productPromoCodeId" method-name="toUpperCase" ret-field="productPromoCodeUpperCase"/>
+            <set from-field="productPromoCodeUpperCase" field="promoCodeExistsMap.productPromoCodeId"/>
+            <find-by-primary-key entity-name="ProductPromoCode" map="promoCodeExistsMap" value-field="existingPromoCode"/>
+            <if-empty field="existingPromoCode">
+                <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="OfferCodeNotFoundError"/>
+                <string-to-list string="${tempErrorMessage}" message-field="productPromoCodeId" list="error_list"/>
+            <else>
+                <!-- Check that "Promo Code" has association with product store-->
+                <call-class-method class-name="org.ofbiz.order.shoppingcart.product.ProductPromoWorker" method-name="getStoreProductPromoCodes" ret-field="storeProductPromoCodes">
+                    <field field="shoppingCart" type="org.ofbiz.order.shoppingcart.ShoppingCart"/>
+                </call-class-method>
+                <call-object-method obj-field="storeProductPromoCodes" method-name="contains" ret-field="hasProductStroeAssoc">
+                     <field field="existingPromoCode.productPromoCodeId" type="Object"/>
+                </call-object-method>
+                <if-compare field="hasProductStroeAssoc" operator="equals" value="false" type="Boolean">
+                    <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="OfferCodeNotFoundError"/>
+                    <string-to-list string="${tempErrorMessage}" message-field="productPromoCodeId" list="error_list"/>
+                <else>
+                    <!-- Check that "Promo Code" is not already applied on cart-->
+                    <call-object-method obj-field="shoppingCart" method-name="getProductPromoCodesEntered" ret-field="promoCodesEntered"/>
+                    <call-object-method obj-field="promoCodesEntered" method-name="contains" ret-field="promoCodeInUse">
+                         <field field="existingPromoCode.productPromoCodeId" type="Object"/>
+                    </call-object-method>
+                    <if-compare field="promoCodeInUse" operator="equals" value="true" type="Boolean">
+                        <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="OfferCodeInUseError"/>
+                        <string-to-list string="${tempErrorMessage}" message-field="productPromoCodeId" list="error_list"/>
+                    <else>
+                        <!-- Check that "Promo Code" is Expire-->
+                        <set field="tempPromoCodeList[]" from-field="existingPromoCode"/>
+                        <call-class-method class-name="org.ofbiz.entity.util.EntityUtil" method-name="filterByDate" ret-field="tempPromoCodeList">
+                            <field field="tempPromoCodeList" type="List"/>
+                        </call-class-method>
+                        <if-empty field="tempPromoCodeList">
+                            <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="OfferCodeExpireError"/>
+                            <string-to-list string="${tempErrorMessage}" message-field="productPromoCodeId" list="error_list"/>
+                        <else>
+                            <!-- Check that "Promo Code" use limit-->
+                            <call-object-method obj-field="shoppingCart" method-name="getPartyId" ret-field="partyId"/>
+                            <call-class-method class-name="org.ofbiz.order.shoppingcart.product.ProductPromoWorker" method-name="getProductPromoCodeUseLimit" ret-field="codeUseLimit">
+                                <field field="existingPromoCode" type="org.ofbiz.entity.GenericValue"/>
+                                <field field="partyId"/>
+                                <field field="delegator" type="org.ofbiz.entity.Delegator"/>
+                            </call-class-method>
+                            <if>
+                                <condition>
+                                    <or>
+                                        <if-empty field="codeUseLimit"/>
+                                        <if-compare field="codeUseLimit" operator="less-equals" value="0" type="Long"/>
+                                    </or>
+                                </condition>
+                                <then>
+                                    <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="OfferCodeUseExcessError"/>
+                                    <string-to-list string="${tempErrorMessage}" message-field="productPromoCodeId" list="error_list"/>
+                                </then>
+                            <else>
+                                <call-class-method class-name="com.osafe.util.Util" method-name="getProductStoreParm" ret-field="useOnlyOnePromoCode">
+                                    <field field="request" type="javax.servlet.ServletRequest"/>
+                                    <string value="CHECKOUT_PROMO_MANUAL_ONE_ONLY"/>
+                                </call-class-method>
+                                <call-class-method class-name="com.osafe.util.Util" method-name="isProductStoreParmTrue" ret-field="isTrue">
+                                    <field field="useOnlyOnePromoCode"/>
+                                </call-class-method>
+                                <if-compare field="isTrue" operator="equals" value="true">
+                                    <call-object-method obj-field="shoppingCart" method-name="getProductPromoCodesEntered" ret-field="promoCodesEntered"/>
+                                    <call-object-method obj-field="shoppingCart" method-name="clearAllPromotionInformation"/>
+                                    <call-object-method obj-field="promoCodesEntered" method-name="clear"/>
+                                </if-compare>
+                            </else>
+                            </if>
+                        </else>
+                        </if-empty>
+                    </else>
+                    </if-compare>
+                </else>
+                </if-compare>
+            </else>
+            </if-empty>
+        </if-not-empty>
+        <set field="fieldLevelErrors" value="Y"/>
+        <field-to-request field="fieldLevelErrors" />
+        
+        <!-- Send this request variable to updateCartOnChange -->
+        <set field="DO_CART_PROMO" value="N"/>
+        <field-to-request field="DO_CART_PROMO"/>
+        <check-errors/>
+
+    </simple-method>
+
+    <simple-method method-name="removeCartPromoCode" short-description="remove applied Promo Code" login-required="false">
+        <session-to-field field="shoppingCart"/>
+        <call-object-method obj-field="shoppingCart" method-name="getProductPromoCodesEntered" ret-field="promoCodesEntered"/>
+        <call-object-method obj-field="promoCodesEntered" method-name="remove">
+            <field field="parameters.productPromoCodeId" type="Object"/>
+        </call-object-method>
+        <call-class-method class-name="org.ofbiz.order.shoppingcart.product.ProductPromoWorker" method-name="doPromotions">
+            <field field="shoppingCart" type="org.ofbiz.order.shoppingcart.ShoppingCart"/>
+            <field field="dispatcher" type="org.ofbiz.service.LocalDispatcher"/>
+        </call-class-method>
+        <!-- Send this request variable to updateCartOnChange -->
+        <set field="DO_CART_PROMO" value="N"/>
+        <field-to-request field="DO_CART_PROMO"/>
+        <check-errors/>
+    </simple-method>
+    
+    <simple-method method-name="validateLoyaltyPoints" short-description="Validate Loyalty Points" login-required="false">
+    	<call-class-method class-name="org.ofbiz.product.store.ProductStoreWorker" method-name="getProductStoreId" ret-field="productStoreId">
+           <field field="request" type="javax.servlet.ServletRequest"/>
+        </call-class-method>
+        <call-class-method class-name="com.osafe.util.Util" method-name="getProductStoreParm" ret-field="checkoutLoyaltyMethod">
+               <field field="request" type="javax.servlet.ServletRequest"/>
+               <string value="CHECKOUT_LOYALTY_METHOD"/>
+        </call-class-method>
+        <if-empty field="checkoutLoyaltyMethod">
+            <set field="checkoutLoyaltyMethod" value="NONE"/>
+        </if-empty>
+        <call-object-method method-name="toUpperCase" obj-field="checkoutLoyaltyMethod" ret-field="checkoutLoyaltyMethodUpperCase"/>
+        <if-compare field="checkoutLoyaltyMethodUpperCase" operator="equals" value="NONE">
+        	<property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="LoyaltyPointsFailError"/>
+            <string-to-list string="${tempErrorMessage}" message-field="loyaltyPointsId" list="error_list"/>
+        	<else>
+	        <if-not-empty field="productStoreId">
+	       		<set field="parameters.productStoreId" from-field="productStoreId"/>
+	        </if-not-empty>
+	        <!-- Check that a "Member ID" has been entered -->
+	        <if-empty field="parameters.loyaltyPointsId">
+	        	<property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="LoyaltyPointsMissingError"/>
+	            <string-to-list string="${tempErrorMessage}" message-field="loyaltyPointsId" list="error_list"/>
+	            <else>
+	            	<!-- Verify that a valid "Member ID" has been entered -->
+		            <set-service-fields service-name="validateLoyaltyMember" map="parameters" to-map="isValidLoyaltyPointsUserCtx"/>
+		            <call-service service-name="validateLoyaltyMember" in-map-name="isValidLoyaltyPointsUserCtx">
+		                <result-to-field result-name="isValid" field="isValid"/>
+		            </call-service>
+		            <if-compare field="isValid" operator="equals" value="N">
+		            	<property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="LoyaltyPointsUserInvalidError"/>
+		                <string-to-list string="${tempErrorMessage}" message-field="loyaltyPointsId" list="error_list"/>
+		                <else>
+		                	<!-- Verify that the balance is greater than 0 -->
+		                	<set-service-fields service-name="getLoyaltyPointsInfoMap" map="parameters" to-map="getLoyaltyPointsInfoMapCtx"/>
+				            <call-service service-name="getLoyaltyPointsInfoMap" in-map-name="getLoyaltyPointsInfoMapCtx">
+				                <result-to-field result-name="loyaltyPointsAmount" field="loyaltyPointsAmount"/>
+				            </call-service>
+		                	<field-to-request field="loyaltyPointsAmount"/>
+		                </else>
+		            </if-compare>
+	            </else>
+	        </if-empty>
+        	</else>
+        </if-compare>
+        <set field="fieldLevelErrors" value="Y"/>
+        <field-to-request field="fieldLevelErrors" />
+        
+        <!-- Send this request variable to updateCartOnChange -->
+        <set field="DO_CART_LOYALTY" value="N"/>
+        <field-to-request field="DO_CART_LOYALTY"/>
+        <check-errors/>
+    </simple-method>
+    
+    <simple-method method-name="validateUpdateLoyaltyPoints" short-description="Validate Update Loyalty Points" login-required="false">
+        <set field="validAmountRedeem" value="N"/>
+        <if-not-empty field="parameters.update_loyaltyPointsAmount">
+	        <if-not-empty field="parameters.loyaltyPointsAvailable">
+		        <call-class-method class-name="org.ofbiz.base.util.UtilValidate" method-name="isInteger" ret-field="isVaildNum">
+		            <field field="parameters.update_loyaltyPointsAmount" type="String" />
+		        </call-class-method>
+		        <if-compare operator="equals" value="true" field="isVaildNum" type="Boolean">
+		        <set field="loyaltyPointsAmount" value="${parameters.update_loyaltyPointsAmount}" type="Long"/>
+		        <set field="loyaltyPointsAvailable" value="${parameters.loyaltyPointsAvailable}" type="Long"/>
+		        	<if-compare operator="greater-equals" value="1" field="loyaltyPointsAmount" type="Long">
+		        		<if-compare-field operator="less-equals" to-field="loyaltyPointsAvailable" field="loyaltyPointsAmount" type="Long">
+		        			<set field="validAmountRedeem" value="Y"/>
+		        		</if-compare-field>
+		        	</if-compare>
+		        </if-compare>
+	        </if-not-empty>
+        </if-not-empty>
+        <if-compare operator="equals" value="N" field="validAmountRedeem">
+        	<property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="LoyaltyPointsUpdateFailError"/>
+            <string-to-list string="${tempErrorMessage}" message-field="update_loyaltyPointsAmount" list="error_list"/>
+        </if-compare>
+        <set field="fieldLevelErrors" value="Y"/>
+        <field-to-request field="fieldLevelErrors" />
+        <check-errors/>
+    </simple-method>
+
+    
+</simple-methods>

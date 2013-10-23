@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of OSafe Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+
+
+    <extend-entity entity-name="ProductFeatureCategoryAppl">
+        <field name="sequenceNum" type="numeric"></field>
+    </extend-entity>
+    <extend-entity entity-name="ProductFeatureCatGrpAppl">
+        <field name="sequenceNum" type="numeric"></field>
+        <field name="facetValueMin" type="numeric"></field>
+        <field name="facetValueMax" type="numeric"></field>
+        <field name="facetTooltip" type="very-long"></field>
+    </extend-entity>
+
+    <extend-entity entity-name="ProductReview">
+        <field name="reviewTitle" type="name"></field>
+        <field name="effectivenessRating" type="fixed-point"></field>
+        <field name="satisfactionRating" type="fixed-point"></field>
+        <field name="qualityRating" type="fixed-point"></field>
+        <field name="reviewLocation" type="name"></field>
+        <field name="reviewNickName" type="name"></field>
+        <field name="reviewGender" type="short-varchar"></field>
+        <field name="reviewAge" type="short-varchar"></field>
+        <field name="responseDateTime"     type="date-time"></field>
+        <field name="reviewResponse" type="very-long"></field>
+        <field name="reviewPrivateNote" type="very-long"></field>
+    </extend-entity>
+
+    <extend-entity entity-name="CarrierShipmentMethod">
+        <field name="optionalMessage" type="very-long"></field>
+    </extend-entity>
+
+    <extend-entity entity-name="PostalAddress">
+        <field name="address3" type="long-varchar"></field>
+    </extend-entity>
+
+    <entity entity-name="FeatureDataResourceType"
+            package-name="org.ofbiz.product.feature"
+            title="Product Feature Data Resource Type Entity">
+      <field name="featureDataResourceTypeId" type="id-ne"></field>
+      <field name="hasTable" type="indicator"></field>
+      <field name="description" type="description"></field>
+      <prim-key field="featureDataResourceTypeId"/>
+    </entity>
+
+    <extend-entity entity-name="ProductFeatureDataResource">
+        <field name="featureDataResourceTypeId" type="id"></field>
+       <relation type="one" fk-name="PFDR_TYPE" rel-entity-name="FeatureDataResourceType">
+        <key-map field-name="featureDataResourceTypeId"/>
+      </relation>
+    </extend-entity>
+
+    <entity entity-name="XPixelTracking"
+            package-name="org.ofbiz.osafe.admin"
+            title="Merchant Pixel Tracking" >
+      <field name="pixelId" type="id-ne"></field>
+      <field name="pixelScope" type="description"></field>
+      <field name="pixelPagePosition" type="name"></field>
+      <field name="pixelSequenceNum" type="numeric"></field>
+      <field name="productStoreId" type="id-ne"></field>
+      <field name="contentId" type="id-ne"></field>
+      <field name="createdByUserLogin" type="id-vlong"></field>
+      <field name="description" type="description"></field>
+      <field name="fromDate" type="date-time"></field>
+      <field name="thruDate" type="date-time"></field>
+      <prim-key field="pixelId"/>
+      <prim-key field="productStoreId"/>
+        <relation type="one" fk-name="XPT_PRODUCTSTORE" rel-entity-name="ProductStore">
+            <key-map field-name="productStoreId"/>
+        </relation>
+       <relation type="one" fk-name="XPT_USERLOGIN" title="CreatedBy" rel-entity-name="UserLogin">
+        <key-map field-name="createdByUserLogin" rel-field-name="userLoginId"/>
+       </relation>
+       <relation type="one" fk-name="XPT_CONTENT" rel-entity-name="Content">
+        <key-map field-name="contentId"/>
+      </relation>
+    </entity>
+
+
+    <entity entity-name="SagePayTokenPaymentMethod" 
+            package-name="org.ofbiz.accounting.payment">
+      <description>PayPal Payment Method Details</description>
+      <field name="paymentMethodId" type="id-ne"></field>
+      <field name="sagePayToken" type="short-varchar"></field>
+      <field name="contactMechId" type="id-ne"></field>
+      <prim-key field="paymentMethodId"/>
+      <relation type="one" fk-name="SPTPM_PM" rel-entity-name="PaymentMethod">
+        <key-map field-name="paymentMethodId"/>
+      </relation>
+      <relation type="one" fk-name="SPTPM_CM" rel-entity-name="ContactMech">
+        <key-map field-name="contactMechId"/>
+      </relation>
+      <relation type="one" fk-name="SPTM_ADDRESS" rel-entity-name="PostalAddress">
+        <key-map field-name="contactMechId"/>
+      </relation>
+    </entity>
+
+    <entity entity-name="PaymentGatewaySagePayToken"
+            package-name="org.ofbiz.accounting.payment"
+            title="SagePay Token Payment Gateway Configuration">
+      <field name="paymentGatewayConfigId" type="id-ne"></field>
+      <field name="vendor" type="short-varchar"><description>Vendor name</description></field>
+      <field name="productionHost" type="short-varchar"><description>Production Host</description></field>
+      <field name="testingHost" type="short-varchar"><description>Testing Host</description></field>
+      <field name="sagePayMode" type="short-varchar"><description>Mode (PRODUCTION/TEST)</description></field>
+      <field name="protocolVersion" type="very-short"><description>Protocol Version</description></field>
+      <field name="authenticationTransType" type="short-varchar"><description>Authentication type (PAYMENT/AUTHENTICATE/DEFERRED)</description></field>
+      <field name="authenticationUrl" type="long-varchar"><description>Authentication Url</description></field>
+      <field name="authoriseTransType" type="short-varchar"><description>Authorise type (AUTHORISE/RELEASE)</description></field>
+      <field name="authoriseUrl" type="long-varchar"><description>Authorise url</description></field>
+      <field name="releaseTransType" type="short-varchar"><description>Release type (CANCEL/ABORT)</description></field>
+      <field name="releaseUrl" type="long-varchar"><description>Release Url</description></field>
+      <field name="voidTransType" type="short-varchar"><description>Release type (CANCEL/ABORT)</description></field>
+      <field name="voidUrl" type="long-varchar"><description>Void Url</description></field>
+      <field name="refundTransType" type="short-varchar"><description>Release type (CANCEL/ABORT)</description></field>
+      <field name="refundUrl" type="long-varchar"><description>Refund Url</description></field>
+      <field name="registrationTransType" type="short-varchar"><description>Registration type (TOKEN)</description></field>
+      <field name="registrationUrl" type="long-varchar"><description>Registration Url</description></field>
+      <field name="storeToken" type="very-short"><description>Store Token (No:0/Yes:1)</description></field>
+      <prim-key field="paymentGatewayConfigId"/>
+      <relation type="one" fk-name="PGSPT_PGC" rel-entity-name="PaymentGatewayConfig">
+        <key-map field-name="paymentGatewayConfigId"/>
+      </relation>
+    </entity>
+
+    <entity entity-name="XContentXref"
+            package-name="org.ofbiz.osafe.admin"
+            title="content product store reference" >
+      <field name="bfContentId" type="id-ne"></field>
+      <field name="productStoreId" type="id"></field>
+      <field name="contentId" type="id"></field>
+      <field name="contentTypeId" type="id"></field>
+      <prim-key field="bfContentId"/>
+      <prim-key field="productStoreId"/>
+      <relation type="one" fk-name="XCX_PRODUCTSTORE" rel-entity-name="ProductStore">
+          <key-map field-name="productStoreId"/>
+      </relation>
+       <relation type="one" fk-name="XCX_CONTENT" rel-entity-name="Content">
+        <key-map field-name="contentId"/>
+      </relation>
+      <relation type="one" fk-name="XCX_CONTENTTYPE" rel-entity-name="ContentType">
+        <key-map field-name="contentTypeId"/>
+      </relation>
+    </entity>
+
+	<entity entity-name="PaymentGatewayEbs"
+            package-name="org.ofbiz.accounting.payment"
+            title="EBS Payment Gateway Config">
+        <field name="paymentGatewayConfigId" type="id-ne"></field>
+        <field name="apiUrl" type="value"><description>EBS API url</description></field>
+        <field name="merchantId" type="short-varchar"><description>EBS Merchant Account ID is a unique value generated by EBS to distinguish between different merchants.</description></field>
+        <field name="secretKey" type="value"><description>Secret key provided by EBS</description></field>
+        <field name="returnUrl" type="value"><description>This URL is where the customer’s browser is returned after completing the payment.(https://www.yourdomainname.com/online/control/EBSCheckoutReturn?DR={DR})</description></field>
+        <field name="redirectUrl" type="value"><description>EBS Redirect URL (Sandbox/Production)</description></field>
+        <field name="ebsMode" type="value"><description>Mode type LIVE or TEST</description></field>
+        <prim-key field="paymentGatewayConfigId"/>
+        <relation type="one" fk-name="PGE_PGC" rel-entity-name="PaymentGatewayConfig">
+            <key-map field-name="paymentGatewayConfigId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="EbsPaymentMethod" 
+            package-name="org.ofbiz.accounting.payment">
+        <description>EBS Payment Method Details</description>
+        <field name="paymentMethodId" type="id-ne"></field>
+        <field name="transactionId" type="short-varchar"><description>Unique reference number generated by EBS for the current status of payment</description></field>
+        <field name="responseCode" type="short-varchar"><description>Whether the payment is successful or not</description></field>
+        <field name="responseMessage" type="value"><description>Message to denote the status of payment(Transaction Successful/Unsuccessful)</description></field>
+        <field name="dateCreated" type="short-varchar"><description>Date of payment</description></field>
+        <field name="paymentId" type="short-varchar"><description>Unique reference number generated by EBS for payment</description></field>
+        <field name="merchantReferenceNum" type="short-varchar"><description>Marchant reference number</description></field>
+        <field name="isFlagged" type="short-varchar"><description>Expalins whether the payment Flagged or not(Yes/No)</description></field>
+        <field name="amount" type="short-varchar"><description>Payment amount</description></field>
+        <field name="paymentMethod" type="short-varchar"><description>Ebs paymdent metho</description></field>
+        <prim-key field="paymentMethodId"/>
+        <relation type="one" fk-name="EBS_PM" rel-entity-name="PaymentMethod">
+            <key-map field-name="paymentMethodId"/>
+        </relation>
+    </entity>
+	
+    <extend-entity entity-name="ProductStoreShipmentMeth">
+        <field name="allowPoBoxAddr" type="indicator"></field>
+    </extend-entity>
+    
+    <entity entity-name="ShipmentGatewayBlueDart" 
+            package-name="org.ofbiz.shipment.shipment"
+            title="BlueDart Shipment Gateway Configuration">
+    <description>BlueDart shipment gateways Details</description>
+    <field name="shipmentGatewayConfigId" type="id-ne"></field>
+    <field name="connectUrl" type="value"><description>Connect Url</description></field>
+    <field name="customerId" type="value" encrypt="true"><description>Customer id</description></field>
+    <field name="customerLisenceKey" type="value" encrypt="true"><description>Customer id</description></field>
+    <field name="versionNum" type="short-varchar"><description>Version Number</description></field>
+    <field name="scanNum" type="numeric"><description>Scan Number</description></field>
+    <field name="format" type="short-varchar"><description>Format</description></field>
+    <prim-key field="shipmentGatewayConfigId"/>
+    <relation type="one" fk-name="SGBD_SGC" rel-entity-name="ShipmentGatewayConfig">
+            <key-map field-name="shipmentGatewayConfigId"/>
+     </relation>
+    </entity>
+
+    <entity entity-name="PaymentGatewayTenderCard"
+            package-name="org.ofbiz.accounting.payment"
+            title="TenderCard Payment Gateway Config">
+        <field name="paymentGatewayConfigId" type="id-ne"></field>
+        <field name="apiUrl" type="value"><description>Tender card API url</description></field>
+        <field name="tenderCardId" type="short-varchar"><description>Tender card id of merchant</description></field>
+        <field name="terminalId" type="short-varchar"><description>Terminal id for merchant</description></field>
+        <prim-key field="paymentGatewayConfigId"/>
+        <relation type="one" fk-name="PGTC_PGC" rel-entity-name="PaymentGatewayConfig">
+            <key-map field-name="paymentGatewayConfigId"/>
+        </relation>
+    </entity>
+
+    <extend-entity entity-name="ShoppingListItem">
+        <field name="modifiedPrice" type="currency-amount"></field>
+    </extend-entity>
+
+    <entity entity-name="PaymentGatewayPayNetz"
+            package-name="org.ofbiz.accounting.payment"
+            title="Atom PayNetz Payment Gateway Configuration">
+      <field name="paymentGatewayConfigId" type="id-ne"></field>
+      <field name="apiUrl" type="value"><description>PayNetz API url</description></field>
+      <field name="loginId" type="short-varchar"><description>PayNetz Merchant Login ID is a unique value generated by PayNetz to distinguish between different merchants.</description></field>
+      <field name="password" type="value"><description>password provided by PayNetz</description></field>
+      <field name="productId" type="short-varchar"><description>Product ID as decided and approved by the Merchant.</description></field>
+      <field name="payNetzMode" type="short-varchar"><description>Mode (LIVE/TEST)</description></field>
+      <field name="redirectUrl" type="short-varchar"><description>PayNetz Production Redirect URL</description></field>
+      <field name="returnUrl" type="value"><description>This URL is where the customer’s browser is returned after completing the payment.(https://www.yourdomainname.com/online/control/payNetzCheckoutReturn)</description></field>
+      <field name="transactionType" type="short-varchar"><description>PayNetz transaction Type</description></field>
+      <prim-key field="paymentGatewayConfigId"/>
+      <relation type="one" fk-name="PGPNZ_PGC" rel-entity-name="PaymentGatewayConfig">
+        <key-map field-name="paymentGatewayConfigId"/>
+      </relation>
+    </entity>
+
+    <entity entity-name="PayNetzPaymentMethod" 
+            package-name="org.ofbiz.accounting.payment">
+        <description>PayNetz Payment Method Details</description>
+        <field name="paymentMethodId" type="id-ne"></field>
+        <field name="amount" type="short-varchar"><description>Payment amount</description></field>
+        <field name="bankName" type="value"><description>Bank on which customer performed transaction. In case of credit/debit card transactions, bank name will be received as Atom Bank. For testing it will be a single bank called 'Atom Bank'.</description></field>
+        <field name="bankTransactionId" type="short-varchar"><description>Bank Transaction ID. This ID is generated by the Bank</description></field>
+        <field name="clientcode" type="short-varchar"><description>clientcode, party Id</description></field>
+        <field name="dateCreated" type="short-varchar"><description>Date of payment</description></field>
+        <field name="productId" type="short-varchar"><description>Product ID as decided and approved by the Merchant.</description></field>
+        <field name="transactionId" type="short-varchar"><description>Unique reference number generated by PayNetz for the current status of payment</description></field>
+        <field name="merchantTransactionId" type="short-varchar"><description>Unique reference number generated by Site.</description></field>
+        <field name="responseCode" type="short-varchar"><description>Whether the payment is successful or not. OK for Successful transaction , F for Failed Transaction</description></field>
+        <prim-key field="paymentMethodId"/>
+        <relation type="one" fk-name="PAYNETZ_PM" rel-entity-name="PaymentMethod">
+            <key-map field-name="paymentMethodId"/>
+        </relation>
+    </entity>
+
+</entitymodel>

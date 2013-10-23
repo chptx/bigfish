@@ -1,0 +1,808 @@
+//********************************************************************************************
+//        TABLE OF CONTENTS
+//RELEASE ITEMS - Notes on items in this release 
+//SQL UPDATES - SQL statements to be executed against DB
+//BIGFISH PARAMETERS UPDATES - System Parameters added/removed (Entity: X_PRODUCT_STORE_PARM)
+//BIGFISH TYPES - Specific DB Types added/removed
+//BIGFISH EXTENDED STORE - Options added/removed to script for additional product stores
+//BIGFISH CONTENT MENU - Detailed options added/removed to maintain BigFish Content Menu options (emails, page content)
+//LABEL UPDATES - Ecommerce Labels added/removed
+//DIV SEQUENCE UPDATES - Ecommerce DIV sequence items added/removed
+//CLIENT DEPLOYMENT UPDATES - Properties added/removed
+//ECOMMERCE SEED UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE CONTENT SEED UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE EMAIL DATA UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE CSS UPDATES - High level Styles added/removed to CSS files
+//All entries in each section are noted by the following:
+//   Date:
+//   Issue #:
+//   Description: [Feedback Subject]
+//   By: [Developer Initials]
+//   Note: [Additional notation]
+//********************************************************************************************
+
+
+
+//********************************************************************************************
+//RELEASE ITEMS
+//********************************************************************************************
+      
+
+    
+//********************************************************************************************
+//SQL UPDATES
+//********************************************************************************************
+	
+Date: 09/12/2013
+Issue #: 31637
+Description: EBS Payment method
+By: RL
+Note:
+    UPDATE EBS_PAYMENT_METHOD SET MERCHANT_REFERENCE_NUM = MERCHANT_REF_NO WHERE MERCHANT_REFERENCE_NUM IS NULL;
+
+Date: 09/16/2013
+Issue #: 31788
+Description: Ecommerce: Address Book
+By: PA
+Note:   
+    UPDATE POSTAL_ADDRESS SET TO_NAME=NULL where TO_NAME=' ';
+    
+//********************************************************************************************
+//BIGFISH PARAMETERS UPDATES
+//FILE: bigFishParameters.xml
+//********************************************************************************************
+
+//Add
+Date: 09/18/2013
+Issue #: 31995
+Description: Show multi sales-tax line items in checkout
+By: RB
+Note:
+    <XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_SHOW_SALES_TAX_MULTI" description="TRUE will show multiple sales tax, if configured, on checkout pages." parmCategory="CHECKOUT"/>
+
+	
+//Remove
+
+
+//********************************************************************************************
+//BIGFISH CONTENT MENU
+//FILE: bigFishContentMenu.xml
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+
+//Edit
+
+//********************************************************************************************
+//BIGFISH TYPES
+//FILE: bigFishTypes.xml
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+
+
+//Edit
+
+
+//********************************************************************************************
+//BIGFISH EXTENDED STORE
+//FILE: bigFishExtendedStore.xml
+//********************************************************************************************
+
+//Add
+
+
+		
+//Remove
+
+//Edit
+
+
+//********************************************************************************************
+//LABEL UPDATES
+//FILE: OSafeUiLabels.xml
+//********************************************************************************************
+
+//Add
+Date: 09/12/2013
+Issue #: 31788
+Description: Ecommerce Address Book
+By: PA
+Note:
+	<property key="CountryMissingError">
+        <value xml:lang="en">Please select your Country</value>
+        <category>MESSAGE_ERROR</category>
+        <description>CountryMissingError</description>
+    </property>
+    
+Date: 09/13/2013
+Issue #: 31750
+Description: SSJ DEV CSS:Change Personal information
+By: PA
+Note:
+    <property key="MissingDobDateError">
+        <value xml:lang="en">Please enter your Date Of Birth</value>
+        <category>MESSAGE_ERROR</category>
+        <description>Missing DOB error message</description>
+    </property>
+    <property key="LoyaltyPointIdMissingError">
+        <value xml:lang="en">Please enter your Loyalty Point Id</value>
+        <category>MESSAGE_ERROR</category>
+        <description>Missing Loyalty Point Id error message</description>
+    </property>
+    
+Date: 09/17/2013
+Issue #: 31980
+Description: eComm: Incorrect validation message on Re-Order page
+By: RB
+Note:
+	<property key="NoOrderItemsSelectedError">
+        <value xml:lang="en">Please select items to order</value>
+        <category>MULTI_USE</category>
+        <description>NoOrderItemsSelectedError</description>
+    </property>
+    
+Date: 09/19/2013
+Issue #: 31980
+Description: Show multi sales-tax line items in checkout
+By: RB
+Note:
+    <property key="SummarySalesTaxCaption">
+        <value xml:lang="en">Sales Tax(${taxPercent}%):</value>
+        <category>MULTI_USE</category>
+        <description>SummarySalesTaxCaption</description>
+    </property>
+    <property key="SummarySalesTaxMultiCaption">
+        <value xml:lang="en">Sales Tax(${description} ${taxPercent}%):</value>
+        <category>MULTI_USE</category>
+        <description>SummarySalesTaxMultiCaption</description>
+    </property>
+
+Date: 09/24/2013
+Issue #: 31950
+Description: GiftCard: Order Total
+By: RB
+Note:
+	<property key="GiftCardExceedCartBalanceWarning">
+        <value xml:lang="en">We have adjusted the Gift Card redemption</value>
+        <category>MULTI_USE</category>
+        <description>GiftCardExceedCartBalanceWarning</description>
+    </property>
+    
+//Remove
+
+
+    
+//Edit
+Date: 09/13/2013
+Issue #: 31750
+Description: SSJ DEV CSS:Change Personal information
+By: PA
+Note:
+    <property key="ValidDobDateError">
+        <value xml:lang="en">Please enter valid Date Of Birth</value>
+        <category>MESSAGE_ERROR</category>
+        <description>Invalid DOB error message</description>
+    </property>
+
+//********************************************************************************************
+//eCommerce Id Map UPDATES
+//FILE: eCommerceIdMap.xml
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//DIV SEQUENCE UPDATES
+//FILE: OSafeUiSequence.xml
+//********************************************************************************************
+//Add
+Date: 09/26/2013
+Issue #: 31881
+Description: Smoke V1.13-SSJ:Write a review
+By: RL
+Note:
+    <property key="writeReviewSubmitButton">
+        <value xml:lang="en">30</value>
+        <screen>WriteReview</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Submit button</description>
+    </property>
+    <property key="writeReviewCancelButton">
+        <value xml:lang="en">40</value>
+        <screen>WriteReview</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Cancel button</description>
+    </property>
+    <property key="writeReviewDetailOverallStars">
+        <value xml:lang="en">10</value>
+        <screen>WriteReviewDetail</screen>
+        <style>image</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>The overall rating star selection</description>
+    </property>
+    <property key="writeReviewDetailQualityStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewDetail</screen>
+        <style>image</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The quality rating star selection</description>
+    </property>
+    <property key="writeReviewDetailEffectivenessStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewDetail</screen>
+        <style>image</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The effectiveness rating star selection</description>
+    </property>
+    <property key="writeReviewDetailSatisfactionStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewDetail</screen>
+        <style>image</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The satisfaction rating star selection</description>
+    </property>
+        <property key="writeReviewDetailReviewerLocation">
+        <value xml:lang="en">60</value>
+        <screen>WriteReviewDetail</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Location of reviewer</description>
+    </property>
+    <property key="writeReviewDetailReviewerAge">
+        <value xml:lang="en">70</value>
+        <screen>WriteReviewDetail</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Age of reviewer</description>
+    </property>
+    <property key="writeReviewDetailReviewerGender">
+        <value xml:lang="en">80</value>
+        <screen>WriteReviewDetail</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Gender of reviewer</description>
+    </property>
+    <property key="writeReviewDetailReviewerPrivateNote">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewDetail</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Private note</description>
+    </property>
+    <property key="writeReviewDetailReviewerPrivateNoteTip">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewDetail</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Tip for Private Note</description>
+    </property>
+    <property key="writeReviewDetailReviewTermsCondLink">
+        <value xml:lang="en">90</value>
+        <screen>WriteReviewDetail</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Terms and Conditions helper link .</description>
+    </property>
+    <property key="writeReviewDetailReviewGuidelinesLink">
+        <value xml:lang="en">100</value>
+        <screen>WriteReviewDetail</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Guidelines helper link.</description>
+    </property>
+	
+//Remove
+Date: 09/26/2013
+Issue #: 31881
+Description: Smoke V1.13-SSJ:Write a review
+By: RL
+Note: 
+    <property key="writeReviewRating">
+        <value xml:lang="en">0</value>
+        <screen>WriteReview</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Review Product Ratings.</description>
+    </property>
+    <property key="writeReviewAboutYou">
+        <value xml:lang="en">0</value>
+        <screen>WriteReview</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Review User Information.</description>
+    </property> 
+    <property key="writeReviewButton">
+        <value xml:lang="en">0</value>
+        <screen>WriteReview</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Submit and Cancel Button.</description>
+    </property>
+    <!-- *************************************** -->
+    <!-- WriteReviewRating -->
+    <!-- *************************************** -->
+    <property key="writeReviewRatingOverallStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewRating</screen>
+        <style>image</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>The overall rating star selection</description>
+    </property>
+    <property key="writeReviewRatingQualityStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewRating</screen>
+        <style>image</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The quality rating star selection</description>
+    </property>
+    <property key="writeReviewRatingEffectivenessStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewRating</screen>
+        <style>image</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The effectiveness rating star selection</description>
+    </property>
+    <property key="writeReviewRatingSatisfactionStars">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewRating</screen>
+        <style>image</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The satisfaction rating star selection</description>
+    </property>
+    <!-- *************************************** -->
+    <!-- WriteReviewAboutYou -->
+    <!-- *************************************** -->
+    <property key="writeReviewAboutYouReviewerLocation">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewAboutYou</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Location of reviewer</description>
+    </property>
+    <property key="writeReviewAboutYouReviewerAge">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewAboutYou</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Age of reviewer</description>
+    </property>
+    <property key="writeReviewAboutYouReviewerGender">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewAboutYou</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Gender of reviewer</description>
+    </property>
+    <property key="writeReviewAboutYouReviewerPrivateNote">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewAboutYou</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Private note</description>
+    </property>
+    <property key="writeReviewAboutYouReviewerPrivateNoteTip">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewAboutYou</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Tip for Private Note</description>
+    </property>
+    <!-- *************************************** -->
+    <!-- WriteReviewLink -->
+    <!-- *************************************** -->
+    <property key="writeReviewLinkReviewTermsCondLink">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewLink</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Terms and Conditions helper link .</description>
+    </property>
+    <property key="writeReviewLinkReviewGuidelinesLink">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewLink</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Guidelines helper link.</description>
+    </property>
+    <!-- *************************************** -->
+    <!-- WritesReviewButton -->
+    <!-- *************************************** -->
+    <property key="writeReviewButtonSubmitButton">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewButton</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Submit button.</description>
+    </property>
+    <property key="writeReviewButtonCancelButton">
+        <value xml:lang="en">0</value>
+        <screen>WriteReviewButton</screen>
+        <style>action</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>The Cancel button.</description>
+    </property>
+//Edit
+Date: 09/12/2013
+Issue #: 31788
+Description: Ecommerce Address Book
+By: PA
+Note: Mandatory Value Changed under AddressInfo Div Sequencer
+    <property key="addressInfoCountry">
+        <value xml:lang="en">0</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Country selector</description>
+    </property>
+    <property key="addressInfoNickname">
+        <value xml:lang="en">10</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Address Nickname</description>
+    </property>
+    <property key="addressInfoAddress2">
+        <value xml:lang="en">30</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Address Line 2</description>
+    </property>
+    <property key="addressInfoAddress3">
+        <value xml:lang="en">40</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Address Line 3</description>
+    </property>
+    <property key="addressInfoCityTown">
+        <value xml:lang="en">50</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>City or Town</description>
+    </property>
+    <property key="addressInfoZipPostcode">
+        <value xml:lang="en">70</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>SYS_YES</mandatory>
+        <group>0</group>
+        <description>Zip or Postcode</description>
+    </property>
+    <property key="addressSkipVerification">
+        <value xml:lang="en">0</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>NO</mandatory>
+        <group>0</group>
+        <description>Checkbox that allows the customer to accept (skip) address entry from an address Verification method</description>
+    </property>
+    <property key="addressInfoFullName">
+        <value xml:lang="en">0</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Full Name</description>
+    </property>
+    <property key="addressInfoFirstName">
+        <value xml:lang="en">0</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>First Name</description>
+    </property>
+    <property key="addressInfoLastName">
+        <value xml:lang="en">0</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>Last Name</description>
+    </property>
+
+Date: 09/16/2013
+Issue #: 31788
+Description: Ecommerce Address Book
+By: PA
+Note: Mandatory Value Changed under AddressInfo Div Sequencer
+    <property key="personalInfoLoyaltyPointId">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Loyalty Point Identifier</description>
+    </property>
+	<property key="addressSkipVerification">
+        <value xml:lang="en">0</value>
+        <screen>AddressInfo</screen>
+        <style>entry</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Checkbox that allows the customer to accept (skip) address entry from an address Verification method</description>
+    </property>
+
+Date: 09/26/2013
+Issue #: 31881
+Description: Smoke V1.13-SSJ:Write a review
+By: RL
+Note:
+    <property key="writeReviewProduct">
+        <value xml:lang="en">10</value>
+        <screen>WriteReview</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Review Product Information</description>
+    </property>
+    <property key="writeReviewDetail">
+        <value xml:lang="en">20</value>
+        <screen>WriteReview</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Review Product Ratings</description>
+    </property>
+    <property key="writeReviewProductProductName">
+        <value xml:lang="en">10</value>
+        <screen>WriteReviewProduct</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Product Name</description>
+    </property>
+    <property key="writeReviewProductThumbImage">
+        <value xml:lang="en">20</value>
+        <screen>WriteReviewProduct</screen>
+        <style>image</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Main Image</description>
+    </property>
+    <property key="writeReviewProductDescription">
+        <value xml:lang="en">30</value>
+        <screen>WriteReviewProduct</screen>
+        <style>string</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Long Description. The primary description for the Product. </description>
+    </property>
+    <property key="writeReviewDetailReviewerNickname">
+        <value xml:lang="en">20</value>
+        <screen>WriteReviewDetail</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The Nickname of the reviewer</description>
+    </property>
+    <property key="writeReviewDetailReviewerTitle">
+        <value xml:lang="en">30</value>
+        <screen>WriteReviewDetail</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The Title for the review</description>
+    </property>
+    <property key="writeReviewDetailReviewerText">
+        <value xml:lang="en">40</value>
+        <screen>WriteReviewDetail</screen>
+        <style>entry</style>
+        <mandatory>YES</mandatory>
+        <group>0</group>
+        <description>The Text of the review</description>
+    </property>
+    <property key="writeReviewDetailReviewerTip">
+        <value xml:lang="en">50</value>
+        <screen>WriteReviewDetail</screen>
+        <style>container</style>
+        <mandatory>NA</mandatory>
+        <group>0</group>
+        <description>Tips for writing a review, from Label file</description>
+    </property>
+//********************************************************************************************
+//CLIENT DEPLOYMENT UPDATES
+//FILE: client-deployment.properties
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE EMAIL DATA UPDATES
+//FILE: eCommerceContentEmailData.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE CSS UPDATES
+//FILE: bigFishClientSkin.css
+//********************************************************************************************
+
+//Add
+
+
+
+//Remove
+
+
+
+//********************************************************************************************
+//OSAFE PROPERTIES UPDATE
+//FILE: osafe.properties.template
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+
+
+//Edit
+
+    
+//********************************************************************************************
+//EECAS XML TEMPLATE UPDATE
+//FILE: eecas.xml.template
+//********************************************************************************************
+
+
+//********************************************************************************************
+//OFBIZ COMPONENT XML UPDATES
+//FILE: ofbiz-component.xml.template
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//CLIENT STORE SEED DATA XML UPDATES
+//FILE: clientStoreSeedData.xml.template
+//********************************************************************************************
+
+//Add
+Date: 09/18/2013
+Issue #: 31995
+Description: Show multi sales-tax line items in checkout
+By: RB
+Note:
+    <XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_SHOW_SALES_TAX_MULTI" parmValue="FALSE" description="TRUE will show multiple sales tax, if configured, on checkout pages." parmCategory="CHECKOUT"/>
+	
+//Remove
+
+
+
+	
+//********************************************************************************************
+//CACHE PROPERTIES
+//FILE: cache.properties
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//JS LIBRARIES
+//DIRECTORY: osafe-theme/js/lib
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//VISUAL THEME RESOURCE
+//FILE: OsafeThemeData.xml.template
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+
+//********************************************************************************************
+//ECOMMERCE PAYMENT CUSTIOME METHODS
+//FILE: eCommercePaymentCustomMethods.xml
+//********************************************************************************************
+
+//Add
+
+	
+//Remove
+
+    
+
+    
+
+
+

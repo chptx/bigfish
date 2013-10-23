@@ -1,0 +1,387 @@
+//********************************************************************************************
+//RELEASE ITEMS
+//********************************************************************************************
+
+
+    
+//********************************************************************************************
+//SQL UPDATES
+//********************************************************************************************
+
+05/17/2013 - Issue#29997 (This system parameter was added to the DB with a key containing a trailing space)
+	- DELETE FROM X_PRODUCT_STORE_PARM WHERE PARM_KEY ='MELISSA_VERIFICATION_MODE ';
+	- INSERT INTO X_PRODUCT_STORE_PARM (product_store_id, parm_category, parm_key, description)
+	VALUES ('@PRODUCT_STORE_ID@', 'MELISSA', 'MELISSA_VERIFICATION_MODE', 'Melissa provides the two types of services for address verification. First install the Melissa address tool locally and second send HTTP request for verification. Possible values are HTTP or FILEPATH.');
+	
+
+//********************************************************************************************
+//BIGFISH PARAMETERS UPDATES
+//FILE: bigFishParameters.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//BIGFISH CONTENT MENU
+//FILE: bigFishContentMenu.xml
+//********************************************************************************************
+
+//Add
+    
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//BIGFISH TYPES
+//FILE: bigFishTypes.xml
+//********************************************************************************************
+
+//Add
+05/23/2013 - Issue #30063
+	<CustomMethodType customMethodTypeId="SHIP_CHARGE_AVAIL" parentTypeId="" hasTable="" description="Shipment Service which determines if a shipping Charge (method) is available"/>
+	
+//Remove
+
+
+//Edit
+
+
+//********************************************************************************************
+//BIGFISH EXTENDED STORE
+//FILE: bigFishExtendedStore.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+
+//********************************************************************************************
+//LABEL UPDATES
+//FILE: OSafeUiLabels.xml
+//********************************************************************************************
+
+//Add
+05/13/2013 - Issue#29655
+	<property key="ExportToPDFLabel">
+        <value xml:lang="en">Printable PDF</value>
+        <category>CHECK_OUT</category>
+        <description>ExportToPDFLabel</description>
+    </property>
+
+//Remove
+
+
+    
+//Edit
+05/10/2013 - Issue#29845
+	<property key="PassOneNumInstructionsInfo">
+        <value xml:lang="en">at least XXX number, </value>
+        <category>MESSAGE_INFO</category>
+        <description>PassOneNumInstructionsInfo</description>
+    </property>
+    <property key="PassOneUpperCaseInstructionsInfo">
+        <value xml:lang="en">at least XXX uppercase characters.</value>
+        <category>MESSAGE_INFO</category>
+        <description>PassOneUpperCaseInstructionsInfo</description>
+    </property>
+    <property key="PasswordInstructionsInfo">
+        <value xml:lang="en">min XXX characters, at least XXX number.</value>
+        <category>MESSAGE_INFO</category>
+        <description>PasswordInstructionsInfo</description>
+    </property>
+    <property key="PasswordHasNoNumberError">
+        <value xml:lang="en">Password must be contain at least XXX number.</value>
+        <category>MESSAGE_ERROR</category>
+        <description>PasswordHasNoNumberError</description>
+    </property>
+
+
+
+//********************************************************************************************
+//eCommerce Id Map UPDATES
+//FILE: eCommerceIdMap.xml
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//DIV SEQUENCE UPDATES
+//FILE: OSafeUiSequence.xml
+//********************************************************************************************
+//Add
+Issue# 29644 - 05/09/2013
+    <property key="customAttributes">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <div>personalInfoCustomAttributes</div>
+        <description>Custom Attributes, if defined</description>
+    </property>
+    
+Issue# 29676 - 05/28/2013
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>ShowCart</screen>
+        <div>showCartOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummary</screen>
+        <div>orderSummaryOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirm</screen>
+        <div>orderConfirmOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>WishList</screen>
+        <div>showWishlistOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemShowCartButton">
+        <value xml:lang="en">0</value>
+        <screen>LightBox</screen>
+        <div>lightBoxShowCartButton</div>
+        <description>The button will direct to the 'full' version of the shopping cart.</description>
+    </property>
+    <property key="itemDescription">
+        <value xml:lang="en">0</value>
+        <screen>LightBoxOrderItems</screen>
+        <div>lightBoxItemDescription</div>
+        <description>The item Description</description>
+    </property>
+
+//Remove
+Issue# 29676 - 05/28/2013
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>ShowCart</screen>
+        <div>showCartOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummary</screen>
+        <div>orderSummaryOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirm</screen>
+        <div>orderConfirmOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>WishList</screen>
+        <div>showWishlistOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="showCartButton">
+        <value xml:lang="en">0</value>
+        <screen>LightBox</screen>
+        <div>lightBoxShowCartButton</div>
+        <description>The button will direct to the 'full' version of the shopping cart.</description>
+    </property>
+
+//Edit
+
+
+
+//********************************************************************************************
+//CLIENT DEPLOYMENT UPDATES
+//FILE: client-deployment.properties
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+05/23/2013 - Issue#30063
+	<CustomMethod customMethodId="BDART_CHECK_DELIVERY" customMethodTypeId="SHIP_CHARGE_AVAIL" customMethodName="blueDartCheckoutPincode" description="Service which determines if Blue Dart carrier can deliver to a customers pincode."/>
+	
+//Remove
+
+//********************************************************************************************
+//ECOMMERCE CONTENT SEED UPDATES
+//FILE: eCommerceContentSeedData.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE EMAIL DATA UPDATES
+//FILE: eCommerceContentEmailData.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE CSS UPDATES
+//FILE: bigFishClientSkin.css
+//********************************************************************************************
+
+//Add
+
+***Added to Section 5.14 ***
+
+.personalInfoCustomAttributesSeq {
+
+}
+
+
+***Added to Section 8. ***
+
+.radioButtonGroup {
+
+}
+
+.radioButtonGroup span {  /* Overrides .radioOptionText */
+
+}
+
+.entry .checkboxOptionText {
+
+}
+
+.checkboxButtonGroup {
+
+}
+
+.checkboxButtonGroup span {  /* Overrides .checkboxOptionText */
+
+}
+
+*** Added to Section 11.8 ***
+
+
+.personalInfoCustomAttributes {
+
+}
+
+
+//Remove
+
+
+//********************************************************************************************
+//OSAFE PROPERTIES UPDATE
+//FILE: osafe.properties.template
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//EECAS XML TEMPLATE UPDATE
+//FILE: eecas.xml.template
+//********************************************************************************************
+
+
+//********************************************************************************************
+//OFBIZ COMPONENT XML UPDATES
+//FILE: ofbiz-component.xml.template
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//CLIENT STORE SEED DATA XML UPDATES
+//FILE: clientStoreSeedData.xml.template
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//CACHE PROPERTIES
+//FILE: cache.properties
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//JS LIBRARIES
+//DIRECTORY: osafe-theme/js/lib
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//VISUAL THEME RESOURCE
+//FILE: OsafeThemeData.xml.template
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+
+    
+
+//comment out all services   
+
+

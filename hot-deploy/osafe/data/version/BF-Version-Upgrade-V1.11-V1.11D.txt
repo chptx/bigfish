@@ -1,0 +1,1623 @@
+//********************************************************************************************
+//        TABLE OF CONTENTS
+//RELEASE ITEMS - Notes on items in this release 
+//SQL UPDATES - SQL statements to be executed against DB
+//BIGFISH PARAMETERS UPDATES - System Parameters added/removed (Entity: X_PRODUCT_STORE_PARM)
+//BIGFISH TYPES - Specific DB Types added/removed
+//BIGFISH EXTENDED STORE - Options added/removed to script for additional product stores
+//BIGFISH CONTENT MENU - Detailed options added/removed to maintain BigFish Content Menu options (emails, page content)
+//LABEL UPDATES - Ecommerce Labels added/removed
+//DIV SEQUENCE UPDATES - Ecommerce DIV sequence items added/removed
+//CLIENT DEPLOYMENT UPDATES - Properties added/removed
+//ECOMMERCE SEED UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE CONTENT SEED UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE EMAIL DATA UPDATES - Entries added/removed for building 'seed' data.
+//ECOMMERCE CSS UPDATES - High level Styles added/removed to CSS files
+//All entries in each section are noted by the following:
+//   Date:
+//   Issue #:
+//   Description: [Feedback Subject]
+//   By: [Developer Initials]
+//   Note: [Additional notation]
+//********************************************************************************************
+
+
+
+//********************************************************************************************
+//RELEASE ITEMS
+//********************************************************************************************
+
+
+    
+//********************************************************************************************
+//SQL UPDATES
+//********************************************************************************************
+
+Date: 05/17/2013
+Issue #: 29997 
+Description: CompareTool: bug in SysParams comparison
+By: RB
+Note:This system parameter was added to the DB with a key containing a trailing space
+	- DELETE FROM X_PRODUCT_STORE_PARM WHERE PARM_KEY ='MELISSA_VERIFICATION_MODE ';
+	- INSERT INTO X_PRODUCT_STORE_PARM (product_store_id, parm_category, parm_key, description)
+	VALUES ('@PRODUCT_STORE_ID@', 'MELISSA', 'MELISSA_VERIFICATION_MODE', 'Melissa provides the two types of services for address verification. First install the Melissa address tool locally and second send HTTP request for verification. Possible values are HTTP or FILEPATH.');
+	
+Date: 06/21/2013
+Issue #: 30455
+Description: System Parameter: REVIEW_SHOW_ON_PLP
+By: RB
+Note:
+	- DELETE FROM X_PRODUCT_STORE_PARM WHERE PARM_KEY ='REVIEW_SHOW_ON_PLP';
+	
+Date: 06/27/2013
+Issue #: 30582
+Description: Remove System Parameters
+By: RB
+Note:
+	- DELETE FROM X_PRODUCT_STORE_PARM WHERE PARM_KEY ='PDP_WISHLIST_ACTIVE_FLAG';
+	- DELETE FROM X_PRODUCT_STORE_PARM WHERE PARM_KEY ='CLP_HIDE_SUB_CATEGORIES';
+	
+Date: 07/03/2013
+Issue #: 30636
+Description: System Parameter: CHECKOUT_DELIVERY
+By: RB
+Note: This parameter was added to seed, but was not implemented. 
+	- DELETE FROM X_PRODUCT_STORE_PARM WHERE PARM_KEY ='CHECKOUT_DELIVERY';
+
+//********************************************************************************************
+//BIGFISH PARAMETERS UPDATES
+//FILE: bigFishParameters.xml
+//********************************************************************************************
+
+//Add
+Date: 05/30/2013
+Issue #: 29861
+Description: Blue Dart: shipping label
+By: PA
+Note:
+<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="LENGTH_UOM_DEFAULT" description="Default setting for the LENGTH unit of measure (UOM). Valid values as per the UOM_TYPE entity of type LENGTH_MEASURE. Typical setting is cm or in." parmCategory="FORMAT"/>
+<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="WEIGHT_UOM_DEFAULT" description="Default setting for the WEIGHT unit of measure (UOM). Valid values as per the UOM_TYPE entity of type WEIGHT_MEASURE. Typical setting is lb or kg." parmCategory="FORMAT"/>
+
+Date: 06/18/2013
+Issue #: 30338
+Description: Admin Catalog: new attribute CHECKOUT_GIFT_MESSAGE
+By: RL
+Note:
+<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_GIFT_MESSAGE" description="TRUE or FALSE flag value to indicate if Gift Messages are to be offered in the My Cart page. This acts as the default, can be overridden at the Product level." parmCategory="CHECKOUT"/>
+
+Date: 06/19/2013
+Issue #: 30022
+Description: Ecommerce PDP: new attribute PDP_QTY_DEFAULT
+By: YC
+Note:
+<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="PDP_QTY_DEFAULT" parmValue="1" description="Pre-Populate the qty field on the PDP(if numeric)." parmCategory="PDP"/>
+
+//Remove
+
+Date: 06/21/2013
+Issue #: 30455
+Description: System Parameter: REVIEW_SHOW_ON_PLP
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="REVIEW_SHOW_ON_PLP" description="Display Customer Ratings on the PLP page true or false." parmCategory="REVIEW"/>
+
+Date: 06/27/2013
+Issue #: 30582
+Description: Remove System Parameters
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="PDP_WISHLIST_ACTIVE_FLAG" description="Determines if the ADD TO WISHLIST functionality is activated" parmCategory="PDP"/>
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CLP_HIDE_SUB_CATEGORIES" description="On the CLP (Category Listing Page) a value of TRUE will hide all standard sub-categories on the assumption that Content Spots will be displayed in order to manage the customer experience on every CLP." parmCategory="CLP"/>
+
+Date: 07/03/2013
+Issue #: 30636
+Description: System Parameter: CHECKOUT_DELIVERY
+By: RB
+Note: This parameter was added to seed, but was not implemented. 
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_DELIVERY" description="Defines whether a customer is given a delivery option (with associated shipping charges)" parmCategory="CHECKOUT"/>  
+
+
+//********************************************************************************************
+//BIGFISH CONTENT MENU
+//FILE: bigFishContentMenu.xml
+//********************************************************************************************
+
+//Add
+    
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//BIGFISH TYPES
+//FILE: bigFishTypes.xml
+//********************************************************************************************
+
+//Add
+Date: 05/23/2013
+Issue #: 30063
+Description: Bf Admin Shipping Charges Customer method
+By: RB
+Note:
+	<CustomMethodType customMethodTypeId="SHIP_CHARGE_AVAIL" parentTypeId="" hasTable="" description="Shipment Service which determines if a shipping Charge (method) is available"/>
+
+Date: 06/14/2013
+Issue #: 30324
+Description: Lookup Data: Gift Messages
+By: RL
+Note:	
+    <EnumerationType enumTypeId="GIFT_MESSAGE" parentTypeId="" hasTable="" description="Gift Message"/>
+//Remove
+
+
+//Edit
+
+
+//********************************************************************************************
+//BIGFISH EXTENDED STORE
+//FILE: bigFishExtendedStore.xml
+//********************************************************************************************
+
+//Add
+
+//Add
+Date: 06/17/2013
+Issue #: 30335
+Description: eComm: Show Cart: Gift Messages
+By: RB
+Note: 
+	<DataResource dataResourceId="PES_GIFT_MESS@extendedStore.suffix@" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" localeString="en_US"/>
+	<DataResource dataResourceId="PES_GIFT_MESS@extendedStore.suffix@" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" localeString="en_US"/>
+	<ElectronicText dataResourceId="PTS_GIFT_MESS@extendedStore.suffix@"/>
+	<ElectronicText dataResourceId="PES_GIFT_MESS@extendedStore.suffix@"/>
+	<Content contentId="PTS_GIFT_MESS@extendedStore.suffix@" contentTypeId="BF_PAGE_TOP_SPOT" dataResourceId="PTS_GIFT_MESS@extendedStore.suffix@"  description="Content Spot displayed on the TOP of the Gift-Message page" contentName="Gift Message" createdByUserLogin="admin" lastModifiedDate="2011-01-26 19:00:30.0" lastModifiedByUserLogin="admin" localeString="en_US"/>
+	<Content contentId="PES_GIFT_MESS@extendedStore.suffix@" contentTypeId="BF_PAGE_TOP_SPOT" dataResourceId="PES_GIFT_MESS@extendedStore.suffix@"  description="Content Spot displayed on the END of the Gift-Message page" contentName="Gift Message" createdByUserLogin="admin" lastModifiedDate="2011-01-26 19:00:30.0" lastModifiedByUserLogin="admin" localeString="en_US"/>
+	<ContentRole contentId="PTS_GIFT_MESS@extendedStore.suffix@" partyId="admin" roleTypeId="OWNER" fromDate="2011-01-26 19:00:30.0"/>
+	<ContentRole contentId="PES_GIFT_MESS@extendedStore.suffix@" partyId="admin" roleTypeId="OWNER" fromDate="2011-01-26 19:00:30.0"/>
+	<XContentXref productStoreId="@store.productStoreId@" bfContentId="PTS_GIFT_MESSAGE" contentId="PTS_GIFT_MESS@extendedStore.suffix@" contentTypeId="BF_PAGE_TOP_SPOT"/>
+	<XContentXref productStoreId="@store.productStoreId@" bfContentId="PES_GIFT_MESSAGE" contentId="PES_GIFT_MESS@extendedStore.suffix@" contentTypeId="BF_PAGE_TOP_SPOT"/>
+		
+//Remove
+
+//Edit
+
+
+//********************************************************************************************
+//LABEL UPDATES
+//FILE: OSafeUiLabels.xml
+//********************************************************************************************
+
+//Add
+Date: 05/13/2013
+Issue #: 29655
+Description: Order Confirmation: printable PDF
+By: RB
+Note:
+	<property key="ExportToPDFLabel">
+        <value xml:lang="en">Printable PDF</value>
+        <category>CHECK_OUT</category>
+        <description>ExportToPDFLabel</description>
+    </property>
+    
+Date: 05/30/2013
+Issue #: 30064
+Description: Ecommerce Shipping Charges - Custom Method
+By: RB
+Note:
+	<property key="NoShippingMessageInfo">
+        <value xml:lang="en">We’re sorry but we cannot schedule a delivery to your address</value>
+        <category>CHECK_OUT</category>
+        <description>NoShippingMessageInfo</description>
+    </property>
+    <property key="NoShippingMethodError">
+        <value xml:lang="en">No Shipping Method was selected</value>
+        <category>CHECK_OUT</category>
+        <description>NoShippingMethodError</description>
+    </property>
+    
+Date: 06/06/2013
+Issue #: 30172
+Description: List of Reviews: now part of DIV Sequencing
+By: RB
+Note:    
+	<property key="ReviewRatingOutOfFiveLabel">
+        <value xml:lang="en">out of 5</value>
+        <category>RATING_REVIEW</category>
+        <description>ReviewRatingOutOfFiveLabel</description>
+    </property>
+    <property key="ReviewDateCaption">
+        <value xml:lang="en">Review Date:</value>
+        <category>RATING_REVIEW</category>
+        <description>ReviewDateCaption</description>
+    </property>
+    <property key="NickNameCaption">
+        <value xml:lang="en">Nickname:</value>
+        <category>RATING_REVIEW</category>
+        <description>NickNameCaption</description>
+    </property>
+
+Date: 06/14/2013
+Issue #: 30195
+Description: Re-Order items from historical purchases
+By: PA
+Note:
+    <property key="ReOrderItemImageLabel">
+        <value xml:lang="en">Item Image</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemImageLabel</description>
+    </property>
+    <property key="ReOrderItemProductLabel">
+        <value xml:lang="en">Product</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemProductLabel</description>
+    </property>
+    <property key="ReOrderItemLastOrderDateLabel">
+        <value xml:lang="en">Last Ordered Date</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemLastOrderDateLabel</description>
+    </property>
+    <property key="ReOrderItemCheckToReOrderLabel">
+        <value xml:lang="en">Check to Re-Order</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemCheckToReOrderLabel</description>
+    </property>
+    <property key="ReOrderItemReOrderQtyLabel">
+        <value xml:lang="en">Re-Order Qty</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemReOrderQtyLabel</description>
+    </property>
+    <property key="ReOrderItemCurrentPriceLabel">
+        <value xml:lang="en">Current Price</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemCurrentPriceLabel</description>
+    </property>
+    <property key="ReOrderItemImageCaption">
+        <value xml:lang="en">Item Image:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemImageCaption</description>
+    </property>
+    <property key="ReOrderItemDescriptionCaption">
+        <value xml:lang="en">Product:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemDescriptionCaption</description>
+    </property>
+    <property key="ReOrderItemLastOrderDateCaption">
+        <value xml:lang="en">Last Ordered Date:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemLastOrderDateCaption</description>
+    </property>
+    <property key="ReOrderItemCheckToReOrderCaption">
+        <value xml:lang="en">Check to Re-Order:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemCheckToReOrderCaption</description>
+    </property>
+    <property key="ReOrderItemQtyCaption">
+        <value xml:lang="en">Re-Order Qty:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemQtyCaption</description>
+    </property>
+    <property key="ReOrderItemCurrentPriceCaption">
+        <value xml:lang="en">Current Price:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderItemCurrentPriceCaption</description>
+    </property>
+    <property key="PreviouslyPurchasedProductsTitle">
+        <value xml:lang="en">Previously Purchased Products</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>PreviouslyPurchasedProducts</description>
+    </property>
+    <property key="ReOrderSelectedItemsBtn">
+        <value xml:lang="en">Re-Order Selected Items</value>
+        <category>BUTTON_TEXT</category>
+        <description>Re-Order Selected Items Btn</description>
+    </property>
+    <property key="ReOrderItemsBtn">
+        <value xml:lang="en">Re-Order Items</value>
+        <category>BUTTON_TEXT</category>
+        <description>Re-Order Items Btn</description>
+    </property>
+    <property key="PreviousPurchaseProductsHeading">
+        <value xml:lang="en">Previously Purchased Products</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>PreviousPurchaseItemsHeading</description>
+    </property>
+
+Date: 06/17/2013
+Issue #: 30287
+Description: eComm: Check Out, added Shipping Instructions
+By: RL
+Note:   
+    <property key="ShippingInstructionsLabel">
+        <value xml:lang="en">Special Delivery Instructions (Optional)</value>
+        <category>CHECK_OUT</category>
+        <description>ShippingInstructionsLabel</description>
+    </property>
+    <property key="ShippingInstructionsInfo">
+        <value xml:lang="en">* Note any specific details that will help us delivery your items to you.</value>
+        <category>CHECK_OUT</category>
+        <description>ShippingInstructionsInfo</description>
+    </property>
+    <property key="CartShippingInstructionsLabel">
+        <value xml:lang="en">Shipping Instructions:</value>
+        <category>CHECKOUT</category>
+        <description>CartShippingInstructionsLabel</description>
+    </property>
+    
+Date: 06/17/2013
+Issue #: 30335
+Description: eComm: Show Cart: Gift Messages
+By: RB
+Note:     
+    <property key="CartItemGiftMessageLinkCaption">
+        <value xml:lang="en">Gift Message Link:</value>
+        <category>CART</category>
+        <description>CartItemGiftMessageLinkCaption</description>
+    </property>
+    <property key="GiftMessageLink">
+        <value xml:lang="en">Add Gift Message</value>
+        <category>CART</category>
+        <description>GiftMessageLink</description>
+    </property>
+    <property key="AddGiftMessageTitle">
+        <value xml:lang="en">Add Gift Message</value>
+        <category>CART</category>
+        <description>AddGiftMessageTitle</description>
+    </property>
+    <property key="FromCaption">
+        <value xml:lang="en">From:</value>
+        <category>CART</category>
+        <description>FromCaption</description>
+    </property>
+    <property key="ToCaption">
+        <value xml:lang="en">To:</value>
+        <category>CART</category>
+        <description>ToCaption</description>
+    </property>
+    <property key="GiftMessageLetUsHelpCaption">
+        <value xml:lang="en">Message, let us help:</value>
+        <category>CART</category>
+        <description>GiftMessageLetUsHelpCaption</description>
+    </property>
+    <property key="GiftMessageTextCaption">
+        <value xml:lang="en">Message, your choice:</value>
+        <category>CART</category>
+        <description>GiftMessageTextCaption</description>
+    </property>
+    <property key="SaveContinueShoppingBtn">
+        <value xml:lang="en">Save and Continue Checkout</value>
+        <category>CART</category>
+        <description>SaveContinueShoppingBtn</description>
+    </property>
+    <property key="CartItemGiftMessageLinkLabel">
+        <value xml:lang="en">Add a Gift Message</value>
+        <category>CART</category>
+        <description>CartItemGiftMessageLinkLabel</description>
+    </property>
+    <property key="QuantityOrderedLabel">
+        <value xml:lang="en">Quantity Ordered</value>
+        <category>CART</category>
+        <description>QuantityOrderedLabel</description>
+    </property>
+Date: 06/19/2013
+Issue #: 30195
+Description: Re-Order items from historical purchases
+By: PA
+Note:
+    <property key="OrderNoOrderFoundInfo">
+        <value xml:lang="en">There are no orders on file.</value>
+        <category>ORDER_STATUS</category>
+        <description>OrderNoOrderFoundInfo</description>
+    </property>
+    <property key="ProductNoLongerAvailableInfo">
+        <value xml:lang="en">No Longer Available</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ProductNoLongerAvailableInfo</description>
+    </property> 
+Date: 06/26/2013
+Issue #: 30195
+Description: Re-Order items from historical purchases
+By: PA
+Note:
+    <property key="ReOrderBtn">
+        <value xml:lang="en">Re-Order</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>ReOrderBtn</description>
+    </property>
+    <property key="FilterByOrderCaption">
+        <value xml:lang="en">Filter by Order:</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>FilterByOrderCaption</description>
+    </property>
+    <property key="OrderPlacedOnDateLabel">
+        <value xml:lang="en">${orderId} placed on ${orderDate}</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>OrderPlacedOnDateLabel</description>
+    </property>
+    <property key="AllOrdersLabel">
+        <value xml:lang="en">All Orders</value>
+        <category>RE_ORDER_ITEM</category>
+        <description>AllOrdersLabel</description>
+    </property>   
+//Remove
+
+
+    
+//Edit
+Date: 05/10/2013
+Issue #: 29845
+Description: Labels and Captions replace reference to ONE w XXX
+By: RB
+Note:
+	<property key="PassOneNumInstructionsInfo">
+        <value xml:lang="en">at least XXX number, </value>
+        <category>MESSAGE_INFO</category>
+        <description>PassOneNumInstructionsInfo</description>
+    </property>
+    <property key="PassOneUpperCaseInstructionsInfo">
+        <value xml:lang="en">at least XXX uppercase characters.</value>
+        <category>MESSAGE_INFO</category>
+        <description>PassOneUpperCaseInstructionsInfo</description>
+    </property>
+    <property key="PasswordInstructionsInfo">
+        <value xml:lang="en">min XXX characters, at least XXX number.</value>
+        <category>MESSAGE_INFO</category>
+        <description>PasswordInstructionsInfo</description>
+    </property>
+    <property key="PasswordHasNoNumberError">
+        <value xml:lang="en">Password must be contain at least XXX number.</value>
+        <category>MESSAGE_ERROR</category>
+        <description>PasswordHasNoNumberError</description>
+    </property>
+
+
+//********************************************************************************************
+//eCommerce Id Map UPDATES
+//FILE: eCommerceIdMap.xml
+//********************************************************************************************
+
+//Add
+
+Date: 06/14/2013
+Issue #: 30335
+Description: Show Cart: Gift Messages
+By: RB
+Note:
+	<property key="PAGE_TOP_SPOT_GIFT_MESSAGE">
+        <value xml:lang="en">PTS_GIFT_MESSAGE</value>
+    </property>
+    <property key="PAGE_END_SPOT_GIFT_MESSAGE">
+        <value xml:lang="en">PES_GIFT_MESSAGE</value>
+    </property>
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//DIV SEQUENCE UPDATES
+//FILE: OSafeUiSequence.xml
+//********************************************************************************************
+//Add
+Date: 05/09/2013
+Issue #: 29644 
+Description: Custom Attributes: prompt on eComm registration
+By: PA
+Note:
+    <property key="customAttributes">
+        <value xml:lang="en">0</value>
+        <screen>PersonalInfo</screen>
+        <div>personalInfoCustomAttributes</div>
+        <description>Custom Attributes, if defined</description>
+    </property>
+     
+Date: 05/28/2013
+Issue #: 29676
+Description: Cart/Order items - DIV sequence
+By: RB
+Note:
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>ShowCart</screen>
+        <div>showCartOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummary</screen>
+        <div>orderSummaryOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirm</screen>
+        <div>orderConfirmOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="orderItemsHeader">
+        <value xml:lang="en">0</value>
+        <screen>WishList</screen>
+        <div>showWishlistOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemShowCartButton">
+        <value xml:lang="en">0</value>
+        <screen>LightBox</screen>
+        <div>lightBoxShowCartButton</div>
+        <description>The button will direct to the 'full' version of the shopping cart.</description>
+    </property>
+    <property key="itemDescription">
+        <value xml:lang="en">0</value>
+        <screen>LightBoxOrderItems</screen>
+        <div>lightBoxItemDescription</div>
+        <description>The item Description</description>
+    </property>
+    
+    <property key="footprint">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutFootprint</div>
+        <description>The footprint, or temperature bar, that informs the customer which step of a check-out they are currently on</description>
+    </property>
+    
+Date: 06/04/2013
+Issue #: 30163
+Description: DIV Sequencing: added "qty" to PDP
+By: RB
+Note:
+	<property key="qty">
+        <value xml:lang="en">0</value>
+        <screen>PDP</screen>
+        <div>pdpQty</div>
+        <description>The Qty field that the customer uses for purchasing.</description>
+    </property>
+    <property key="qty">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabs</screen>
+        <group>0</group>
+        <div>pdpTabsQty</div>
+        <description>The Qty field that the customer uses for purchasing.</description>
+    </property>
+    <property key="qty">
+        <value xml:lang="en">0</value>
+        <screen>Quicklook</screen>
+        <div>quicklookQty</div>
+        <description>The Qty field that the customer uses for purchasing.</description>
+    </property>
+    
+Date: 06/06/2013
+Issue #: 30172
+Description: List of Reviews: now part of DIV Sequencing
+By: RB
+Note:    
+	<!-- *************************************** -->
+	<!-- PDPReviewList -->
+	<!-- *************************************** -->
+    <property key="rateSortOptions">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewList</screen>
+        <div>pdpReviewListSortOptions</div>
+        <description>The sorting options of the ratings list</description>
+    </property>
+    <property key="rateReviewListItems">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewList</screen>
+        <div>pdpReviewListItems</div>
+        <description>The ratings list of items</description>
+    </property>
+    <property key="ratePagingOptions">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewList</screen>
+        <div>pdpReviewListPagingOptions</div>
+        <description>The paging options of the ratings list</description>
+    </property>
+
+	<!-- *************************************** -->
+	<!-- PDPReviewListItems -->
+	<!-- *************************************** -->
+    <property key="rateReviewDate">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewDate</div>
+        <description>The Date review was entered</description>
+    </property>
+    <property key="rateOverallStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemOverallStars</div>
+        <description>The overall rating star selection</description>
+    </property>
+    <property key="rateQualityStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemQualityStars</div>
+        <description>The quality rating star selection</description>
+    </property>
+    <property key="rateEffectivenessStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemEffectivenessStars</div>
+        <description>The effectiveness rating star selection</description>
+    </property>
+    <property key="rateSatisfactionStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemSatisfactionStars</div>
+        <description>The satisfaction rating star selection</description>
+    </property>
+    <property key="reviewerNickname">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewerNickname</div>
+        <description>The Nickname of the reviewer</description>
+    </property>
+    <property key="reviewerTitle">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewerTitle</div>
+        <description>The Title of the reviewer</description>
+    </property>
+    <property key="reviewerText">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewerText</div>
+        <description>The Text of the reviewer</description>
+    </property>
+    <property key="reviewerLocation">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewerLocation</div>
+        <description>Location of the reviewer</description>
+    </property>
+    <property key="reviewerAge">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewerAge</div>
+        <description>Age of the reviewer</description>
+    </property>
+    <property key="reviewerGender">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewerGender</div>
+        <description>Gender of the reviewer</description>
+    </property>
+    <property key="rateReviewResponse">
+        <value xml:lang="en">0</value>
+        <screen>PDPReviewListItems</screen>
+        <div>pdpReviewListItemReviewResponse</div>
+        <description>Company response to customer review</description>
+    </property>
+
+	<!-- *************************************** -->
+	<!-- PDPTabsReviewList -->
+	<!-- *************************************** -->
+    <property key="rateSortOptions">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewList</screen>
+        <div>pdpTabsReviewListSortOptions</div>
+        <description>The sorting options of the ratings list</description>
+    </property>
+    <property key="rateReviewListItems">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewList</screen>
+        <div>pdpTabsReviewListItems</div>
+        <description>The ratings list of items</description>
+    </property>
+    <property key="ratePagingOptions">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewList</screen>
+        <div>pdpTabsReviewListPagingOptions</div>
+        <description>The paging options of the ratings list</description>
+    </property>
+
+	<!-- *************************************** -->
+	<!-- PDPTabsReviewListItems -->
+	<!-- *************************************** -->
+    <property key="rateReviewDate">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewDate</div>
+        <description>The Date review was entered</description>
+    </property>
+    <property key="rateOverallStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemOverallStars</div>
+        <description>The overall rating star selection</description>
+    </property>
+    <property key="rateQualityStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemQualityStars</div>
+        <description>The quality rating star selection</description>
+    </property>
+    <property key="rateEffectivenessStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemEffectivenessStars</div>
+        <description>The effectiveness rating star selection</description>
+    </property>
+    <property key="rateSatisfactionStars">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemSatisfactionStars</div>
+        <description>The satisfaction rating star selection</description>
+    </property>
+    <property key="reviewerNickname">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewerNickname</div>
+        <description>The Nickname of the reviewer</description>
+    </property>
+    <property key="reviewerTitle">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewerTitle</div>
+        <description>The Title of the reviewer</description>
+    </property>
+    <property key="reviewerText">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewerText</div>
+        <description>The Text of the reviewer</description>
+    </property>
+    <property key="reviewerLocation">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewerLocation</div>
+        <description>Location of the reviewer</description>
+    </property>
+    <property key="reviewerAge">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewerAge</div>
+        <description>Age of the reviewer</description>
+    </property>
+    <property key="reviewerGender">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewerGender</div>
+        <description>Gender of the reviewer</description>
+    </property>
+    <property key="rateReviewResponse">
+        <value xml:lang="en">0</value>
+        <screen>PDPTabsReviewListItems</screen>
+        <div>pdpTabsReviewListItemReviewResponse</div>
+        <description>Company response to customer review</description>
+    </property>
+
+	<!-- *************************************** -->
+	<!-- QuicklookReviewList -->
+	<!-- *************************************** -->
+    <property key="rateSortOptions">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewList</screen>
+        <div>quicklookReviewListSortOptions</div>
+        <description>The sorting options of the ratings list</description>
+    </property>
+    <property key="rateReviewListItems">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewList</screen>
+        <div>quicklookReviewListItems</div>
+        <description>The ratings list of items</description>
+    </property>
+    <property key="ratePagingOptions">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewList</screen>
+        <div>quicklookReviewListPagingOptions</div>
+        <description>The paging options of the ratings list</description>
+    </property>
+
+	<!-- *************************************** -->
+	<!-- QuicklookReviewListItems -->
+	<!-- *************************************** -->
+    <property key="rateReviewDate">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewDate</div>
+        <description>The Date review was entered</description>
+    </property>
+    <property key="rateOverallStars">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemOverallStars</div>
+        <description>The overall rating star selection</description>
+    </property>
+    <property key="rateQualityStars">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemQualityStars</div>
+        <description>The quality rating star selection</description>
+    </property>
+    <property key="rateEffectivenessStars">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemEffectivenessStars</div>
+        <description>The effectiveness rating star selection</description>
+    </property>
+    <property key="rateSatisfactionStars">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemSatisfactionStars</div>
+        <description>The satisfaction rating star selection</description>
+    </property>
+    <property key="reviewerNickname">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewerNickname</div>
+        <description>The Nickname of the reviewer</description>
+    </property>
+    <property key="reviewerTitle">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewerTitle</div>
+        <description>The Title of the reviewer</description>
+    </property>
+    <property key="reviewerText">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewerText</div>
+        <description>The Text of the reviewer</description>
+    </property>
+    <property key="reviewerLocation">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewerLocation</div>
+        <description>Location of the reviewer</description>
+    </property>
+    <property key="reviewerAge">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewerAge</div>
+        <description>Age of the reviewer</description>
+    </property>
+    <property key="reviewerGender">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewerGender</div>
+        <description>Gender of the reviewer</description>
+    </property>
+    <property key="rateReviewResponse">
+        <value xml:lang="en">0</value>
+        <screen>QuicklookReviewListItems</screen>
+        <div>quicklookReviewListItemReviewResponse</div>
+        <description>Company response to customer review</description>
+    </property>
+
+Date: 06/13/2013
+Issue #: 30360
+Description: Export to PDF DIV sequence
+By: RB
+Note:
+    <property key="exportToPdfButton">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirm</screen>
+        <div>orderConfirmExportToPdfButton</div>
+        <description>The button that will  print order confirmation in PDF format.</description>
+    </property>
+    
+Date: 06/14/2013
+Issue #: 30335
+Description: Show Cart: Gift Messages
+By: RB
+Note:
+    <property key="itemGiftMessageLink">
+        <value xml:lang="en">0</value>
+        <screen>ShowCartOrderItems</screen>
+        <div>showCartItemGiftMessageLink</div>
+        <description>The link to "Add Gift message" page</description>
+    </property>
+
+Date: 06/17/2013
+Issue #: 30287
+Description: eComm: Check Out, added Shipping Instructions
+By: RL
+    <property key="shippingInstructions">
+        <value xml:lang="en">0</value>
+        <screen>ShippingOptions</screen>
+        <div>shippingOptionsShippingInstructions</div>
+        <description>Prompt for a freeform entry box of customer Delivery Instruction.</description>
+    </property>
+    <property key="shippingInstructions">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutShippingInstructions</div>
+        <description>Prompt for a freeform entry box of customer Delivery Instruction.</description>
+    </property>
+    <property key="shippingInstructions">
+        <value xml:lang="en">0</value>
+        <screen>ShowCartOrderItemsSummary</screen>
+        <div>showCartShippingInstructions</div>
+        <description>Delivery Instructions, if available</description>
+    </property>
+    <property key="shippingInstructions">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummaryOrderItemsSummary</screen>
+        <div>orderSummaryShippingInstructions</div>
+        <description>Delivery Instructions, if available</description>
+    </property>
+    <property key="shippingInstructions">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirmOrderItemsSummary</screen>
+        <div>orderConfirmShippingInstructions</div>
+        <description>Delivery Instructions, if available</description>
+    </property>
+Note:
+//Remove
+Date: 05/28/2013
+Issue #: 29676
+Description: Cart/Order items - DIV sequence
+By: RB
+Note:
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>ShowCart</screen>
+        <div>showCartOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderSummary</screen>
+        <div>orderSummaryOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>OrderConfirm</screen>
+        <div>orderConfirmOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>OnePageCheckout</screen>
+        <div>onePageCheckoutOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="itemHeader">
+        <value xml:lang="en">0</value>
+        <screen>WishList</screen>
+        <div>showWishlistOrderItemsHeader</div>
+        <description>The cart item headings</description>
+    </property>
+    <property key="showCartButton">
+        <value xml:lang="en">0</value>
+        <screen>LightBox</screen>
+        <div>lightBoxShowCartButton</div>
+        <description>The button will direct to the 'full' version of the shopping cart.</description>
+    </property>
+    
+Date: 06/03/2013
+Issue #: 29676
+Description: Cart/Order items - DIV sequence
+By: RB
+Note:
+	<property key="thankyou">
+        <value xml:lang="en">20</value>
+        <screen>OrderConfirm</screen>
+        <div>orderConfirmThankyou</div>
+        <description>Thankyou</description>
+    </property>
+
+
+//Edit
+Date: 06/28/2013
+Issue #: 30601
+Description: DIV itemDescription: just selected features
+By: RB
+Note: Updated descriptions
+	<property key="itemDescription">
+        <value xml:lang="en">30</value>
+        <screen>ShowCartOrderItems</screen>
+        <div>showCartItemDescription</div>
+        <description>The item Description (Selected Features)</description>
+    </property>
+    <property key="itemDescription">
+        <value xml:lang="en">30</value>
+        <screen>OrderSummaryOrderItems</screen>
+        <div>orderSummaryItemDescription</div>
+        <description>The item Description (Selected Features)</description>
+    </property>
+    <property key="itemDescription">
+        <value xml:lang="en">30</value>
+        <screen>OrderConfirmOrderItems</screen>
+        <div>orderConfirmItemDescription</div>
+        <description>The item Description (Selected Features)</description>
+    </property>
+    <property key="itemDescription">
+        <value xml:lang="en">0</value>
+        <screen>ShowWishlistOrderItems</screen>
+        <div>showWishlistItemDescription</div>
+        <description>The item Description (Selected Features)</description>
+    </property>
+    <property key="itemDescription">
+        <value xml:lang="en">0</value>
+        <screen>LightBoxOrderItems</screen>
+        <div>lightBoxItemDescription</div>
+        <description>The item Description (Selected Features)</description>
+    </property>
+
+
+//********************************************************************************************
+//CLIENT DEPLOYMENT UPDATES
+//FILE: client-deployment.properties
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+Date: 05/23/2013
+Issue #: 30063
+Description: Bf Admin Shipping Charges Customer method
+By: RB
+Note:
+	<CustomMethod customMethodId="BDART_CHECK_DELIVERY" customMethodTypeId="SHIP_CHARGE_AVAIL" customMethodName="blueDartCheckoutPincode" description="Service which determines if Blue Dart carrier can deliver to a customers pincode."/>
+
+//Add
+Date: 06/14/2013
+Issue #: 30324
+Description: Lookup Data: Gift Messages
+By: RL
+Note:
+    <Enumeration enumId="GM_MOTHERS_DAY" enumTypeId="GIFT_MESSAGE" description="Happy Mother’s Day." enumCode="GM_MOTHERS_DAY" sequenceId="01"/>
+    <Enumeration enumId="GM_SYMBOL" enumTypeId="GIFT_MESSAGE" description="A symbol of my love and appreciation for you." enumCode="GM_SYMBOL" sequenceId="02"/>
+    <Enumeration enumId="GM_MY_LOVE" enumTypeId="GIFT_MESSAGE" description="My love for you will last as long as this rose, forever." enumCode="GM_MY_LOVE" sequenceId="03"/>
+    <Enumeration enumId="GM_HATE_SS" enumTypeId="GIFT_MESSAGE" description="I Love You! But I Hate Steven Singer!" enumCode="GM_HATE_SS" sequenceId="04"/>
+    <Enumeration enumId="GM_FINALLY" enumTypeId="GIFT_MESSAGE" description="Finally, flowers that won’t end up in the trash in a week." enumCode="GM_FINALLY" sequenceId="05"/>
+    <Enumeration enumId="GM_HAPPY_ANNIV" enumTypeId="GIFT_MESSAGE" description="Happy Anniversary. Every year it gets better." enumCode="GM_HAPPY_ANNIV" sequenceId="06"/>
+    <Enumeration enumId="GM_NEXT_TIME" enumTypeId="GIFT_MESSAGE" description="Next time I am in big trouble, remember this note." enumCode="GM_NEXT_TIME" sequenceId="07"/>
+    <Enumeration enumId="GM_I_KNOW" enumTypeId="GIFT_MESSAGE" description="I know it’s not the ring, but you’ve gotta admit it is pretty sweet." enumCode="GM_I_KNOW" sequenceId="08"/>
+    <Enumeration enumId="GM_YES_ITS_REAL" enumTypeId="GIFT_MESSAGE" description="YES IT’S REAL!" enumCode="GM_YES_ITS_REAL" sequenceId="09"/>
+    <Enumeration enumId="GM_ONLY_THING" enumTypeId="GIFT_MESSAGE" description="The only thing that sparkles more are your eyes." enumCode="GM_ONLY_THING" sequenceId="10"/>
+    <Enumeration enumId="GM_PRINCESS" enumTypeId="GIFT_MESSAGE" description="For my princess." enumCode="GM_PRINCESS" sequenceId="11"/>
+    <Enumeration enumId="GM_TONIGHT" enumTypeId="GIFT_MESSAGE" description="Is tonight the night?" enumCode="GM_TONIGHT" sequenceId="12"/>
+    <Enumeration enumId="GM_NAUGHTY" enumTypeId="GIFT_MESSAGE" description="You sure have been naughty, here’s some coal!" enumCode="GM_NAUGHTY" sequenceId="13"/>
+    <Enumeration enumId="GM_PERFECT" enumTypeId="GIFT_MESSAGE" description="Perfect for someone soooo pretty." enumCode="GM_PERFECT" sequenceId="14"/>
+    <Enumeration enumId="GM_POINTS" enumTypeId="GIFT_MESSAGE" description="How many points can I score with this great gift?" enumCode="GM_POINTS" sequenceId="15"/>
+    <Enumeration enumId="GM_BEST_MOM" enumTypeId="GIFT_MESSAGE" description="To the best Mom in the world!" enumCode="GM_BEST_MOM" sequenceId="16"/>
+
+//Remove
+
+//********************************************************************************************
+//ECOMMERCE CONTENT SEED UPDATES
+//FILE: eCommerceContentSeedData.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE EMAIL DATA UPDATES
+//FILE: eCommerceContentEmailData.xml
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE CSS UPDATES
+//FILE: bigFishClientSkin.css
+//********************************************************************************************
+
+//Add
+
+***Added to Section 5.14 ***
+
+.personalInfoCustomAttributesSeq {
+
+}
+
+
+***Added to Section 8. ***
+
+.radioButtonGroup {
+
+}
+
+.radioButtonGroup span {  /* Overrides .radioOptionText */
+
+}
+
+.entry .checkboxOptionText {
+
+}
+
+.checkboxButtonGroup {
+
+}
+
+.checkboxButtonGroup span {  /* Overrides .checkboxOptionText */
+
+}
+
+*** Added to Section 11.8 ***
+
+
+.personalInfoCustomAttributes {
+
+}
+
+
+*** Added to Section 6.4 ***
+
+
+.pdpSelectableFeature 
+
+}
+
+.pdpSelectableFeature ul {
+    display: block; /* Default setting shows Lists / Swatches */
+}
+
+.pdpSelectableFeature select {
+    display: none; /* Default setting hides select boxes */
+}
+
+.pdpSelectableFeature .selectableFeatures {
+
+}
+
+.pdpSelectableFeature .selectableFeatures label {
+
+}
+
+
+*** Added to Section 5.20 ***
+
+.manufacturerProductListSeq {
+
+}
+
+*** Added to Section 6.5 ***
+
+.manufacturerProductList {
+
+}
+
+
+*** Added to Section 6.4 ***
+
+.pdpAddToCart.multiVariant {  /* used to offset multivariant carts with no label or qty. field */
+
+}
+
+*** Added to Section 5.1 ***
+
+.pdpQtySeq {
+
+}
+
+*** Added to Section 5.2 ***
+
+.pdpTabsQtySeq {
+
+}
+
+*** Added to Section 5.3 ***
+
+.quicklookQtySeq {
+
+}
+
+*** Added to Section 6.4 ***
+
+
+.pdpQty {
+
+}
+
+.pdpQty label {
+
+}
+
+.pdpQty input {
+
+}
+
+
+*** Added to Section 5.8 ***
+
+.cartHeadershowCartItemNameSeq {
+
+}
+
+.cartHeadershowCartItemDescriptionSeq {
+
+}
+
+.showCartItemNameSeq {
+
+}
+
+.showCartItemDescriptionSeq {
+
+}
+
+.cartHeaderorderSummaryItemNameSeq {
+
+}
+
+.cartHeaderorderSummaryItemDescriptionSeq {
+
+}
+
+.orderSummaryItemNameSeq {
+
+}
+
+.orderSummaryItemDescriptionSeq {
+
+}
+
+.cartHeaderorderConfirmItemNameSeq {
+
+}
+
+.cartHeaderorderConfirmItemDescriptionSeq {
+
+}
+
+.orderConfirmItemNameSeq {
+
+}
+
+.orderConfirmItemDescriptionSeq {
+
+}
+
+.cartHeaderlightBoxItemNameSeq {
+
+}
+
+.cartHeaderlightBoxItemDescriptionSeq {
+
+}
+
+.lightBoxItemNameSeq {
+
+}
+
+.lightBoxItemDescriptionSeq {
+
+}
+
+.cartHeadershowWishlistItemNameSeq {
+
+}
+
+.cartHeadershowWishlistItemDescriptionSeq {
+
+}
+
+.showWishlistItemNameSeq {
+
+}
+
+.showWishlistItemDescriptionSeq {
+  
+}
+
+*** Added to Section 6.2 ***
+
+.categoryListItem:hover { 
+
+}
+
+
+.clpProductListLink a {  
+
+}
+
+.clpProductListLink a:hover {   
+
+}
+
+.clpThumbImage a {   
+
+}
+
+.clpThumbImage a img {   
+
+}
+
+
+
+
+//Remove
+
+*** Removed From Section 6.4 ***
+
+
+.pdpAddToCart label {
+
+}
+
+.pdpAddToCart input {
+
+}
+
+*** Removed from  Section 5.8 ***
+
+
+.cartHeadershowCartItemNameSeg {
+
+}
+
+.cartHeadershowCartItemDescriptionSeg {
+
+}
+
+.showCartItemNameSeg {
+
+}
+
+.showCartItemDescriptionSeg {
+
+}
+
+.cartHeaderorderSummaryItemNameSeg {
+
+}
+
+.cartHeaderorderSummaryItemDescriptionSeg {
+
+}
+
+.orderSummaryItemNameSeg {
+
+}
+
+.orderSummaryItemDescriptionSeg {
+
+}
+
+.cartHeaderorderConfirmItemNameSeg {
+
+}
+
+.cartHeaderorderConfirmItemDescriptionSeg {
+
+}
+
+.orderConfirmItemNameSeg {
+
+}
+
+.orderConfirmItemDescriptionSeg {
+
+}
+
+.cartHeaderlightBoxItemNameSeg {
+
+}
+
+.lightBoxItemNameSeg {
+
+}
+
+.cartHeadershowWishlistItemNameSeg {
+
+}
+
+.cartHeadershowWishlistItemDescriptionSeg {
+
+}
+
+.showWishlistItemNameSeg {
+
+}
+
+.showWishlistItemDescriptionSeg {
+
+}
+
+
+*** Removed From Section 6.2 ***
+
+
+.clpThumbImage:hover { 
+
+}
+
+.clpThumbImage a.eCommerceThumbNailHolder { 
+
+}
+
+.clpProductListLink a.eCommerceProductLink {   
+
+}
+
+.clpProductListLink a.eCommerceProductLink:hover { 
+
+}
+
+.clpThumbImage a.eCommerceThumbNailHolder {
+
+}
+
+.clpThumbImage:hover { 
+
+}
+
+
+//********************************************************************************************
+//OSAFE PROPERTIES UPDATE
+//FILE: osafe.properties.template
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//********************************************************************************************
+//EECAS XML TEMPLATE UPDATE
+//FILE: eecas.xml.template
+//********************************************************************************************
+
+
+//********************************************************************************************
+//OFBIZ COMPONENT XML UPDATES
+//FILE: ofbiz-component.xml.template
+//********************************************************************************************
+
+//Add
+Date: 06/10/2013
+Issue #: 30251
+Description: Site Info - Seed Data
+By: RL
+Note: Add Site Info and Static Pages Seeded data with status as actived
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/seed/eCommerceContentSeedData.xml"/>
+
+Date: 06/13/2013
+Issue #: 30357
+Description: Shipment custom method: No data in dropdown
+By: RL
+Note: 
+    <!--  Shipment Custom Methods -->
+    <entity-resource type="data" reader-name="customshipmentmethods" loader="main" location="data/seed/eCommerceShipmentCustomMethods.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/seed/eCommerceShipmentCustomMethods.xml"/>
+
+    <!-- Payment Custom Methods -->
+    <entity-resource type="data" reader-name="custompaymentmethods" loader="main" location="data/seed/eCommercePaymentCustomMethods.xml"/>
+    <entity-resource type="data" reader-name="seed" loader="main" location="data/seed/eCommercePaymentCustomMethods.xml"/>
+
+Date: 06/19/2013
+Issue #: 30297
+Description: eComm: Check Out, added Gift Card Redemption
+By: RL
+Note: 
+    <!-- Gift Card Payment Setting -->
+    <entity-resource type="data" reader-name="gifcardpaymentsettings" loader="main" location="data/seed/ecommerceGiftCardPaymentSettings.xml"/>
+
+    <!-- Tender Card Custom Methods -->
+    <entity-resource type="data" reader-name="tendercardpaymentsettings" loader="main" location="data/seed/ecommerceTenderCardPaymentSettings.xml"/>
+    
+//Add
+
+//Remove
+
+//********************************************************************************************
+//CLIENT STORE SEED DATA XML UPDATES
+//FILE: clientStoreSeedData.xml.template
+//********************************************************************************************
+
+//Add
+Date: 06/17/2013
+Issue #: 30335
+Description: eComm: Show Cart: Gift Messages
+By: RB
+Note: 
+	<DataResource dataResourceId="PTS_GIFT_MESSAGE" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" localeString="en_US"/>
+	<DataResource dataResourceId="PES_GIFT_MESSAGE" dataResourceTypeId="ELECTRONIC_TEXT" dataTemplateTypeId="FTL" localeString="en_US"/>
+	<ElectronicText dataResourceId="PTS_GIFT_MESSAGE"/>
+	<ElectronicText dataResourceId="PES_GIFT_MESSAGE"/>
+	<Content contentId="PTS_GIFT_MESSAGE" contentTypeId="BF_PAGE_TOP_SPOT" dataResourceId="PTS_GIFT_MESSAGE"  description="Content Spot displayed on the TOP of the Gift-Message page" contentName="Gift Message" createdByUserLogin="admin" lastModifiedDate="2011-01-26 19:00:30.0" lastModifiedByUserLogin="admin" localeString="en_US"/>
+	<Content contentId="PES_GIFT_MESSAGE" contentTypeId="BF_PAGE_TOP_SPOT" dataResourceId="PES_GIFT_MESSAGE"  description="Content Spot displayed on the END of the Gift-Message page" contentName="Gift Message" createdByUserLogin="admin" lastModifiedDate="2011-01-26 19:00:30.0" lastModifiedByUserLogin="admin" localeString="en_US"/>
+	<ContentRole contentId="PTS_GIFT_MESSAGE" partyId="admin" roleTypeId="OWNER" fromDate="2011-01-26 19:00:30.0"/>
+	<ContentRole contentId="PES_GIFT_MESSAGE" partyId="admin" roleTypeId="OWNER" fromDate="2011-01-26 19:00:30.0"/>
+	<XContentXref productStoreId="@store.productStoreId@" bfContentId="PTS_GIFT_MESSAGE" contentId="PTS_GIFT_MESSAGE" contentTypeId="BF_PAGE_TOP_SPOT"/>
+	<XContentXref productStoreId="@store.productStoreId@" bfContentId="PES_GIFT_MESSAGE" contentId="PES_GIFT_MESSAGE" contentTypeId="BF_PAGE_TOP_SPOT"/>
+
+Date: 06/18/2013
+Issue #: 30338
+Description: Admin Catalog: new attribute CHECKOUT_GIFT_MESSAGE
+By: RL
+Note:
+<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_GIFT_MESSAGE" parmValue="FALSE" description="TRUE or FALSE flag value to indicate if Gift Messages are to be offered in the My Cart page. This acts as the default, can be overridden at the Product level." parmCategory="CHECKOUT"/>
+
+Date: 06/19/2013
+Issue #: 30022
+Description: Ecommerce PDP: new attribute PDP_QTY_DEFAULT
+By: YC
+Note:
+<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="PDP_QTY_DEFAULT" parmValue="1" description="Pre-Populate the qty field on the PDP(if numeric)." parmCategory="PDP"/>
+
+//Remove
+
+Date: 06/21/2013
+Issue #: 30455
+Description: System Parameter: REVIEW_SHOW_ON_PLP
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="REVIEW_SHOW_ON_PLP" description="Display Customer Ratings on the PLP page true or false." parmCategory="REVIEW"/>
+
+Date: 06/27/2013
+Issue #: 30582
+Description: Remove System Parameters
+By: RB
+Note:
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="PDP_WISHLIST_ACTIVE_FLAG" parmValue="FALSE" description="Determines if the ADD TO WISHLIST functionality is activated" parmCategory="PDP"/>
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CLP_HIDE_SUB_CATEGORIES" parmValue="FALSE" description="On the CLP (Category Listing Page) a value of TRUE will hide all standard sub-categories on the assumption that Content Spots will be displayed in order to manage the customer experience on every CLP." parmCategory="CLP"/>
+
+Date: 07/03/2013
+Issue #: 30636
+Description: System Parameter: CHECKOUT_DELIVERY
+By: RB
+Note: This parameter was added to seed, but was not implemented. 
+	<XProductStoreParm productStoreId="@store.productStoreId@" parmKey="CHECKOUT_DELIVERY" parmValue="TRUE" description="Defines whether a customer is given a delivery option (with associated shipping charges)" parmCategory="CHECKOUT"/>  
+	
+//********************************************************************************************
+//CACHE PROPERTIES
+//FILE: cache.properties
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//JS LIBRARIES
+//DIRECTORY: osafe-theme/js/lib
+//********************************************************************************************
+
+//Add
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//VISUAL THEME RESOURCE
+//FILE: OsafeThemeData.xml.template
+//********************************************************************************************
+
+//Add
+
+
+//Remove
+
+//Edit
+
+//********************************************************************************************
+//ECOMMERCE SEED UPDATES
+//FILE: eCommerceSeedData.xml
+//********************************************************************************************
+
+//Add
+
+    
+
+//comment out all services   
+
+

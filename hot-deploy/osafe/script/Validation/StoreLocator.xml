@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="http://www.ofbiz.org/dtds/simple-methods.xsd">
+
+    <simple-method method-name="validateAddress" short-description="get latitude and longitude from address" login-required="false">
+        <call-class-method class-name="org.ofbiz.product.store.ProductStoreWorker" method-name="getProductStoreId" ret-field="productStoreId">
+            <field field="request" type="javax.servlet.ServletRequest"/>
+        </call-class-method>
+        <if-not-empty field="productStoreId">
+        	<set field="parameters.productStoreId" from-field="productStoreId"/>
+        </if-not-empty>
+        <set field="showMap" value="N"/>
+        <set-service-fields service-name="getShowMapInfoMap" map="parameters" to-map="getShowMapInfoMapCtx"/>
+        <call-service service-name="getShowMapInfoMap" in-map-name="getShowMapInfoMapCtx">
+            <result-to-field result-name="showMap" field="showMap"/>
+            <result-to-field result-name="latitude" field="latitude"/>
+            <result-to-field result-name="longitude" field="longitude"/>
+            <result-to-field result-name="searchRadius" field="searchRadius"/>
+			<result-to-field result-name="uom" field="uom"/>
+        </call-service>
+        <if-compare field="showMap" operator="equals" value="Y">
+        	<field-to-request field="latitude"/>
+            <field-to-request field="longitude"/>
+            <field-to-request field="showMap"/>
+            <else>
+            	<if-not-empty field="parameters.notFoundAddress">
+	            	<set field="getShowMapNotFoundInfoMapCtx.productStoreId" from-field="productStoreId"/>
+	            	<set field="getShowMapNotFoundInfoMapCtx.address" from-field="parameters.notFoundAddress"/>
+	            	<set field="getShowMapNotFoundInfoMapCtx.latitude" from-field="parameters.notFoundLatitude"/>
+	            	<set field="getShowMapNotFoundInfoMapCtx.longitude" from-field="parameters.notFoundLongitude"/>
+			        <call-service service-name="getShowMapInfoMap" in-map-name="getShowMapNotFoundInfoMapCtx">
+			            <result-to-field result-name="showMap" field="showMap"/>
+			            <result-to-field result-name="latitude" field="latitude"/>
+			            <result-to-field result-name="longitude" field="longitude"/>
+			            <result-to-field result-name="searchRadius" field="searchRadius"/>
+			            <result-to-field result-name="uom" field="uom"/>
+			        </call-service>
+			        <if-compare field="showMap" operator="equals" value="Y">
+			        	<set field="isStoreNotFoundAddress" value="Y"/>
+			        	<field-to-request field="latitude"/>
+			            <field-to-request field="longitude"/>
+			            <field-to-request field="showMap"/>
+			            <field-to-request field="isStoreNotFoundAddress"/> 
+			            
+			            <set field="argListNames[]" from-field="searchRadius"/>
+	                    <set field="argListNames[]" from-field="uom"/>
+	                    <set field="notFoundAddress" from-field="parameters.notFoundAddress"/>
+	                    <set field="argListNames[]" from-field="notFoundAddress"/>
+			            <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="NotFoundAddressUsedError" arg-list-name="argListNames"/>
+	                    <string-to-list string="${tempErrorMessage}" list="error_list"/>
+			            <else>
+			            	<set field="argListNames[]" from-field="searchRadius"/>
+	                        <set field="argListNames[]" from-field="uom"/>
+	                        <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="NoStoreFoundError" arg-list-name="argListNames"/>
+	                        <string-to-list string="${tempErrorMessage}" list="error_list"/>
+			            </else>
+			        </if-compare>
+			        <else>
+			        	<set field="argListNames[]" from-field="searchRadius"/>
+                        <set field="argListNames[]" from-field="uom"/>
+                        <property-to-field field="tempErrorMessage" resource="OSafeUiLabels" property="NoStoreFoundError" arg-list-name="argListNames"/>
+                        <string-to-list string="${tempErrorMessage}" list="error_list"/>
+			        </else>
+		        </if-not-empty>
+            </else>
+        </if-compare>
+        <check-errors/>
+    </simple-method>
+    
+    
+    
+</simple-methods>

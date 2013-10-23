@@ -1,0 +1,476 @@
+<script type="text/javascript">
+<#assign allowCOD = Static["com.osafe.util.Util"].isProductStoreParmTrue(request,"CHECKOUT_ALLOW_COD")/>
+    function submitCheckoutForm(form, mode, value) 
+    {
+        if (mode == "DN") {
+            // done action; checkout
+            form.action="<@ofbizUrl>${doneAction!""}</@ofbizUrl>";
+            form.submit();
+        } else if (mode == "NA") {
+            // new address
+            form.action="<@ofbizUrl>${addAddressAction!""}?preContactMechTypeId=POSTAL_ADDRESS&contactMechPurposeTypeId="+value+"&DONE_PAGE=${donePage!""}</@ofbizUrl>";
+            form.submit();
+        } else if (mode == "BK") {
+            // Previous Page
+            form.action="<@ofbizUrl>${backAction!""}?action=previous</@ofbizUrl>";
+            form.submit();
+        } else if (mode == "UC") {
+            // update cart action
+            if (updateCart()) {
+                form.action="<@ofbizUrl>${updateCartAction!""}</@ofbizUrl>";
+                form.submit();
+            }
+        }  else if (mode == "PA") {
+            // paypal action
+            document.getElementById("js_paymentMethodTypeId").value = value;
+            form.action="<@ofbizUrl>${payPalAction!""}</@ofbizUrl>";
+            form.submit();
+        } else if (mode == "SO") {
+            // submit order
+            document.getElementById("js_submitOrderBtn").value = "${uiLabelMap.SubmittingOrderBtn}";
+            document.getElementById("js_submitOrderBtn").disabled=true;
+            form.action="<@ofbizUrl>${submitOrderAction!""}</@ofbizUrl>";
+            form.submit();
+        } else if (mode == "EB") {
+            // EBS action
+            document.getElementById("js_paymentMethodTypeId").value = value;
+            form.action="<@ofbizUrl>${ebsAction!""}</@ofbizUrl>";
+            form.submit();
+        } else if (mode == "UWL") {
+            // update wish list action
+            if (updateCart()) {
+                form.action="<@ofbizUrl>${updateWishListAction!""}</@ofbizUrl>";
+                form.submit();
+            }
+        } else if (mode == "ACW") {
+            // add to cart from wish list action
+            if (updateCart()) {
+                document.getElementById("js_add_item_id").value = value;
+                form.action="<@ofbizUrl>${addToCartFromWishListAction!""}</@ofbizUrl>";
+                form.submit();
+            }
+        }  else if (mode == "SP") {
+            // store pick up action
+            document.getElementById("js_storeId").value = value;
+            <#if formName?has_content>
+                document.${formName!}.action="<@ofbizUrl>${storePickupAction!""}</@ofbizUrl>";
+                document.${formName!}.submit();
+            </#if>
+        } else if (mode == "PNZ") {
+            // PayNetz action
+            document.getElementById("js_paymentMethodTypeId").value = value;
+            form.action="<@ofbizUrl>${payNetzAction!""}</@ofbizUrl>";
+            form.submit();
+        } 
+    }
+    function updateCart() 
+    {
+      <#if shoppingCart?has_content>
+        <#assign shoppingCartItemSize = shoppingCart.items().size()! />
+      </#if>
+      var cartItemsNo = ${shoppingCartItemSize!wishListSize!"0"};
+      <#assign PDP_QTY_MIN = Static["com.osafe.util.Util"].getProductStoreParm(request,"PDP_QTY_MIN")!"1"/>
+      <#assign PDP_QTY_MAX = Static["com.osafe.util.Util"].getProductStoreParm(request,"PDP_QTY_MAX")!"99"/>
+      var lowerLimit = ${PDP_QTY_MIN!"1"};
+      var upperLimit = ${PDP_QTY_MAX!"99"};
+      var zeroQty = false;
+      
+      for (var i=0;i<cartItemsNo;i++)
+      {
+          var qtyInCartAttrName = jQuery('#js_qtyInCart_'+i).attr("name");
+          var quantity = Number(0);
+          jQuery('.'+qtyInCartAttrName).each(function () 
+    	  {
+    	      quantity = quantity + Number(jQuery(this).val());
+    	  });
+
+          //var quantity = jQuery('#update_'+i).val();
+          if(quantity != 0) 
+          {
+	          if(quantity < lowerLimit)
+	          {
+	              alert("${StringUtil.wrapString(StringUtil.replaceString(uiLabelMap.PDPMinQtyError,'\"','\\"'))}");
+	              return false;
+	          }
+	          if(upperLimit!= 0 && quantity > upperLimit)
+	          {
+	              alert("${StringUtil.wrapString(StringUtil.replaceString(uiLabelMap.PDPMaxQtyError,'\"','\\"'))}");
+	              return false;
+	          }
+	          if(!isWhole(quantity))
+	          {
+	              alert("${StringUtil.wrapString(StringUtil.replaceString(uiLabelMap.PDPQtyDecimalNumberError,'\"','\\"'))}");
+	              return false;
+	          }
+          } 
+          {
+              zeroQty = true;
+          }
+      }
+      if(zeroQty == true)
+      {
+          window.location='<@ofbizUrl>deleteFromCart</@ofbizUrl>';
+      }
+      return true;
+    }
+<#if formName?has_content>
+    function addManualPromoCode()
+    {
+        if (jQuery('#js_manualOfferCode').length && jQuery('#js_manualOfferCode').val() != null)
+        {
+          promo = jQuery('#js_manualOfferCode').val().toUpperCase();
+          promoCodeWithoutSpace = promo.replace(/^\s+|\s+$/g, "");
+        }
+        var cform = document.${formName!};
+        cform.action="<@ofbizUrl>${addPromoCodeRequest!}?productPromoCodeId="+promoCodeWithoutSpace+"</@ofbizUrl>";
+        cform.submit();
+    }
+
+    function removePromoCode(promoCode)
+    {
+        if (promoCode != null)
+        {
+          var cform = document.${formName!};
+          cform.action="<@ofbizUrl>${removePromoCodeRequest!}?productPromoCodeId="+promoCode+"</@ofbizUrl>";
+          cform.submit();
+        }
+    }
+    function addGiftCardNumber() 
+    {
+        if (jQuery('#js_giftCardNumber').length && jQuery('#js_giftCardNumber').val() != null)
+        {
+          giftCardNumber = jQuery('#js_giftCardNumber').val();
+          giftCardNumberWithoutSpace = giftCardNumber.replace(/^\s+|\s+$/g, "");
+        }
+        var cform = document.${formName!};
+        cform.action="<@ofbizUrl>${addGiftCardNumberRequest!}?gcNumber="+giftCardNumberWithoutSpace+"</@ofbizUrl>";
+        cform.submit();
+    }
+
+    function removeGiftCardNumber(gcPaymentMethodId)
+    {
+        if (gcPaymentMethodId != null)
+        {
+          var cform = document.${formName!};
+          cform.action="<@ofbizUrl>${removeGiftCardNumberRequest!}?gcPaymentMethodId="+gcPaymentMethodId+"</@ofbizUrl>";
+          cform.submit();
+        }
+    }
+    
+    function addLoyaltyPoints()
+    {
+    	jQuery('#js_applyLoyaltyCard').bind('click', false);
+        var cform = document.${formName!};
+        cform.action="<@ofbizUrl>${addLoyaltyPointsRequest!}</@ofbizUrl>";
+        cform.submit();
+    }
+    function removeLoyaltyPoints()
+    {
+    	jQuery('#js_removeLoyaltyCard').bind('click', false);
+	    var cform = document.${formName!};
+	    cform.action="<@ofbizUrl>${removeLoyaltyPointsRequest!}</@ofbizUrl>";
+	    cform.submit();
+    }
+    function updateLoyaltyPoints(indexOfAdj)
+    {
+    	jQuery('#js_updateLoyaltyPointsAmount').bind('click', false);
+	    var cform = document.${formName!};
+	    cform.action="<@ofbizUrl>${updateLoyaltyPointsRequest!}</@ofbizUrl>";
+	    cform.submit();
+    }
+</#if>
+   jQuery(document).ready(function () 
+   {
+        // update shipping options base on shipping postal code
+        if (jQuery('#js_SHIPPING_POSTAL_CODE').length) 
+        {
+          updateShippingOption('Y');
+          calcTax();
+          jQuery('#js_SHIPPING_POSTAL_CODE').change(function () 
+          {
+            updateShippingOption('N');
+            calcTax();
+          });
+          jQuery('#js_SHIPPING_STATE').change(function () 
+          {
+            updateShippingOption('N');
+            calcTax();
+          });
+          jQuery('#js_SHIPPING_ADDRESS1').change(function () 
+          {
+            updateShippingOption('N');
+          });
+          jQuery('#js_SHIPPING_ADDRESS2').change(function () 
+          {
+            updateShippingOption('N');
+          });
+          jQuery('#js_SHIPPING_ADDRESS3').change(function () 
+          {
+            updateShippingOption('N');
+          });
+          jQuery('#js_SHIPPING_COUNTRY').change(function () 
+          {
+            updateShippingOption('N');
+          });
+        }
+
+        // make first shipping option as selected
+        if (jQuery('input.js_shipping_method:checked').val() == undefined) 
+        {
+          jQuery('input.js_shipping_method:first').attr("checked", true);
+        }
+
+        // activate pick up store event listener
+        pickupStoreEventListener();
+    });
+    
+    //display payment options based on if a user selects pay now or pay in store
+    jQuery(document).ready(function () 
+    {
+    	if (jQuery('#js_payInStoreY').is(':checked')) 
+    	{	
+		    jQuery('#js_checkoutPaymentOptions').hide();     
+		}
+    	jQuery('#js_payInStoreN').click(function()
+    	{
+		    jQuery('#js_checkoutPaymentOptions').show();
+		});
+		
+		jQuery('#js_payInStoreY').click(function()
+		{
+		    jQuery('#js_checkoutPaymentOptions').hide();
+		});
+    });
+    
+    
+    function pickupStoreEventListener() 
+    {
+        //If shipping method is select, remove related error message if one is displayed
+        jQuery('.js_shippingMethodsContainer').click(function() 
+        {
+			if(jQuery(this).find('input[type="radio"]').is(':checked'))
+            {
+	            var selected = jQuery(".js_shipping_method:checked");
+	            if(jQuery(selected).hasClass('js_shippingMethodRadioButton'))
+	            {
+	            	//now check if there is an error message in this Div.
+	            	var shipMethErrorMessage = jQuery(this).closest('#js_deliveryOptionBox').next('#js_deliveryOptionBoxError');
+	            	//check if error is displayed
+	            	if(jQuery(shipMethErrorMessage).length)
+	            	{
+	            		if(jQuery.trim(jQuery(shipMethErrorMessage).html()).length)
+	            		{
+	            			jQuery(shipMethErrorMessage).children().hide();
+	            		}
+	            	}
+            	}
+            }
+		});
+		
+        //cancel store select and close dialouge box
+        jQuery('.js_cancelPickupStore').click(function(event) 
+        {
+            event.preventDefault();
+            jQuery(displayDialogId).dialog('close');
+        });
+        
+        //submit store locator search form
+        jQuery('.storePickup_Form').submit(function(event) 
+        {
+            event.preventDefault();
+            jQuery.get(jQuery(this).attr('action')+'?'+jQuery(this).serialize(), function(data) 
+            {
+                jQuery('#eCommerceStoreLocatorContainer').replaceWith(data);
+                pickupStoreEventListener();
+                if (jQuery('#isGoogleApi').val() != "Y") 
+                {
+                    loadScript();
+                } 
+                else
+                {
+                    hideDirection();
+                }
+            });
+        });
+    }
+
+    // update shipping option base on postal code 
+    function updateShippingOption(isOnLoad) 
+    {
+        if (jQuery('#js_deliveryOptionBox').length) 
+        {
+            if (jQuery('#js_SHIPPING_POSTAL_CODE').length) 
+            {
+                // get shipping address values
+                var address1 = (jQuery('#js_SHIPPING_ADDRESS1').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_ADDRESS1').val());
+                var address2 = (jQuery('#js_SHIPPING_ADDRESS2').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_ADDRESS2').val());
+                var address3 = (jQuery('#js_SHIPPING_ADDRESS3').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_ADDRESS3').val());
+                var city = (jQuery('#js_SHIPPING_CITY').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_CITY').val());
+                var postalCode = (jQuery('#js_SHIPPING_POSTAL_CODE').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_POSTAL_CODE').val());
+                var stateProvinceGeoId = (jQuery('#js_SHIPPING_STATE').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_STATE').val());
+                var countryGeoId = (jQuery('#js_SHIPPING_COUNTRY').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_COUNTRY').val());
+        
+                // make ajax request parameters
+                var reqParam = '?address1='+address1+'&address2='+address2+'&address3='+address3+'&city='+city;
+                reqParam = reqParam+'&postalCode='+postalCode+'&stateProvinceGeoId='+stateProvinceGeoId+'&countryGeoId='+countryGeoId;
+                
+                jQuery.get('<@ofbizUrl>${updateShippingOptionRequest?if_exists}'+reqParam+'&callback=Y&rnd='+String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(data) {
+                    jQuery('#js_deliveryOptionBox').replaceWith(data);
+                    //if a shipping option is already selected, then set this shipping option to the cart
+                    if(jQuery('input.js_shipping_method:checked').val() != null) 
+                    {
+                        setShippingMethod(jQuery('input.js_shipping_method:checked').val(), isOnLoad);
+                    } 
+                    //if there are shipping options available but none are selected, then select the first one and set to cart
+                    else 
+                    {
+                        jQuery('input.js_shipping_method:first').attr("checked", true);
+                        setShippingMethod(jQuery('input.js_shipping_method').val(), isOnLoad);
+                    }
+                });
+            } else {
+                location.reload();
+                jQuery('#isGoogleApi').val("");
+            }
+        }
+    }
+    // calculate tax 
+    function calcTax() {
+        // get shipping address values
+        var address1 = (jQuery('#js_SHIPPING_ADDRESS1').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_ADDRESS1').val());
+        var address2 = (jQuery('#js_SHIPPING_ADDRESS2').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_ADDRESS2').val());
+        var address3 = (jQuery('#js_SHIPPING_ADDRESS3').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_ADDRESS3').val());
+        var city = (jQuery('#js_SHIPPING_CITY').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_CITY').val());
+        var postalCode = (jQuery('#js_SHIPPING_POSTAL_CODE').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_POSTAL_CODE').val());
+        var stateProvinceGeoId = (jQuery('#js_SHIPPING_STATE').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_STATE').val());
+        var countryGeoId = (jQuery('#js_SHIPPING_COUNTRY').val()== null)?'':encodeURIComponent(jQuery('#js_SHIPPING_COUNTRY').val());
+
+        // make ajax request parameters
+        var reqParam = '?address1='+address1+'&address2='+address2+'&address3='+address3+'&city='+city;
+        reqParam = reqParam+'&postalCode='+postalCode+'&stateProvinceGeoId='+stateProvinceGeoId+'&countryGeoId='+countryGeoId;
+
+        //call ajax and update order item section
+        if (jQuery('#js_SHIPPING_POSTAL_CODE').length) 
+        {
+            if (jQuery('.js_onePageCheckoutOrderItemsSummary').length) 
+            {
+                jQuery.get('<@ofbizUrl>${calcTaxRequest?if_exists}'+reqParam+'&rnd=' + String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(taxdata)
+	            {
+		             jQuery('.js_onePageCheckoutOrderItemsSummary').replaceWith(taxdata);
+		        });
+            }
+        }
+    }
+
+    // update the order item section
+    function setShippingMethod(selectedShippingOption, isOnLoad) 
+    {
+        if (jQuery('.js_onePageCheckoutOrderItemsSummary').length) 
+        {
+            //if store pick up show/hide COD payment option
+            if (selectedShippingOption == "NO_SHIPPING@_NA_")
+            {
+                <#assign storeCC = Static["com.osafe.util.Util"].isProductStoreParmTrue(request,"CHECKOUT_STORE_CC")/>
+                <#assign storeCCReq = Static["com.osafe.util.Util"].isProductStoreParmTrue(request,"CHECKOUT_STORE_CC_REQ")/>
+                if(${storeCC.toString()} && ${storeCCReq.toString()})
+                {
+                    jQuery('.js_paymentOptions').hide();
+                    jQuery('#js_checkoutPaymentOptions').show(); 
+                }
+                else if (${storeCC.toString()} && !${storeCCReq.toString()})
+                {
+                    jQuery('.js_paymentOptions').show();
+                    jQuery('#js_checkoutPaymentOptions').show(); 
+                }
+                else if (!${storeCC.toString()})
+                {
+                    jQuery('.js_paymentOptions').hide();
+                    jQuery('#js_checkoutPaymentOptions').hide(); 
+                }
+                if(${allowCOD.toString()})
+                {
+                    jQuery('.js_codOptions').hide();
+                }
+                if (jQuery('#js_payInStoreY').is(':checked')) 
+                {   
+                    jQuery('#js_checkoutPaymentOptions').hide();     
+                }
+            }
+            else
+            {
+                if(${allowCOD.toString()})
+                {
+                    jQuery('.js_codOptions').show();
+                }
+                jQuery('.js_paymentOptions').hide();
+                jQuery('#js_checkoutPaymentOptions').show();
+            }
+            
+            jQuery.ajaxSetup({async:false});
+            jQuery.get('<@ofbizUrl>${setShippingOptionRequest?if_exists}?shipMethod='+selectedShippingOption+'&rnd=' + String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(data)
+            {
+	             jQuery('.js_onePageCheckoutOrderItemsSummary').replaceWith(data);
+	             
+	             //if error is displayed and then shipping option gets selected when new shipping option is selected
+	            var selected = jQuery(".js_shipping_method:checked");
+			    if(jQuery(selected).length)
+			    {
+				    if(jQuery('.js_shippingMethodsContainer').find('input[type="radio"]').is(':checked'))
+		            {
+			            var selected = jQuery(".js_shipping_method:checked");
+			            if(jQuery(selected).hasClass('js_shippingMethodRadioButton'))
+			            {
+			            	//now check if there is an error message in this Div.
+			            	var shipMethErrorMessage = jQuery('.js_shippingMethodsContainer').closest('#js_deliveryOptionBox').next('#js_deliveryOptionBoxError');
+			            	//check if error is displayed
+			            	if(jQuery(shipMethErrorMessage).length)
+			            	{
+			            		if(jQuery.trim(jQuery(shipMethErrorMessage).html()).length)
+			            		{
+			            			jQuery(shipMethErrorMessage).children().hide();
+			            		}
+			            	}
+		            	}
+		             }	
+				 }
+				 if((isOnLoad != null) && (isOnLoad =='N')) 
+        		 {
+					 if (jQuery('.js_onePageCheckoutLoyaltyPoints').length) 
+		             {
+		                jQuery.get('<@ofbizUrl>${refreshLoyaltyPointsRequest?if_exists}?rnd=' + String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(lpData)
+		             	{
+		             		jQuery('.js_onePageCheckoutLoyaltyPoints').replaceWith(lpData);	
+			            });
+		             }
+		             
+	             }
+	             
+	             if (jQuery('.js_onePageCheckoutGiftCard').length) 
+	             {
+	             	jQuery.get('<@ofbizUrl>${refreshGiftCardRequest?if_exists}?rnd=' + String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(gcData)
+	             	{
+	             		jQuery('.js_onePageCheckoutGiftCard').replaceWith(gcData);	
+		            });
+	             }
+	             if (jQuery('#js_remainingPayment').length) 
+	             {
+	             	jQuery.get('<@ofbizUrl>${reloadBalanceRequest?if_exists}?rnd=' + String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(data) 
+		            {
+	                   var balanceSection = jQuery(data).find("#js_remainingPayment");
+	                   jQuery('#js_remainingPayment').replaceWith(balanceSection);
+	                });
+	             }
+	             
+            	 
+			});
+        }
+        if((isOnLoad != null) && (isOnLoad =='N')) 
+        {
+            jQuery.get('<@ofbizUrl>${reloadPromoCodeRequest?if_exists}?rnd=' + String((new Date()).getTime()).replace(/\D/gi, "")+'</@ofbizUrl>', function(promoData)
+         	{
+         		jQuery('.js_onePageCheckoutPromoCode').replaceWith(promoData);	
+            });
+        }
+    }
+
+</script>

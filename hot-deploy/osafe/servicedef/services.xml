@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>OSafe Services</description>
+    <vendor/>
+    <version>1.0</version>
+    <service name="checkUserPassword" engine="java" location="com.osafe.services.LoginServices" invoke="checkUserPassword" auth="false">
+        <description>Check User s password for login</description>
+        <attribute name="username" mode="IN" type="String" ></attribute>
+        <attribute name="password" mode="IN" type="String" ></attribute>
+        <attribute name="passwordMatches" mode="OUT" type="String"  optional="false"></attribute>
+        <attribute name="userLogin" mode="OUT" type="org.ofbiz.entity.GenericValue"  optional="true"></attribute>
+    </service>
+    <service name="sendContactUsEmailToCompany" engine="simple"
+            location="component://osafe/script/Event/CommunicationEvent.xml" invoke="sendContactUsEmailToCompany" auth="false">
+        <description>Create communication event and send mail to company</description>
+        <implements service="createCommunicationEventWithoutPermission"/>
+        <attribute name="emailAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="firstName" type="String" mode="IN" optional="true"/>
+        <attribute name="lastName" type="String" mode="IN" optional="true"/>
+        <attribute name="address1" type="String" mode="IN" optional="true"/>
+        <attribute name="address2" type="String" mode="IN" optional="true"/>
+        <attribute name="address3" type="String" mode="IN" optional="true"/>
+        <attribute name="city" type="String" mode="IN" optional="true"/>
+        <attribute name="stateCode" type="String" mode="IN" optional="true"/>
+        <attribute name="postalCode" type="String" mode="IN" optional="true"/>
+        <attribute name="countryCode" type="String" mode="IN" optional="true"/>
+        <attribute name="contactReason" type="String" mode="IN" optional="true"/>
+        <attribute name="contactPhoneArea" type="String" mode="IN" optional="true"/>
+        <attribute name="contactPhoneContact" type="String" mode="IN" optional="true"/>
+        <attribute name="contactPhoneContact3" type="String" mode="IN" optional="true"/>
+        <attribute name="phoneNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="contactPhoneContact4" type="String" mode="IN" optional="true"/>
+        <attribute name="orderIdNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="catalogName" type="String" mode="IN" optional="true"/>
+        <attribute name="emailType" type="String" mode="IN" optional="true"/>
+        <attribute name="custRequestTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="custRequestName" type="String" mode="IN" optional="true"/>
+        <attribute name="productStoreId" type="String" mode="IN" optional="true"/>
+    </service>
+    <service name="updateSolrSchemaXml" engine="java" location="com.osafe.services.SolrServices" invoke="updateSolrSchemaXml" auth="false" transaction-timeout="7200">
+        <description>Update Schema Xml File for SOLR Indexing</description>
+        <attribute name="addFeatureElementCount" type="Integer" mode="OUT" optional="false"/>
+    </service>
+    <service name="getAssociatedStateList" engine="simple" auth="false"
+            location="component://osafe/script/services/OsafeServices.xml" invoke="getAssociatedStateList">
+        <attribute name="countryGeoId" mode="IN" type="String" optional="false"/>
+        <attribute name="listOrderBy" mode="IN" type="String" optional="true"/>
+        <attribute name="stateList" mode="OUT" type="java.util.List"/>
+    </service>
+    <service name="genSiteMap" engine="java" location="com.osafe.services.SiteMapServices" invoke="buildSiteMap" auth="false" transaction-timeout="7200">
+        <description>Create list of document for SOLR Indexing, Output Directory where the SiteMap.xml File will be placed</description>
+        <attribute name="siteMapOutputDir" mode="IN" type="String" optional="true" ></attribute>
+        <attribute name="productStoreId" mode="IN" type="String" optional="false" ></attribute>
+        <attribute name="browseRootProductCategoryId" mode="IN" type="String" optional="false" ></attribute>
+        <attribute name="productDetailUrl" mode="IN" type="String" optional="true" ></attribute>
+        <attribute name="productListUrl" mode="IN" type="String" optional="true" ></attribute>
+        <attribute name="productCategoryListUrl" mode="IN" type="String" optional="true" ></attribute>
+        <attribute name="staticPageUrl" mode="IN" type="String" optional="true" ></attribute>
+        <attribute name="siteMapVariantFeatures" mode="IN" type="String" optional="true" ></attribute>
+        <attribute name="siteMapFile" type="java.io.File" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="genSeoUrlMap" engine="java" location="com.osafe.services.SiteMapServices" invoke="buildFriendlyUrlMap" auth="false" transaction-timeout="7200">
+        <description>Create Friendlu URL Mapping File based on Product Catalog</description>
+        <attribute name="productStoreId" mode="IN" type="String" optional="false" ></attribute>
+        <attribute name="browseRootProductCategoryId" mode="IN" type="String" optional="false" ></attribute>
+    </service>
+
+    <!-- PartyGeoPoint services -->
+    <service name="createPartyGeoPoint" default-entity-name="PartyGeoPoint" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a FixedAssetGeoPoint</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="fromDate" optional="true"/>
+    </service>
+    <service name="updatePartyGeoPoint" default-entity-name="PartyGeoPoint" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a FixedAssetGeoPoint</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deletePartyGeoPoint" default-entity-name="PartyGeoPoint" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a FixedAssetGeoPoint</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <!-- Party Geo services -->
+    <service name="genPartyGeoPoint" engine="java" transaction-timeout="7200" auth="true"
+            location="com.osafe.services.GeoServices" invoke="genPartyGeoPoint">
+        <description>Create geo point and validate existing for party .if roleTypeId is null, consider STORE_LOCATION roletype as default.</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="roleTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="contactMechPurposeTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="productStoreId" type="String" mode="IN" optional="false"/>
+    </service>
+
+    <service name="exportCommunicationEvent" engine="java" location="com.osafe.services.ExportServices" transaction-timeout="7200" invoke="exportCommunicationEvent" auth="false">
+        <description>export communication event data for Contact us Information and Request Catalog Notification</description>
+        <attribute name="outpath" type="String" mode="IN" optional="false"/>
+        <attribute name="results" type="List" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="createUpdatePartyEmailAddress" engine="simple"
+        location="component://party/script/org/ofbiz/party/contact/PartyContactMechServices.xml" invoke="createUpdatePartyEmailAddress" auth="false">
+        <description>Create and Update email address</description>
+        <attribute name="partyId" type="String" mode="IN" optional="true"/>
+        <attribute name="userLogin" type="org.ofbiz.entity.GenericValue" mode="IN" optional="true"/>
+        <attribute name="contactMechPurposeTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="allowSolicitation" type="String" mode="IN" optional="true"/>
+        <attribute name="roleTypeId" type="String" mode="IN" optional="true"/>
+        <attribute name="emailAddress" type="String" mode="INOUT" optional="false"/>
+        <attribute name="contactMechId" type="String" mode="IN" optional="true"/>
+        <attribute name="contactMechId" type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="sendMailFromScreen" max-retry="3" engine="java"
+        location="com.osafe.services.EmailServices" invoke="sendMailFromScreen">
+        <description>Send E-Mail From Screen Widget Service</description>
+        <implements service="sendMailInterface"/>
+        <attribute name="bodyText" type="String" mode="IN" optional="true" allow-html="safe"/>
+        <attribute name="bodyScreenUri" type="String" mode="IN" optional="true"/>
+        <attribute name="xslfoAttachScreenLocation" type="String" mode="IN" optional="true"/>
+        <attribute name="attachmentName" type="String" mode="IN" optional="true"/>
+        <attribute name="bodyParameters" type="Map" mode="IN" optional="true"/>
+        <attribute name="webSiteId" type="String" mode="IN" optional="true"/>
+        <attribute name="subject" type="String" mode="OUT" optional="true"/>
+        <attribute name="body" type="String" mode="OUT" optional="false"/>
+        <attribute name="productStoreId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="attachmentFileLocation" type="String" mode="IN" optional="true"/>
+        <attribute name="attachmentFileMimeType" type="String" mode="IN" optional="true"/>
+        <attribute name="attachmentFileName" type="String" mode="IN" optional="true"/>
+    </service>
+
+    <service name="sendTxtMessage" max-retry="3" engine="java"
+        location="com.osafe.services.TxtMessageServices" invoke="sendTxtMessage">
+        <description>Send Txt Message Service</description>
+        <attribute name="textMessage" type="String" mode="IN" optional="true" allow-html="safe"/>
+        <attribute name="toCell" type="String" mode="IN" optional="true"/>
+        <attribute name="sendFrom" type="String" mode="IN" optional="true"/>
+        <attribute name="communicationEventId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="templateId" type="String" mode="IN" optional="true"/>
+        <attribute name="webSiteId" type="String" mode="IN" optional="true"/>
+        <attribute name="productStoreId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="orderId" type="String" mode="INOUT" optional="true"/>
+    </service>
+    <service name="sendTxtMessageFromTemplate" max-retry="3" engine="java"
+        location="com.osafe.services.TxtMessageServices" invoke="sendTxtMessageFromTemplate">
+        <description>Send Txt Message Service</description>
+        <attribute name="textMessage" type="String" mode="IN" optional="true" allow-html="safe"/>
+        <attribute name="toCell" type="String" mode="IN" optional="true"/>
+        <attribute name="communicationEventId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="templateId" type="String" mode="IN" optional="true"/>
+        <attribute name="webSiteId" type="String" mode="IN" optional="true"/>
+        <attribute name="productStoreId" type="String" mode="IN" optional="true"/>
+        <attribute name="partyId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="orderId" type="String" mode="INOUT" optional="true"/>
+    </service>
+    <service name="genReevooProductsFeed" engine="java" location="com.osafe.services.reevoo.ReevooServices" invoke="genReevooProductsFeed" auth="false" transaction-timeout="7200">
+        <description>Create A text filr for Reevoo Products feed</description>
+        <attribute name="productStoreId" mode="IN" type="String" optional="false" />
+        <attribute name="browseRootProductCategoryId" mode="IN" type="String" optional="false" />
+    </service>
+
+    <service name="getReevooCsvFeed" engine="java" location="com.osafe.services.reevoo.ReevooServices" invoke="getReevooCsvFeed" auth="false" transaction-timeout="7200">
+        <description>down load csv feed</description>
+        <attribute name="productStoreId" type="String" mode="IN" optional="false" />
+        <attribute name="reevooApiUrl" type="String" mode="IN" optional="true"/>
+        <attribute name="reevooApiCsvUrl" type="String" mode="IN" optional="true"/>
+        <attribute name="reevooApiUserName" type="String" mode="IN" optional="true"/>
+        <attribute name="reevooApiPassword" type="String" mode="IN" optional="true"/>
+        <attribute name="csvFile" type="java.io.File" mode="OUT" optional="true"/>
+        <attribute name="csvFileAsString" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="createUpdatePartyAttribute" engine="simple"
+        location="component://osafe/script/services/OsafeServices.xml" invoke="createUpdatePartyAttribute" auth="false">
+        <description>Create Update party attribute</description>
+        <attribute name="partyId" mode="IN" type="String" optional="false" />
+        <attribute name="attrName" mode="IN" type="String" optional="true" />
+        <attribute name="attrValue" mode="IN" type="String" optional="true" />
+    </service>
+    <service name="getPostalAddress" engine="simple"
+        location="component://osafe/script/services/OsafeServices.xml" invoke="getPostalAddress" auth="false">
+        <description>Get party postal address</description>
+        <attribute name="contactMechId" type="String" mode="INOUT" optional="false"/>
+        <attribute name="toName" type="String" mode="OUT" optional="true"/>
+        <attribute name="address1" type="String" mode="OUT" optional="true"/>
+        <attribute name="address2" type="String" mode="OUT" optional="true"/>
+        <attribute name="address3" type="String" mode="OUT" optional="true"/>
+        <attribute name="directions" type="String" mode="OUT" optional="true"/>
+        <attribute name="city" type="String" mode="OUT" optional="true"/>
+        <attribute name="postalCode" type="String" mode="OUT" optional="true"/>
+        <attribute name="stateProvinceGeoId" type="String" mode="OUT" optional="true"/>
+        <attribute name="countyGeoId" type="String" mode="OUT" optional="true"/>
+        <attribute name="countryGeoId" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="sendOrderChangeNotification" engine="java" require-new-transaction="true" max-retry="3"
+            location="com.osafe.services.OrderServices" invoke="sendOrderChangeNotification">
+        <description>Send a order notification</description>
+        <implements service="orderNotificationInterface"/>
+    </service>
+    <service name="extendedAddressValidation" engine="java" location="com.osafe.services.AddressServices" invoke="extendedAddressValidation" auth="false">
+        <description>Check if Address information needs further validation</description>
+        <attribute name="productStoreId" type="String" mode="IN" optional="false"/>
+        <attribute name="address1" type="String" mode="INOUT" optional="true"/>
+        <attribute name="address2" type="String" mode="INOUT" optional="true"/>
+        <attribute name="address3" type="String" mode="INOUT" optional="true"/>
+        <attribute name="city" type="String" mode="INOUT" optional="true"/>
+        <attribute name="postalCode" type="String" mode="INOUT" optional="true"/>
+        <attribute name="postalCodeExt" type="String" mode="INOUT" optional="true"/>
+        <attribute name="stateProvinceGeoId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="countyGeoId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="countryGeoId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="responseCode" type="Integer" mode="OUT" optional="true"/>
+        <attribute name="suggestionList" type="java.util.List" mode="OUT" optional="true"/>
+    </service>
+    <service name="addressValidationMelissaData" engine="java" location="com.osafe.services.MelissaDataServices" invoke="addressChecker" auth="false">
+        <description>Validate Address using Melissa Data</description>
+        <attribute name="productStoreId" type="String" mode="IN" optional="false"/>
+        <attribute name="address1" type="String" mode="INOUT" optional="true"/>
+        <attribute name="address2" type="String" mode="INOUT" optional="true"/>
+        <attribute name="address3" type="String" mode="INOUT" optional="true"/>
+        <attribute name="city" type="String" mode="INOUT" optional="true"/>
+        <attribute name="postalCode" type="String" mode="INOUT" optional="true"/>
+        <attribute name="postalCodeExt" type="String" mode="INOUT" optional="true"/>
+        <attribute name="stateProvinceGeoId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="countyGeoId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="countryGeoId" type="String" mode="INOUT" optional="true"/>
+        <attribute name="responseCode" type="Integer" mode="OUT" optional="true"/>
+        <attribute name="suggestionList" type="java.util.List" mode="OUT" optional="true"/>
+    </service>
+    
+    <service name="checkDelivery" engine="java" auth="false"
+            location="com.osafe.services.bluedart.BlueDartServices" invoke="checkDelivery">
+        <attribute name="pincode" mode="IN" type="String" optional="false"/>
+        <attribute name="deliveryAvailable" mode="OUT" type="String"/>
+    </service>
+    
+    <service name="checkCodLimit" engine="java" auth="false"
+            location="com.osafe.services.bluedart.BlueDartServices" invoke="checkCodLimit">
+        <attribute name="pincode" mode="IN" type="String" optional="false"/>
+        <attribute name="codLimit" mode="OUT" type="BigDecimal"/>
+    </service>
+    
+    <!-- Shipment Custom Methods -->
+    
+    <!-- BlueDart -->
+    <service name="blueDartCheckoutPincode" engine="java"
+            location="com.osafe.services.bluedart.BlueDartServices" invoke="blueDartCheckoutPincode">
+        <description>BlueDart Shipment Custom Method</description>
+        <attribute name="shoppingCart" mode="IN" type="org.ofbiz.order.shoppingcart.ShoppingCart" optional="false"></attribute>  
+        <attribute name="isAvailable" type="String" mode="OUT" optional="true"/>
+    </service>
+
+    <!-- Test GiftCard Services -->
+    <service name="testGCCapture" engine="java"
+            location="org.ofbiz.accounting.payment.PaymentGatewayServices" invoke="testCapture">
+        <description>Test Gift Card Capture Processing: always approve the capture request</description>
+        <implements service="giftCardProcessInterface"/>
+    </service>
+    <service name="testGCRefund" engine="java"
+            location="org.ofbiz.accounting.payment.PaymentGatewayServices" invoke="testRefund">
+        <description>Test Gift Card Refund Processing: always approve the refund request</description>
+        <implements service="paymentRefundInterface"/>
+    </service>
+
+    <service name="tenderCardAuthorize" engine="java"
+             location="com.osafe.services.tendercard.TenderCardServices" invoke="doAuthorization">
+        <implements service="giftCardProcessInterface" optional="true"/>
+    </service>
+    <service name="tenderCardReAuthorize" engine="java"
+             location="com.osafe.services.tendercard.TenderCardServices" invoke="doAuthorization">
+        <implements service="giftCardProcessInterface" optional="true"/>
+        <attribute name="captureAmount" type="BigDecimal" mode="INOUT" optional="false"/>
+    </service>
+    <service name="tenderCardCapture" engine="java"
+             location="com.osafe.services.tendercard.TenderCardServices" invoke="doCapture">
+        <implements service="giftCardProcessInterface"/>
+    </service>
+    <service name="tenderCardRefund" engine="java"
+             location="com.osafe.services.tendercard.TenderCardServices" invoke="doRefund">
+        <implements service="paymentRefundInterface"/>
+    </service>
+    <service name="tenderCardRelease" engine="java"
+             location="com.osafe.services.tendercard.TenderCardServices" invoke="doRelease">
+        <implements service="paymentReleaseInterface"/>
+    </service>
+    <service name="balanceInquireTenderCard" engine="java"
+            location="com.osafe.services.tendercard.TenderCardServices" invoke="balanceInquire" auth="false">
+        <description>Inquire current card balance</description>
+        <attribute name="productStoreId" type="String" mode="IN" optional="false"/>
+        <attribute name="cardNumber" type="String" mode="IN" optional="false"/>
+        <attribute name="CVV" type="String" mode="IN" optional="true"/>
+        <attribute name="balance" type="BigDecimal" mode="OUT" optional="true"/>
+        <attribute name="responseCode" type="String" mode="OUT" optional="false"/>
+        <attribute name="processResult" type="Boolean" mode="OUT" optional="false"/>
+    </service>
+
+    <service name="createOrdersFromAutoShoppingList" engine="java"
+            location="com.osafe.services.ShoppingListServices" invoke="createListReorders">
+        <description>A service designed to be automatically run by job scheduler to create orders from auto-order shopping lists.
+            This is done by looking for all auto-order shopping lists which are active
+            comparing the lastOrderedDate and the defined recurrenceInfo with the time when the service is run.
+        </description>
+    </service>
+    
+    <!-- Loyalty Points -->
+    <service name="validateLoyaltyMember" engine="java"
+            location="com.osafe.services.LoyaltyPointsServices" invoke="validateLoyaltyMember">
+        <description>Verify Loyalty Points Member ID</description>
+        <attribute name="loyaltyPointsId" type="String" mode="IN" optional="true"/>
+        <attribute name="productStoreId" type="String" mode="IN" optional="true"/>
+        <attribute name="isValid" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="getLoyaltyPointsInfoMap" engine="java"
+            location="com.osafe.services.LoyaltyPointsServices" invoke="getLoyaltyPointsInfoMap">
+        <description>Retrieve Loyalty Points information using Member ID</description>
+        <attribute name="loyaltyPointsId" type="String" mode="IN" optional="true"/>
+        <attribute name="productStoreId" type="String" mode="IN" optional="true"/>
+        <attribute name="loyaltyPointsAmount" type="BigDecimal" mode="OUT" optional="true"/>
+        <attribute name="expDate" type="String" mode="OUT" optional="true"/>
+    </service>
+    <service name="convertLoyaltyPoints" engine="java"
+            location="com.osafe.services.LoyaltyPointsServices" invoke="convertLoyaltyPoints">
+        <description>Convert Loyalty Points to Currency</description>
+        <attribute name="loyaltyPointsAmount" type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="checkoutLoyaltyConversion" type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="loyaltyPointsCurrency" type="BigDecimal" mode="OUT" optional="true"/>
+    </service>
+    <service name="convertCurrencyToLoyaltyPoints" engine="java"
+            location="com.osafe.services.LoyaltyPointsServices" invoke="convertCurrencyToLoyaltyPoints">
+        <description>Convert Currency to Loyalty Points</description>
+        <attribute name="loyaltyPointsCurrency" type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="checkoutLoyaltyConversion" type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="loyaltyPointsAmount" type="BigDecimal" mode="OUT" optional="true"/>
+    </service>
+    <service name="redeemLoyaltyPoints" engine="java"
+            location="com.osafe.services.LoyaltyPointsServices" invoke="redeemLoyaltyPoints">
+        <description>Redeem Loyalty Points</description>
+        <attribute name="orderId" type="String" mode="IN" optional="true"/>
+        <attribute name="orderAdjustmentAttributeList" type="java.util.List" mode="IN" optional="true"/>
+    </service>
+
+    <!-- PayNetz Payment Interfaces -->
+    <service name="payNetzCaptureInterface" engine="interface" location="" invoke="">
+        <description>PayNetz Capture Interface</description>
+        <attribute name="orderPaymentPreference" type="org.ofbiz.entity.GenericValue" mode="IN" optional="false"/>
+        <attribute name="captureAmount" type="BigDecimal" mode="INOUT" optional="false"/>
+        <attribute name="currency" type="String" mode="IN" optional="true"/>
+        <attribute name="paymentConfig" type="String" mode="IN" optional="true"/>
+        <attribute name="authTrans" type="org.ofbiz.entity.GenericValue" mode="IN" optional="true"/>
+        <attribute name="paymentGatewayConfigId" type="String" mode="IN" optional="true"/>
+        <attribute name="captureResult" type="Boolean" mode="OUT" optional="true"/>
+        <attribute name="captureAltRefNum" type="String" mode="OUT" optional="true"/>
+        <attribute name="captureRefNum" type="String" mode="OUT" optional="false"/>
+        <attribute name="captureCode" type="String" mode="OUT" optional="true"/>
+        <attribute name="captureFlag" type="String" mode="OUT" optional="true"/>
+        <attribute name="captureMessage" type="String" mode="OUT" optional="true"/>
+        <attribute name="internalRespMsgs" type="List" mode="OUT" optional="true"/>
+    </service>
+
+    <service name="payNetzSetCheckoutInterface" engine="interface" location="" invoke="">
+        <description>Interface for services performing the PayNetz setPayNetzChekout operation</description>
+        <attribute name="cart" mode="IN" type="org.ofbiz.order.shoppingcart.ShoppingCart" optional="false"></attribute>
+    </service>
+    <service name="payNetzGetCheckoutInterface" engine="interface" location="" invoke="">
+        <description>Interface for services performing the PayNetz getPayNetzCheckout operation</description>
+        <attribute name="cart" mode="IN" type="org.ofbiz.order.shoppingcart.ShoppingCart" optional="false"></attribute>
+    </service>
+
+    <service name="setPayNetzChekout" engine="java"
+             location="com.osafe.services.paynetz.PayNetzPaymentServices" invoke="setPayNetzChekout">
+        <implements service="payNetzSetCheckoutInterface"/>
+    </service>
+    <service name="getPayNetzCheckout" engine="java"
+             location="com.osafe.services.paynetz.PayNetzPaymentServices" invoke="getPayNetzCheckout">
+        <implements service="payNetzGetCheckoutInterface"/>
+        <attribute name="payNetzResponse" mode="IN" type="Map" optional="false"></attribute>
+    </service>
+
+    <service name="payNetzAuthProcessor" engine="java"
+             location="com.osafe.services.paynetz.PayNetzPaymentServices" invoke="doAuthorization">
+        <description>PayNetz Order Payment Authorization</description>
+        <implements service="paymentProcessInterface" optional="true"/>
+    </service>
+    <service name="payNetzCapture" engine="java"
+             location="com.osafe.services.paynetz.PayNetzPaymentServices" invoke="doCapture">
+        <description>PayNetz Order Payment Capture</description>
+        <implements service="payNetzCaptureInterface"/>
+    </service>
+    <service name="payNetzRefund" engine="java"
+             location="com.osafe.services.paynetz.PayNetzPaymentServices" invoke="doRefund">
+        <description>PayNetz Order Payment Refund</description>
+        <implements service="paymentRefundInterface"/>
+    </service>
+    <service name="payNetzRelease" engine="java"
+             location="com.osafe.services.paynetz.PayNetzPaymentServices" invoke="doRelease">
+        <description>PayNetz Order Payment Release</description>
+        <implements service="paymentReleaseInterface"/>
+    </service>
+    
+    <!-- Store Locator -->
+    <service name="getShowMapInfoMap" engine="simple" auth="false"
+            location="component://osafe/script/services/OsafeServices.xml" invoke="getShowMapInfoMap">
+        <attribute name="productStoreId" mode="IN" type="String" optional="true"/>
+        <attribute name="address" mode="IN" type="String" optional="true"/>
+        <attribute name="latitude" mode="INOUT" type="String" optional="true"/>
+        <attribute name="longitude" mode="INOUT" type="String" optional="true"/>
+        <attribute name="showMap" mode="OUT" type="String" optional="true"/>
+        <attribute name="searchRadius" mode="OUT" type="String" optional="true"/>
+        <attribute name="uom" mode="OUT" type="String" optional="true"/>
+    </service>
+
+</services>
